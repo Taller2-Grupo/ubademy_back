@@ -20,4 +20,9 @@ def get_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.get_curso(curso_id, db)
 
 
+@api.delete("/cursos/{curso_id}", response_model=CursoSchema.CursoResponse)
+def delete_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
+    return curso_service.eliminar_curso(curso_id, db)
+
+
 uvicorn.run(api)

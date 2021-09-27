@@ -20,3 +20,4 @@ def get_curso(curso_id: uuid.UUID, db: Session):
 def eliminar_curso(curso_id: uuid.UUID, db: Session):
     db_curso = get_curso(curso_id, db)
     db_curso.eliminar()
+    return curso_repository.actualizar_curso(db, db_curso)

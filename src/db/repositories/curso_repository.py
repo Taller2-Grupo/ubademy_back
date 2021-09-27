@@ -1,7 +1,7 @@
 import uuid
 
 from sqlalchemy.orm import Session
-from src.models.CursoModel import Curso, EstadoCursoEnum
+from src.models.CursoModel import Curso
 from src.schemas import CursoSchema
 
 
@@ -19,3 +19,9 @@ def create_curso(db: Session, curso: CursoSchema.CreateCursoRequest):
     db.refresh(db_curso)
     return db_curso
 
+
+def actualizar_curso(db: Session, curso: Curso):
+    db.add(curso)
+    db.commit()
+    db.refresh(curso)
+    return curso
