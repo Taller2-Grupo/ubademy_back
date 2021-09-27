@@ -3,6 +3,7 @@ import uuid
 from typing import Optional
 from pydantic import BaseModel, validator
 from src.models.CursoModel import EstadoCursoEnum
+from fastapi import HTTPException
 
 
 class CursoBase(BaseModel):
@@ -10,12 +11,17 @@ class CursoBase(BaseModel):
     titulo: str
     descripcion: str
 
+    @validator('titulo')
+    def tiene_titulo(cls, titulo: str):
+        if not titulo:
+            raise HTTPException(status_code=400, detail='Debe proporcionar un título.')
+        return titulo
 
-    # @validator('cantidad_alumnos')
-    # def cantidad_menor_a_50(cls, cantidad):
-    #     if cantidad > 50:
-    #         raise HTTPException(status_code=400, detail='Bad Request')
-    #     return cantidad
+    @validator('descripcion')
+    def tiene_descripcion(cls, descripcion: str):
+        if not descripcion:
+            raise HTTPException(status_code=400, detail='Debe proporcionar una descripción.')
+        return descripcion
 
 
 # En esta clase se le agregan todos los atributos particulares para la creación, en este caso ninguno.
