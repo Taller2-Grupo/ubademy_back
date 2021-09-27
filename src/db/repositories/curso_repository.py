@@ -11,10 +11,9 @@ def get_curso(db: Session, curso_id: uuid.UUID):
 
 def create_curso(db: Session, curso: CursoSchema.CreateCursoRequest):
     db_curso = Curso\
-        (id_creador=curso.id_creador,
-         titulo=curso.titulo,
-         descripcion=curso.descripcion,
-         estado=EstadoCursoEnum.activo)
+        (curso.id_creador,
+         curso.titulo,
+         curso.descripcion)
     db.add(db_curso)
     db.commit()
     db.refresh(db_curso)

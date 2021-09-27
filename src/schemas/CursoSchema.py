@@ -1,8 +1,9 @@
+import datetime
 import uuid
-
-from fastapi import HTTPException
+from typing import Optional
 from pydantic import BaseModel, validator
 from src.models.CursoModel import EstadoCursoEnum
+
 
 class CursoBase(BaseModel):
     id_creador: uuid.UUID
@@ -26,6 +27,8 @@ class CreateCursoRequest(CursoBase):
 class CursoResponse(CursoBase):
     id: uuid.UUID
     estado: EstadoCursoEnum
+    fecha_creacion: datetime.datetime
+    fecha_actualizacion: Optional[datetime.datetime]
 
     class Config:
         orm_mode = True
