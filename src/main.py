@@ -1,10 +1,12 @@
 import uuid
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Query
 from src.schemas import CursoSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.services import curso_service
+from src.models.CursoModel import EstadoCursoEnum
+from typing import Optional, List
 
 app = FastAPI()
 
@@ -24,3 +26,6 @@ def delete_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.eliminar_curso(curso_id, db)
 
 
+@app.get("/cursos", response_model=List[CursoSchema.CursoResponse])
+def get_cursos(estados: Optional[List[EstadoCursoEnum]] = Query(None, alias="estado"), db: Session = Depends(get_db)):
+    return curso_service.get_cursos(estados, db)
