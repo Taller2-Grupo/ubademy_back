@@ -11,6 +11,9 @@ class CursoBase(BaseModel):
     titulo: str
     descripcion: str
 
+
+# En esta clase se le agregan todos los atributos particulares para la creación
+class CreateCursoRequest(CursoBase):
     @validator('titulo')
     def tiene_titulo(cls, titulo: str):
         if not titulo:
@@ -24,12 +27,7 @@ class CursoBase(BaseModel):
         return descripcion
 
 
-# En esta clase se le agregan todos los atributos particulares para la creación, en este caso ninguno.
-class CreateCursoRequest(CursoBase):
-    pass
-
-
-# Esto es lo que se va a devolver cuando se este "leyendo" un Curso, en este caso "id" que no se pasa al crear
+# Esto es lo que se va a devolver cuando se este "leyendo" un Curso
 class CursoResponse(CursoBase):
     id: uuid.UUID
     estado: EstadoCursoEnum
