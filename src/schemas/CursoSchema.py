@@ -1,27 +1,38 @@
-from fastapi import HTTPException
+import datetime
+import uuid
+from typing import Optional
 from pydantic import BaseModel, validator
+from src.models.CursoModel import EstadoCursoEnum
+from fastapi import HTTPException
 
 
 class CursoBase(BaseModel):
-    cantidad_alumnos: int
-    cantidad_condicionales: int
-    nombre: str
-
-    @validator('cantidad_alumnos')
-    def cantidad_menor_a_50(cls, cantidad):
-        if cantidad > 50:
-            raise HTTPException(status_code=400, detail='Bad Request')
-        return cantidad
+    id_creador: uuid.UUID
+    titulo: str
+    descripcion: str
 
 
-# En esta clase se le agregan todos los atributos particulares para la creación, en este caso ninguno.
-class CursoCreate(CursoBase):
-    pass
+# En esta clase se le agregan todos los atributos particulares para la creación
+class CreateCursoRequest(CursoBase):
+    @validator('titulo')
+    def tiene_titulo(cls, titulo: str):
+        if not titulo:
+            raise HTTPException(status_code=400, detail='Debe proporcionar un título.')
+        return titulo
+
+    @validator('descripcion')
+    def tiene_descripcion(cls, descripcion: str):
+        if not descripcion:
+            raise HTTPException(status_code=400, detail='Debe proporcionar una descripción.')
+        return descripcion
 
 
-# Esto es lo que se va a devolver cuando se este "leyendo" un Curso, en este caso "id" que no se pasa al crear
-class Curso(CursoBase):
-    id: int
+# Esto es lo que se va a devolver cuando se este "leyendo" un Curso
+class CursoResponse(CursoBase):
+    id: uuid.UUID
+    estado: EstadoCursoEnum
+    fecha_creacion: datetime.datetime
+    fecha_actualizacion: Optional[datetime.datetime]
 
     class Config:
         orm_mode = True
