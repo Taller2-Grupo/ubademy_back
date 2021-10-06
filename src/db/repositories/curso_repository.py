@@ -3,7 +3,7 @@ import uuid
 from sqlalchemy.orm import Session
 from src.models.CursoModel import Curso, EstadoCursoEnum
 from src.schemas import CursoSchema
-from typing import List
+from typing import List, Optional
 
 
 def get_curso(db: Session, curso_id: uuid.UUID):
@@ -29,5 +29,7 @@ def actualizar_curso(db: Session, curso: Curso):
     return curso
 
 
-def get_curso_by_estados(estados: List[EstadoCursoEnum], db: Session):
+def get_curso_by_estados(estados: Optional[List[EstadoCursoEnum]], db: Session):
+    if estados is None:
+        return db.query(Curso).all()
     return db.query(Curso).filter(Curso.estado.in_(estados)).all()
