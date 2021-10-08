@@ -37,9 +37,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: test
       run: |
-        pip install pytest
-        export PYTHONAPP=src
-        pytest
+        pytest tests/test*
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
