@@ -37,7 +37,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: test
       run: |
-        export PYTHONPATH=src
+        export PYTHONPATH=. src
         pytest
     - name: Coveralls
       uses: coverallsapp/github-action@master
