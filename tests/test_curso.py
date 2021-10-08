@@ -1,10 +1,15 @@
 from unittest import TestCase
-from fastapi import HTTPException
 from src.db.database import get_db
 from src.models.CursoModel import Curso
 from src.schemas import CursoSchema
 from src.schemas.CursoSchema import CreateCursoRequest
 from src.services.curso_service import crear_curso
+from fastapi.testclient import TestClient
+from src.main import app
+
+
+testClient = TestClient(app)
+
 
 class CursoTest(TestCase):
 
@@ -29,6 +34,7 @@ class CursoTest(TestCase):
         curso.eliminar()
         self.assertTrue(curso.estado == 'eliminado')
 
-    #def testCrearCursoSinTituloNiDescripcion(self):
-        #self.assertRaises(HTTPException, crear_curso(CreateCursoRequest(), get_db()))
+    def test(self):
+        response = testClient.get("/cursos")
+        assert response.status_code == 200
 

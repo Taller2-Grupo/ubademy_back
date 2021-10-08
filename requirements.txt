@@ -5,3 +5,4 @@ pydantic
 SQLAlchemy
 psycopg2-binary
 alembic
+requests
