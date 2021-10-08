@@ -40,6 +40,7 @@ jobs:
         export PYTHONPATH=. src
         pytest
     - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        pip install coveralls
+        coverage run --source=mypkg -m pytest tests/
+        coveralls
