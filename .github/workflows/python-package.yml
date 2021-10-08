@@ -13,6 +13,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
@@ -41,7 +43,6 @@ jobs:
         pytest
     - name: Coveralls
       run: |
-        export env=GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         pip install coveralls
         coverage run --source=mypkg -m pytest tests/
         coveralls
