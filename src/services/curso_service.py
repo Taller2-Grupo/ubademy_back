@@ -27,3 +27,9 @@ def eliminar_curso(curso_id: uuid.UUID, db: Session):
 
 def get_cursos(estados: Optional[List[EstadoCursoEnum]], db: Session):
     return curso_repository.get_curso_by_estados(estados, db)
+
+def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session):
+    db_curso = curso_repository.get_curso(db, curso_id=curso_id)
+    if db_curso is None:
+        raise HTTPException(status_code=404, detail="Curso not found")
+    return db_curso.obtenerListadoAlumnos()

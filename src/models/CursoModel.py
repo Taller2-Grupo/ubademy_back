@@ -18,6 +18,7 @@ class Curso(Base, Entity):
     titulo = Column(String, nullable=False)
     descripcion = Column(String, nullable=False)
     estado = Column(Enum(EstadoCursoEnum), nullable=False)
+    alumnos = {}
 
     def __init__(self, id_creador, titulo, descripcion):
         self.id_creador = id_creador
@@ -25,7 +26,21 @@ class Curso(Base, Entity):
         self.descripcion = descripcion
         self.estado = EstadoCursoEnum.activo
         self.fecha_creacion = datetime.datetime.now()
+        self.alumnos = {}
 
     def eliminar(self):
         self.estado = EstadoCursoEnum.eliminado
         self.actualizar()
+
+    def agregarAlumno(self, alumno):
+        self.alumnos[alumno.padron] = alumno
+
+    def alumnoEstaInscripto(self, alumno):
+        return alumno.padron in self.alumnos
+
+    def obtenerListadoAlumnos(self):
+        alumnos = []
+        for alumno in self.alumnos:
+            alumnos.append(self.alumnos[alumno])
+        return alumnos
+

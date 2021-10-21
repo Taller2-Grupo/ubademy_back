@@ -57,3 +57,16 @@ class MainTest(TestCase):
         response = client.delete('/cursos/' + id_post)
         print(response.status_code)
         assert response.status_code == 200
+
+    def testGetListadoAlumnosCurso(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'DeleteCurso',
+                                          'descripcion': 'descr'})
+        id_post = response_post.json().get('id')
+        print(id_post)
+        client.post('/cursos/' + id_post, json={'nombre': 'Renzo', 'apellido': 'Jacinto',
+                                          'padron': '100627'})
+        response = client.get('/cursos/' + id_post + '/' + 'alumnos')
+        print(response.status_code)
+        assert response.status_code == 200
+
