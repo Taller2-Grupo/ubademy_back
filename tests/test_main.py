@@ -32,7 +32,7 @@ class MainTest(TestCase):
     def testPostCurso(self):
         response = client.post('/cursos/',
                                json={'id_creador': 'dadb4e2f-63d1-45d4-9f44-2d68a07105cc', 'titulo': 'postCurso'
-                                   , 'descripcion': 'descr'})
+                                   ,'descripcion': 'descr'})
         assert response.status_code == 200
 
     def testGetCursos(self):
@@ -56,6 +56,26 @@ class MainTest(TestCase):
         id_post = response_post.json().get('id')
         response = client.delete('/cursos/' + id_post)
         print(response.status_code)
+        assert response.status_code == 200
+
+    def testEditarCurso(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest',
+                                          'descripcion': 'EditarTest'})
+        id_post = response_post.json().get('id')
+        response = client.put('/cursos/' + id_post, json={'nuevo_titulo': 'nuevoTitulo', 'nueva_descripcion': 'nuevaDescripcion'})
+        self.assertTrue(response.json().get('titulo') == 'nuevoTitulo' and response.json().get('descripcion') == 'nuevaDescripcion')
+        assert response.status_code == 200
+
+    def testGetCursosCreadorSinCursos(self):
+        response = client.get('4e4707da-0542-4f9c-ae59-bc3bcaafde71/cursos')
+        assert response.status_code == 200
+
+    def testGetCursosCreadorConCursos(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'CursosCreadorTest',
+                                          'descripcion': 'CursosCreadorTest'})
+        response = client.get('fa3333cf-10e2-44df-9bc5-ae4c8d936c66/cursos')
         assert response.status_code == 200
 
     def testGetListadoAlumnosCurso(self):

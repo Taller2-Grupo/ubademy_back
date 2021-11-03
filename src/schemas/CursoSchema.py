@@ -12,6 +12,11 @@ class CursoBase(BaseModel):
     descripcion: str
 
 
+class EditarCurso(BaseModel):
+    nuevo_titulo: str
+    nueva_descripcion: str
+
+
 # En esta clase se le agregan todos los atributos particulares para la creación
 class CreateCursoRequest(CursoBase):
     @validator('titulo')
@@ -36,3 +41,16 @@ class CursoResponse(CursoBase):
 
     class Config:
         orm_mode = True
+
+class EditCursoRequest(EditarCurso):
+    @validator('nuevo_titulo')
+    def tiene_titulo(cls, nuevo_titulo: str):
+        if not nuevo_titulo:
+            raise HTTPException(status_code=400, detail='Debe proporcionar un título.')
+        return nuevo_titulo
+
+    @validator('nueva_descripcion')
+    def tiene_descripcion(cls, nueva_descripcion: str):
+        if not nueva_descripcion:
+            raise HTTPException(status_code=400, detail='Debe proporcionar una descripción.')
+        return nueva_descripcion

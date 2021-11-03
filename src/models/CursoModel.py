@@ -32,6 +32,12 @@ class Curso(Base, Entity):
         self.estado = EstadoCursoEnum.eliminado
         self.actualizar()
 
+    def cambiarTitulo(self, nuevo_titulo):
+        self.titulo = nuevo_titulo
+
+    def cambiarDescripcion(self, nueva_descripcion):
+        self.descripcion = nueva_descripcion
+
     def agregarAlumno(self, alumno):
         self.alumnos[alumno.padron] = alumno
 
