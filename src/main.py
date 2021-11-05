@@ -2,7 +2,6 @@ import uuid
 
 from fastapi import FastAPI, Depends, Query
 
-from src.models.AlumnoModel import Alumno
 from src.schemas import CursoSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
@@ -52,9 +51,9 @@ def editar_curso(curso_id: uuid.UUID, curso: CursoSchema.EditarCurso, db: Sessio
 def get_cursos_creador(creador_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.get_cursos_creador(creador_id, db)
 
-@app.get("/cursos/{curso_id}/alumnos", response_model=CursoSchema.CursoResponse)
-def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
-    return curso_service.get_listado_alumnos_curso(curso_id, db)
+#@app.get("/cursos/{curso_id}/alumnos", response_model=CursoSchema.CursoResponse)
+#def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
+ #   return curso_service.get_listado_alumnos_curso(curso_id, db)
 
 ##@app.post("/cursos/{curso_id}", response_model=CursoSchema.CursoResponse)
 ##def agregar_alumno_curso(curso_id: uuid.UUID, alumno: Alumno, db: Session = Depends(get_db)):
