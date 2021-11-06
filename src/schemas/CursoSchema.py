@@ -2,14 +2,20 @@ import datetime
 import uuid
 from typing import Optional
 from pydantic import BaseModel, validator
-from src.models.CursoModel import EstadoCursoEnum
+from src.models.CursoModel import EstadoCursoEnum, Curso
 from fastapi import HTTPException
+from src.models.CursoModel import TipoCursoEnum, SuscripcionCursoEnum
 
 
 class CursoBase(BaseModel):
-    id_creador: uuid.UUID
+    id_creador: str
     titulo: str
     descripcion: str
+    hashtags: str
+    tipo: str
+    examenes: str
+    suscripcion: str
+    ubicacion: str
 
 
 class EditarCurso(BaseModel):
@@ -30,6 +36,26 @@ class CreateCursoRequest(CursoBase):
         if not descripcion:
             raise HTTPException(status_code=400, detail='Debe proporcionar una descripción.')
         return descripcion
+
+    @validator('tipo')
+    def tiene_tipo(cls, tipo: str):
+        if not tipo:
+            raise HTTPException(status_code=400, detail='Debe proporcionar un tipo.')
+        try:
+            TipoCursoEnum(tipo)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail='Debe proporcionar un tipo válido: (' + str(e) + ')')
+        return tipo
+
+    @validator('suscripcion')
+    def tiene_suscripcion(cls, suscripcion: str):
+        if not suscripcion:
+            raise HTTPException(status_code=400, detail='Debe proporcionar una suscripcion.')
+        try:
+            SuscripcionCursoEnum(suscripcion)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail='Debe proporcionar una suscripción válida: (' + str(e) + ')')
+        return suscripcion
 
 
 # Esto es lo que se va a devolver cuando se este "leyendo" un Curso
