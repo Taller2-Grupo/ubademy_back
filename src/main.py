@@ -49,3 +49,7 @@ def editar_curso(curso_id: uuid.UUID, curso: CursoSchema.EditarCurso, db: Sessio
 @app.get("/{creador_id}/cursos", response_model=List[CursoSchema.CursoResponse])
 def get_cursos_creador(creador_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.get_cursos_creador(creador_id, db)
+
+@app.post("/cursos/{curso_id}/inscribirse", response_model=CursadaSchema.CursadaResponse)
+def inscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, db: Session = Depends(get_db)):
+    return cursada_service.inscribir_alumno(curso_id, user, db)
