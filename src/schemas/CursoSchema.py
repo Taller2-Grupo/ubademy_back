@@ -24,6 +24,9 @@ class CursoBase(BaseModel):
 class EditarCurso(BaseModel):
     nuevo_titulo: Optional[str]
     nueva_descripcion: Optional[str]
+    nuevos_hashtags: Optional[str]
+    nuevos_examenes: Optional[str]
+    nueva_ubicacion: Optional[str]
 
 
 # En esta clase se le agregan todos los atributos particulares para la creación

@@ -31,6 +31,12 @@ def editar_curso(curso_id: uuid.UUID, curso: CursoSchema.EditarCurso, db: Sessio
         db_curso.cambiarTitulo(curso.nuevo_titulo)
     if curso.nueva_descripcion:
         db_curso.cambiarDescripcion(curso.nueva_descripcion)
+    if curso.nuevos_hashtags:
+        db_curso.cambiarHashtags(curso.nuevos_hashtags)
+    if curso.nuevos_examenes:
+        db_curso.cambiarExamenes(curso.nuevos_examenes)
+    if curso.nueva_ubicacion:
+        db_curso.cambiarUbicacion(curso.nueva_ubicacion)
     return curso_repository.actualizar_curso(db, db_curso)
 
 def get_cursos(estados: Optional[List[EstadoCursoEnum]], db: Session):
