@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from src.models.CursoModel import Curso, EstadoCursoEnum
 from src.schemas import CursoSchema
 from typing import List, Optional
+from fastapi import HTTPException
 
 
 def get_curso(db: Session, curso_id: uuid.UUID):
@@ -13,12 +14,16 @@ def get_curso(db: Session, curso_id: uuid.UUID):
 def get_cursos_creador(db: Session, creador_id: uuid.UUID):
     cursos = []
     for curso in db.query(Curso):
-        if curso.id_creador == creador_id:
+        if str(curso.id_creador) == str(creador_id):
             cursos.append(curso)
     return cursos
 
 
 def create_curso(db: Session, curso: CursoSchema.CreateCursoRequest):
+    curso.tiene_titulo(curso.titulo)
+    curso.tiene_descripcion(curso.descripcion)
+    curso.tiene_tipo(curso.tipo)
+    curso.tiene_suscripcion(curso.suscripcion)
     db_curso = Curso(
         curso.id_creador,
         curso.titulo,

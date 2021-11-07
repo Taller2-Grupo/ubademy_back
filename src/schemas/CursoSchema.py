@@ -2,25 +2,28 @@ import datetime
 import uuid
 from typing import Optional
 from pydantic import BaseModel, validator
+from pydantic.fields import UndefinedType
+from sqlalchemy import null
+
 from src.models.CursoModel import EstadoCursoEnum, Curso
 from fastapi import HTTPException
 from src.models.CursoModel import TipoCursoEnum, SuscripcionCursoEnum
 
 
 class CursoBase(BaseModel):
-    id_creador: str
-    titulo: str
-    descripcion: str
-    hashtags: str
-    tipo: str
-    examenes: str
-    suscripcion: str
-    ubicacion: str
+    id_creador: Optional[str]
+    titulo: Optional[str]
+    descripcion: Optional[str]
+    hashtags: Optional[str]
+    tipo: Optional[str]
+    examenes: Optional[str]
+    suscripcion: Optional[str]
+    ubicacion: Optional[str]
 
 
 class EditarCurso(BaseModel):
-    nuevo_titulo: str
-    nueva_descripcion: str
+    nuevo_titulo: Optional[str]
+    nueva_descripcion: Optional[str]
 
 
 # En esta clase se le agregan todos los atributos particulares para la creación
@@ -67,16 +70,3 @@ class CursoResponse(CursoBase):
 
     class Config:
         orm_mode = True
-
-class EditCursoRequest(EditarCurso):
-    @validator('nuevo_titulo')
-    def tiene_titulo(cls, nuevo_titulo: str):
-        if not nuevo_titulo:
-            raise HTTPException(status_code=400, detail='Debe proporcionar un título.')
-        return nuevo_titulo
-
-    @validator('nueva_descripcion')
-    def tiene_descripcion(cls, nueva_descripcion: str):
-        if not nueva_descripcion:
-            raise HTTPException(status_code=400, detail='Debe proporcionar una descripción.')
-        return nueva_descripcion

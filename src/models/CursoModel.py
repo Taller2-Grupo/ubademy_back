@@ -1,5 +1,7 @@
 import datetime
 import enum
+from typing import Optional
+
 from sqlalchemy import Column, Enum, String
 from sqlalchemy.dialects import postgresql
 from src.models.Entity import Entity
@@ -48,9 +50,33 @@ class Curso(Base, Entity):
         self.estado = EstadoCursoEnum.eliminado
         self.actualizar()
 
+    def getTitulo(self):
+        return self.titulo
+
+    def getDescripcion(self):
+        return self.descripcion
+
+    def getHashtags(self):
+        return self.hashtags
+
+    def getExamenes(self):
+        return self.examenes
+
+    def getUbicacion(self):
+        return self.ubicacion
+
     def cambiarTitulo(self, nuevo_titulo):
         self.titulo = nuevo_titulo
 
     def cambiarDescripcion(self, nueva_descripcion):
         self.descripcion = nueva_descripcion
+
+    def cambiarHashtags(self, nuevos_hashtags):
+        self.hashtags = nuevos_hashtags
+
+    def cambiarExamenes(self, nuevos_examenes):
+        self.examenes = nuevos_examenes
+
+    def cambiarUbicacion(self, nueva_ubicacion):
+        self.ubicacion = nueva_ubicacion
 

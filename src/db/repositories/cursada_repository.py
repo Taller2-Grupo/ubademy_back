@@ -6,6 +6,7 @@ from src.schemas import CursadaSchema
 
 
 def inscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, db: Session):
+    user.tiene_username(user.username)
     db_cursada = Cursada(
         user.username,
         curso_id

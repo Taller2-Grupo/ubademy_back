@@ -1,7 +1,7 @@
 from unittest import TestCase
 from fastapi.testclient import TestClient
 from src.main import app
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, null
 from sqlalchemy.orm import sessionmaker
 
 # SQLALCHEMY_DATABASE_URL = "postgresql://szbbimktemtmxp:abb783d6b84c1f607061d64dacb901af10cae40d24a2b6d96110d7efe477b5c4@ec2-54-174-172-218.compute-1.amazonaws.com:5432/d3vhnlg19iblmb"
@@ -24,6 +24,7 @@ from sqlalchemy.orm import sessionmaker
 #
 #
 # app.dependency_overrides[get_db] = override_get_db
+from src.models.CursoModel import EstadoCursoEnum
 
 client = TestClient(app)
 
@@ -36,11 +37,39 @@ class MainTest(TestCase):
                                    , 'suscripcion':'gratuito', 'ubicacion': 'virtual'})
         assert response.status_code == 200
 
+    def testPostCursoSinTitulo(self):
+        response = client.post('/cursos/',
+                               json={'id_creador': 'Renzo'
+                                   , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                   , 'suscripcion':'gratuito', 'ubicacion': 'virtual'})
+        assert response.status_code == 400
+
+    def testPostCursoSinDescripcion(self):
+        response = client.post('/cursos/',
+                               json={'id_creador': 'Renzo', 'titulo': 'postCurso'
+                                   , 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                   , 'suscripcion':'gratuito', 'ubicacion': 'virtual'})
+        assert response.status_code == 400
+
+    def testPostCursoSinTipo(self):
+        response = client.post('/cursos/',
+                               json={'id_creador': 'Renzo', 'titulo': 'postCurso'
+                                   , 'descripcion': 'descr', 'hashtags': 'hola', 'examenes': '1'
+                                   , 'suscripcion':'gratuito', 'ubicacion': 'virtual'})
+        assert response.status_code == 400
+
     def testPostCursoTipoErroneo(self):
         response = client.post('/cursos/',
                                json={'id_creador': 'dadb4e2f-63d1-45d4-9f44-2d68a07105cc', 'titulo': 'postCurso'
                                    , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'dsfsdfsd', 'examenes': '1'
                                    , 'suscripcion':'gratuito', 'ubicacion': 'virtual'})
+        assert response.status_code == 400
+
+    def testPostCursoSinSuscripcion(self):
+        response = client.post('/cursos/',
+                               json={'id_creador': 'Renzo', 'titulo': 'postCurso'
+                                   , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                   , 'ubicacion': 'virtual'})
         assert response.status_code == 400
 
     def testPostCursoSuscripcionErronea(self):
@@ -62,6 +91,10 @@ class MainTest(TestCase):
         id_post = response_post.json().get('id')
         response = client.get('/cursos/' + id_post)
         assert response.status_code == 200
+
+    def testGetCursoInexistente(self):
+        response = client.get('/cursos/58738aa9-a3ee-4ca9-8b36-4a0c20c1693f')
+        assert response.status_code == 404
 
     def testDeleteCurso(self):
         response_post = client.post('/cursos/',
@@ -102,6 +135,15 @@ class MainTest(TestCase):
         id_post = response_post.json().get('id')
         response = client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin@admin.com'})
         assert response.status_code == 200
+
+    def testInscribirseCursoSinUsername(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest'
+                                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response = client.post('/cursos/' + id_post + '/inscribirse', json={})
+        assert response.status_code == 400
 
 
 
