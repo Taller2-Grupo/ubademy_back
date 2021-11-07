@@ -10,11 +10,24 @@ def get_curso(db: Session, curso_id: uuid.UUID):
     return db.query(Curso).filter(Curso.id == curso_id).first()
 
 
+def get_cursos_creador(db: Session, creador_id: uuid.UUID):
+    cursos = []
+    for curso in db.query(Curso):
+        if curso.id_creador == creador_id:
+            cursos.append(curso)
+    return cursos
+
+
 def create_curso(db: Session, curso: CursoSchema.CreateCursoRequest):
     db_curso = Curso(
         curso.id_creador,
         curso.titulo,
-        curso.descripcion
+        curso.descripcion,
+        curso.hashtags,
+        curso.tipo,
+        curso.examenes,
+        curso.suscripcion,
+        curso.ubicacion
     )
     db.add(db_curso)
     db.commit()

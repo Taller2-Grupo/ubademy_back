@@ -31,9 +31,24 @@ class MainTest(TestCase):
 
     def testPostCurso(self):
         response = client.post('/cursos/',
-                               json={'id_creador': 'dadb4e2f-63d1-45d4-9f44-2d68a07105cc', 'titulo': 'postCurso'
-                                   , 'descripcion': 'descr'})
+                               json={'id_creador': 'Renzo', 'titulo': 'postCurso'
+                                   , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                   , 'suscripcion':'gratuito', 'ubicacion': 'virtual'})
         assert response.status_code == 200
+
+    def testPostCursoTipoErroneo(self):
+        response = client.post('/cursos/',
+                               json={'id_creador': 'dadb4e2f-63d1-45d4-9f44-2d68a07105cc', 'titulo': 'postCurso'
+                                   , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'dsfsdfsd', 'examenes': '1'
+                                   , 'suscripcion':'gratuito', 'ubicacion': 'virtual'})
+        assert response.status_code == 400
+
+    def testPostCursoSuscripcionErronea(self):
+        response = client.post('/cursos/',
+                               json={'id_creador': 'dadb4e2f-63d1-45d4-9f44-2d68a07105cc', 'titulo': 'postCurso'
+                                   , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                   , 'suscripcion':'sdfsdfs', 'ubicacion': 'virtual'})
+        assert response.status_code == 400
 
     def testGetCursos(self):
         response = client.get('/cursos')
@@ -41,19 +56,53 @@ class MainTest(TestCase):
 
     def testGetCurso(self):
         response_post = client.post('/cursos/',
-                                    json={'id_creador': '615e3022-fd6a-4fd0-ba8b-0b8a3549a067', 'titulo': 'GetCurso',
-                                          'descripcion': 'descr'})
+                    json={'id_creador': '615e3022-fd6a-4fd0-ba8b-0b8a3549a067', 'titulo': 'GetCurso'
+                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
-        print(id_post)
         response = client.get('/cursos/' + id_post)
-        print(response.status_code)
         assert response.status_code == 200
 
     def testDeleteCurso(self):
         response_post = client.post('/cursos/',
-                                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'DeleteCurso',
-                                          'descripcion': 'descr'})
+                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'DeleteCurso'
+                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
         response = client.delete('/cursos/' + id_post)
-        print(response.status_code)
         assert response.status_code == 200
+
+    def testEditarCurso(self):
+        response_post = client.post('/cursos/',
+                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response = client.put('/cursos/' + id_post, json={'nuevo_titulo': 'nuevoTitulo', 'nueva_descripcion': 'nuevaDescripcion'})
+        self.assertTrue(response.json().get('titulo') == 'nuevoTitulo' and response.json().get('descripcion') == 'nuevaDescripcion')
+        assert response.status_code == 200
+
+    def testGetCursosCreadorSinCursos(self):
+        response = client.get('4e4707da-0542-4f9c-ae59-bc3bcaafde71/cursos')
+        assert response.status_code == 200
+
+    def testGetCursosCreadorConCursos(self):
+        client.post('/cursos/',
+                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'CursosCreadorTest'
+                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        response = client.get('fa3333cf-10e2-44df-9bc5-ae4c8d936c66/cursos')
+        assert response.status_code == 200
+
+    def testInscribirseCurso(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest'
+                                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response = client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin@admin.com'})
+        assert response.status_code == 200
+
+
+
+

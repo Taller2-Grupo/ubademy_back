@@ -1,13 +1,13 @@
 import uuid
 
 from fastapi import FastAPI, Depends, Query
-from src.schemas import CursoSchema
+
+from src.schemas import CursoSchema, CursadaSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
-from src.services import curso_service
+from src.services import curso_service, cursada_service
 from src.models.CursoModel import EstadoCursoEnum
 from typing import Optional, List
-
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -39,3 +39,17 @@ def delete_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
 @app.get("/cursos", response_model=List[CursoSchema.CursoResponse])
 def get_cursos(estados: Optional[List[EstadoCursoEnum]] = Query(None, alias="estado"), db: Session = Depends(get_db)):
     return curso_service.get_cursos(estados, db)
+
+
+@app.put("/cursos/{curso_id}", response_model=CursoSchema.CursoResponse)
+def editar_curso(curso_id: uuid.UUID, curso: CursoSchema.EditarCurso, db: Session = Depends(get_db)):
+    return curso_service.editar_curso(curso_id=curso_id, curso=curso, db=db)
+
+
+@app.get("/{creador_id}/cursos", response_model=List[CursoSchema.CursoResponse])
+def get_cursos_creador(creador_id: uuid.UUID, db: Session = Depends(get_db)):
+    return curso_service.get_cursos_creador(creador_id, db)
+
+@app.post("/cursos/{curso_id}/inscribirse", response_model=CursadaSchema.CursadaResponse)
+def inscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, db: Session = Depends(get_db)):
+    return cursada_service.inscribir_alumno(curso_id, user, db)
