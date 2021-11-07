@@ -9,7 +9,7 @@ from src.models.CursadaModel import EstadoCursadaEnum
 
 
 class CursadaBase(BaseModel):
-    username: str
+    username: Optional[str]
 
 class InscribirAlumno(CursadaBase):
 
