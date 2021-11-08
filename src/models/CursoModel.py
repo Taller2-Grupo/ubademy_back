@@ -6,6 +6,7 @@ from sqlalchemy import Column, Enum, String
 from sqlalchemy.dialects import postgresql
 from src.models.Entity import Entity
 from src.db.database import Base
+from fastapi import HTTPException
 
 
 class EstadoCursoEnum(str, enum.Enum):
@@ -28,11 +29,11 @@ class Curso(Base, Entity):
     titulo = Column(String, nullable=False)
     descripcion = Column(String, nullable=False)
     estado = Column(Enum(EstadoCursoEnum), nullable=False)
-    hashtags = Column(String, nullable=False)
+    hashtags = Column(String, nullable=True)
     tipo = Column(Enum(TipoCursoEnum), nullable=False)
-    examenes = Column(String, nullable=False)
+    examenes = Column(String, nullable=True)
     suscripcion = Column(Enum(SuscripcionCursoEnum), nullable=False)
-    ubicacion = Column(String, nullable=False)
+    ubicacion = Column(String, nullable=True)
 
     def __init__(self, id_creador, titulo, descripcion, hashtags, tipo, examenes, suscripcion, ubicacion):
         self.id_creador = id_creador
@@ -71,11 +72,32 @@ class Curso(Base, Entity):
     def cambiarDescripcion(self, nueva_descripcion):
         self.descripcion = nueva_descripcion
 
+    def cambiarEstado(self, nuevo_estado):
+        try:
+            nuevoEstado = EstadoCursoEnum(nuevo_estado)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail='Debe proporcionar un estado válido: (' + str(e) + ')')
+        self.estado = nuevoEstado
+
     def cambiarHashtags(self, nuevos_hashtags):
         self.hashtags = nuevos_hashtags
 
+    def cambiarTipo(self, nuevo_tipo):
+        try:
+            nuevoTipo = TipoCursoEnum(nuevo_tipo)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail='Debe proporcionar un tipo válido: (' + str(e) + ')')
+        self.tipo = nuevoTipo
+
     def cambiarExamenes(self, nuevos_examenes):
         self.examenes = nuevos_examenes
+
+    def cambiarSuscripcion(self, nueva_suscripcion):
+        try:
+            nuevaSuscripcion = SuscripcionCursoEnum(nueva_suscripcion)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail='Debe proporcionar una suscripción válida: (' + str(e) + ')')
+        self.suscripcion = nuevaSuscripcion
 
     def cambiarUbicacion(self, nueva_ubicacion):
         self.ubicacion = nueva_ubicacion

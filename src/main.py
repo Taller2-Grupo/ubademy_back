@@ -2,7 +2,7 @@ import uuid
 
 from fastapi import FastAPI, Depends, Query
 
-from src.schemas import CursoSchema, CursadaSchema
+from src.schemas import CursoSchema, CursadaSchema, AlumnosSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.services import curso_service, cursada_service
@@ -40,11 +40,9 @@ def delete_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
 def get_cursos(estados: Optional[List[EstadoCursoEnum]] = Query(None, alias="estado"), db: Session = Depends(get_db)):
     return curso_service.get_cursos(estados, db)
 
-
 @app.put("/cursos/{curso_id}", response_model=CursoSchema.CursoResponse)
 def editar_curso(curso_id: uuid.UUID, curso: CursoSchema.EditarCurso, db: Session = Depends(get_db)):
     return curso_service.editar_curso(curso_id=curso_id, curso=curso, db=db)
-
 
 @app.get("/{creador_id}/cursos", response_model=List[CursoSchema.CursoResponse])
 def get_cursos_creador(creador_id: uuid.UUID, db: Session = Depends(get_db)):
@@ -57,3 +55,7 @@ def inscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, d
 @app.put("/cursos/{curso_id}/desinscribirse", response_model=CursadaSchema.CursadaResponse)
 def desinscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, db: Session = Depends(get_db)):
     return cursada_service.desinscribir_alumno(curso_id, user, db)
+
+@app.get("/cursos/{curso_id}/alumnos", response_model=List[str])
+def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
+    return curso_service.get_listado_alumnos(curso_id, db)

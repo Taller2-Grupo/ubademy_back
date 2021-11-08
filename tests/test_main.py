@@ -124,6 +124,24 @@ class MainTest(TestCase):
         response = client.put('/cursos/' + id_post, json={'nueva_descripcion': 'nuevaDescripcion'})
         self.assertTrue(response.json().get('descripcion') == 'nuevaDescripcion' and response.status_code == 200)
 
+    def testEditarEstadoValidoCurso(self):
+        response_post = client.post('/cursos/',
+                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response = client.put('/cursos/' + id_post, json={'nuevo_estado': 'bloqueado'})
+        self.assertTrue(response.json().get('estado') == 'bloqueado' and response.status_code == 200)
+
+    def testEditarEstadoInvalidoCurso(self):
+        response_post = client.post('/cursos/',
+                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response = client.put('/cursos/' + id_post, json={'nuevo_estado': 'inexistente'})
+        assert response.status_code == 400
+
     def testEditarHashtagsCurso(self):
         response_post = client.post('/cursos/',
                     json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
@@ -133,6 +151,24 @@ class MainTest(TestCase):
         response = client.put('/cursos/' + id_post, json={'nuevos_hashtags': '#h1'})
         self.assertTrue(response.json().get('hashtags') == '#h1' and response.status_code == 200)
 
+    def testEditarTipoValidoCurso(self):
+        response_post = client.post('/cursos/',
+                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response = client.put('/cursos/' + id_post, json={'nuevo_tipo': 'programacion'})
+        self.assertTrue(response.json().get('tipo') == 'programacion' and response.status_code == 200)
+
+    def testEditarTipoInvalidoCurso(self):
+        response_post = client.post('/cursos/',
+                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response = client.put('/cursos/' + id_post, json={'nuevo_tipo': 'inexistente'})
+        assert response.status_code == 400
+
     def testEditarExamenesCurso(self):
         response_post = client.post('/cursos/',
                     json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
@@ -141,6 +177,24 @@ class MainTest(TestCase):
         id_post = response_post.json().get('id')
         response = client.put('/cursos/' + id_post, json={'nuevos_examenes': '2'})
         self.assertTrue(response.json().get('examenes') == '2' and response.status_code == 200)
+
+    def testEditarSuscripcionValidaCurso(self):
+        response_post = client.post('/cursos/',
+                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response = client.put('/cursos/' + id_post, json={'nueva_suscripcion': 'pago'})
+        self.assertTrue(response.json().get('suscripcion') == 'pago' and response.status_code == 200)
+
+    def testEditarSuscripcionInvalidaCurso(self):
+        response_post = client.post('/cursos/',
+                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response = client.put('/cursos/' + id_post, json={'nueva_suscripcion': 'inexistente'})
+        assert response.status_code == 400
 
     def testEditarUbicacionCurso(self):
         response_post = client.post('/cursos/',
@@ -190,6 +244,26 @@ class MainTest(TestCase):
         client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin@admin.com'})
         response = client.put('/cursos/' + id_post + '/desinscribirse', json={'username': 'admin@admin.com'})
         self.assertTrue(response.json().get('estado') == EstadoCursadaEnum.desinscripto and response.status_code == 200)
+
+    def testGetListadoDeAlumnosCursoExistente(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'hola@gmail.com', 'titulo': 'ListadoTest'
+                                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin@admin.com'})
+        client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin2@admin.com'})
+        client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin3@admin.com'})
+        response = client.get('/cursos/' + id_post + '/alumnos')
+        assert response.status_code == 200
+
+    def testGetListadoDeAlumnosCursoInexistente(self):
+        response = client.get('/cursos/c8886379-356d-49f7-8fc2-d6a566a8384d/alumnos')
+        assert response.status_code == 404
+
+
+
+
 
 
 
