@@ -24,6 +24,7 @@ from sqlalchemy.orm import sessionmaker
 #
 #
 # app.dependency_overrides[get_db] = override_get_db
+from src.models.CursadaModel import EstadoCursadaEnum
 from src.models.CursoModel import EstadoCursoEnum
 
 client = TestClient(app)
@@ -179,6 +180,16 @@ class MainTest(TestCase):
         id_post = response_post.json().get('id')
         response = client.post('/cursos/' + id_post + '/inscribirse', json={})
         assert response.status_code == 400
+
+    def testDesinscribirseCurso(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'hola@gmail.com', 'titulo': 'DesinscribirseTest'
+                                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin@admin.com'})
+        response = client.put('/cursos/' + id_post + '/desinscribirse', json={'username': 'admin@admin.com'})
+        self.assertTrue(response.json().get('estado') == EstadoCursadaEnum.desinscripto and response.status_code == 200)
 
 
 

@@ -1,22 +1,26 @@
 import datetime
 import enum
+import uuid
+
 from sqlalchemy import Column, Enum, String
 from sqlalchemy.dialects import postgresql
 from src.models.Entity import Entity
 from src.db.database import Base
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 
 
 class EstadoCursadaEnum(str, enum.Enum):
     inscripto = 'inscripto'
     solicitado_de_alta = 'solicitado_de_alta'
     solicitado_de_baja = 'solicitado_de_baja'
-    desuscripto = 'desuscripto'
+    desinscripto = 'desinscripto'
 
 
 class Cursada(Base, Entity):
     __tablename__ = "cursadas"
     username = Column(String, nullable=False)
-    curso_id = Column(String, nullable=False)
+    curso_id = Column(UUID(as_uuid=True), default=uuid.uuid4)
     estado = Column(Enum(EstadoCursadaEnum), nullable=False)
 
 
@@ -24,4 +28,7 @@ class Cursada(Base, Entity):
         self.username = username
         self.curso_id = curso_id
         self.fecha_creacion = datetime.datetime.now()
-        self.estado = EstadoCursadaEnum.solicitado_de_alta
+        self.estado = EstadoCursadaEnum.inscripto
+
+    def cambiarEstadoADesinscripto(self):
+        self.estado = self.estado.desinscripto

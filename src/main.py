@@ -53,3 +53,7 @@ def get_cursos_creador(creador_id: uuid.UUID, db: Session = Depends(get_db)):
 @app.post("/cursos/{curso_id}/inscribirse", response_model=CursadaSchema.CursadaResponse)
 def inscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, db: Session = Depends(get_db)):
     return cursada_service.inscribir_alumno(curso_id, user, db)
+
+@app.put("/cursos/{curso_id}/desinscribirse", response_model=CursadaSchema.CursadaResponse)
+def desinscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, db: Session = Depends(get_db)):
+    return cursada_service.desinscribir_alumno(curso_id, user, db)
