@@ -25,4 +25,8 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table("cursos")
+    op.drop_column('cursos', "hashtags")
+    op.drop_column('cursos', "tipo")
+    op.drop_column('cursos', "examenes")
+    op.drop_column('cursos', "suscripcion")
+    op.drop_column('cursos', "ubicacion")

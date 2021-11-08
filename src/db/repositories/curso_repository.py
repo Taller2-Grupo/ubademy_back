@@ -1,6 +1,8 @@
 import uuid
 
 from sqlalchemy.orm import Session
+
+from src.models.CursadaModel import Cursada
 from src.models.CursoModel import Curso, EstadoCursoEnum
 from src.schemas import CursoSchema
 from typing import List, Optional
@@ -51,3 +53,10 @@ def get_curso_by_estados(estados: Optional[List[EstadoCursoEnum]], db: Session):
     if estados is None:
         return db.query(Curso).all()
     return db.query(Curso).filter(Curso.estado.in_(estados)).all()
+
+def get_listado_alumnos(curso_id: uuid.UUID, db: Session):
+    cursadas = db.query(Cursada).filter(Cursada.curso_id == curso_id).all()
+    listado = []
+    for cursada in cursadas:
+        listado.append(cursada.username)
+    return listado
