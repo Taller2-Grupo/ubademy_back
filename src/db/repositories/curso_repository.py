@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from src.models.CursadaModel import Cursada
 from src.models.CursoModel import Curso, EstadoCursoEnum
-from src.schemas import CursoSchema, AlumnosSchema
+from src.schemas import CursoSchema
 from typing import List, Optional
 from fastapi import HTTPException
 

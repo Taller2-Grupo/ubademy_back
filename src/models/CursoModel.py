@@ -57,11 +57,20 @@ class Curso(Base, Entity):
     def getDescripcion(self):
         return self.descripcion
 
+    def getEstado(self):
+        return self.estado.value
+
     def getHashtags(self):
         return self.hashtags
 
+    def getTipo(self):
+        return self.tipo.value
+
     def getExamenes(self):
         return self.examenes
+
+    def getSuscripcion(self):
+        return self.suscripcion.value
 
     def getUbicacion(self):
         return self.ubicacion

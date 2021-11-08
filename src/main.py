@@ -2,7 +2,7 @@ import uuid
 
 from fastapi import FastAPI, Depends, Query
 
-from src.schemas import CursoSchema, CursadaSchema, AlumnosSchema
+from src.schemas import CursoSchema, CursadaSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.services import curso_service, cursada_service
