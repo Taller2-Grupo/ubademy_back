@@ -235,6 +235,16 @@ class MainTest(TestCase):
         response = client.post('/cursos/' + id_post + '/inscribirse', json={})
         assert response.status_code == 400
 
+    def testInscribirseCursoDosVeces(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest'
+                                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin@admin.com'})
+        response = client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin@admin.com'})
+        assert response.status_code == 400
+
     def testDesinscribirseCurso(self):
         response_post = client.post('/cursos/',
                                     json={'id_creador': 'hola@gmail.com', 'titulo': 'DesinscribirseTest'
@@ -260,6 +270,24 @@ class MainTest(TestCase):
     def testGetListadoDeAlumnosCursoInexistente(self):
         response = client.get('/cursos/c8886379-356d-49f7-8fc2-d6a566a8384d/alumnos')
         assert response.status_code == 404
+
+    def testGetListadoDeAlumnosCursoExistenteAlumnoDesinscripto(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'holaa@gmail.com', 'titulo': 'ListadoDesinscriptoTest'
+                                        , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
+                                        , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin11@admin.com'})
+        client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin12@admin.com'})
+        client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin13@admin.com'})
+        d = client.put('/cursos/' + id_post + '/desinscribirse', json={'username': 'admin13@admin.com'})
+
+        print(d.json())
+
+        response = client.get('/cursos/' + id_post + '/alumnos')
+        print('response: ' + str(response.json()))
+        print(response.status_code)
+        assert response.status_code == 200
 
 
 
