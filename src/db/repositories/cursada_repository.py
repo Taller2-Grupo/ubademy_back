@@ -1,14 +1,16 @@
 import uuid
 
 from sqlalchemy.orm import Session
-from src.models.CursadaModel import Cursada
+from src.models.CursadaModel import Cursada, EstadoCursadaEnum
 from src.schemas import CursadaSchema
 from fastapi import HTTPException
 
 
 def inscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, db: Session):
-    if get_cursada(curso_id, user, db) is not None:
-        raise HTTPException(status_code=400, detail="El alumno " + user.username + " ya se encuentra inscripto al curso " + str(curso_id))
+    cursada = get_cursada(curso_id, user, db)
+    if cursada:
+        if cursada.estado == EstadoCursadaEnum.inscripto:
+            raise HTTPException(status_code=400, detail="El alumno " + user.username + " ya se encuentra inscripto al curso " + str(curso_id))
     user.tiene_username(user.username)
     db_cursada = Cursada(
         user.username,
