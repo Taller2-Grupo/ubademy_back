@@ -293,6 +293,7 @@ class MainTest(TestCase):
         client.put('/cursos/' + id_post + '/desinscribirse', json={'username': 'admin13@admin.com'})
 
         response = client.get('/cursos/' + id_post + '/alumnos')
+
         self.assertTrue(response.status_code == 200 and response.json() == ['admin11@admin.com', 'admin12@admin.com'])
 
     def testGetListadoDeAlumnosCursoExistenteAlumnoInscriptoDespuesDeDesinscripto(self):
@@ -306,6 +307,7 @@ class MainTest(TestCase):
         client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin111@admin.com'})
 
         response = client.get('/cursos/' + id_post + '/alumnos')
+
         self.assertTrue(response.status_code == 200 and response.json() == ['admin111@admin.com'])
 
 
