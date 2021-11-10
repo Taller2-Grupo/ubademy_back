@@ -32,3 +32,6 @@ class Cursada(Base, Entity):
 
     def cambiarEstadoADesinscripto(self):
         self.estado = self.estado.desinscripto
+
+    def cambiarEstadoAInscripto(self):
+        self.estado = self.estado.inscripto
