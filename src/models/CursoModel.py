@@ -1,9 +1,7 @@
 import datetime
 import enum
-from typing import Optional
 
 from sqlalchemy import Column, Enum, String
-from sqlalchemy.dialects import postgresql
 from src.models.Entity import Entity
 from src.db.database import Base
 from fastapi import HTTPException
@@ -14,14 +12,17 @@ class EstadoCursoEnum(str, enum.Enum):
     bloqueado = 'bloqueado'
     eliminado = 'eliminado'
 
+
 class TipoCursoEnum(str, enum.Enum):
     idioma = 'idioma'
     programacion = 'programacion'
     multimedia = 'multimedia'
 
+
 class SuscripcionCursoEnum(str, enum.Enum):
     gratuito = 'gratuito'
     pago = 'pago'
+
 
 class Curso(Base, Entity):
     __tablename__ = "cursos"

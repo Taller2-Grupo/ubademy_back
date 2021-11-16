@@ -310,6 +310,10 @@ class MainTest(TestCase):
 
         self.assertTrue(response.status_code == 200 and response.json() == ['admin111@admin.com'])
 
+    def testGetCursoByTipo(self):
+        response = client.get('/cursos/tipos/?tipo=idioma')
+        assert response.status_code == 200
+
 
 
 
