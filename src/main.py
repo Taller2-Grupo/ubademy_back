@@ -6,7 +6,7 @@ from src.schemas import CursoSchema, CursadaSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.services import curso_service, cursada_service
-from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum
+from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
 from typing import Optional, List
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -44,6 +44,11 @@ def get_cursos_by_estado(estados: Optional[List[EstadoCursoEnum]] = Query(None, 
 @app.get("/cursos/tipos/", response_model=List[CursoSchema.CursoResponse])
 def get_cursos_by_tipo(tipos: Optional[List[TipoCursoEnum]] = Query(None, alias="tipo"), db: Session = Depends(get_db)):
     return curso_service.get_cursos_by_tipo_curso(tipos, db)
+
+
+@app.get("/cursos/suscripciones/", response_model=List[CursoSchema.CursoResponse])
+def get_cursos_by_suscripcion(suscripciones: Optional[List[SuscripcionCursoEnum]] = Query(None, alias="suscripcion"), db: Session = Depends(get_db)):
+    return curso_service.get_cursos_by_suscripcion(suscripciones, db)
 
 
 @app.put("/cursos/{curso_id}", response_model=CursoSchema.CursoResponse)

@@ -314,7 +314,9 @@ class MainTest(TestCase):
         response = client.get('/cursos/tipos/?tipo=idioma')
         assert response.status_code == 200
 
-
+    def testGetCursoBySuscripcion(self):
+        response = client.get('/cursos/suscripciones/?suscripcion=gratuito')
+        assert response.status_code == 200
 
 
 
