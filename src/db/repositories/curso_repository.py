@@ -3,7 +3,7 @@ import uuid
 from sqlalchemy.orm import Session
 
 from src.models.CursadaModel import Cursada, EstadoCursadaEnum
-from src.models.CursoModel import Curso, EstadoCursoEnum, TipoCursoEnum
+from src.models.CursoModel import Curso, EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
 from src.schemas import CursoSchema
 from typing import List, Optional
 
@@ -58,6 +58,12 @@ def get_curso_by_tipo_curso(tipos: Optional[List[TipoCursoEnum]], db: Session):
     if tipos is None:
         return db.query(Curso).all()
     return db.query(Curso).filter(Curso.tipo.in_(tipos)).all()
+
+
+def get_curso_by_suscripcion(suscripciones: Optional[List[SuscripcionCursoEnum]], db: Session):
+    if suscripciones is None:
+        return db.query(Curso).all()
+    return db.query(Curso).filter(Curso.suscripcion.in_(suscripciones)).all()
 
 
 def get_listado_alumnos(curso_id: uuid.UUID, db: Session):

@@ -4,7 +4,7 @@ from src.db.repositories import curso_repository
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from src.schemas import CursoSchema
-from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum
+from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
 from typing import List, Optional
 
 
@@ -56,6 +56,10 @@ def get_cursos(estados: Optional[List[EstadoCursoEnum]], db: Session):
 
 def get_cursos_by_tipo_curso(tipos: Optional[List[TipoCursoEnum]], db: Session):
     return curso_repository.get_curso_by_tipo_curso(tipos, db)
+
+
+def get_cursos_by_suscripcion(suscripciones: Optional[List[SuscripcionCursoEnum]], db: Session):
+    return curso_repository.get_curso_by_suscripcion(suscripciones, db)
 
 
 def get_listado_alumnos(curso_id: uuid.UUID, db: Session):
