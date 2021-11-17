@@ -2,10 +2,7 @@ import datetime
 import uuid
 from typing import Optional
 from pydantic import BaseModel, validator
-from pydantic.fields import UndefinedType
-from sqlalchemy import null
-
-from src.models.CursoModel import EstadoCursoEnum, Curso
+from src.models.CursoModel import EstadoCursoEnum
 from fastapi import HTTPException
 from src.models.CursoModel import TipoCursoEnum, SuscripcionCursoEnum
 

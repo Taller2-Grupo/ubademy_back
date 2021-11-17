@@ -7,70 +7,71 @@ from src.services.curso_service import crear_curso
 from fastapi import HTTPException
 import pytest
 
+
 class CursoTest(TestCase):
 
     def testEditarTitulo(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
-        curso.cambiarTitulo('titulo nuevo')
+        curso.set_titulo('titulo nuevo')
 
-        self.assertTrue(curso.getTitulo() == 'titulo nuevo')
+        self.assertTrue(curso.get_titulo() == 'titulo nuevo')
 
     def testEditarDescripcion(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
-        curso.cambiarDescripcion('descripcion nueva')
+        curso.set_descripcion('descripcion nueva')
 
-        self.assertTrue(curso.getDescripcion() == 'descripcion nueva')
+        self.assertTrue(curso.get_descripcion() == 'descripcion nueva')
 
     def testEditarEstadoValido(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
-        curso.cambiarEstado('bloqueado')
+        curso.set_estado('bloqueado')
 
-        self.assertTrue(curso.getEstado() == 'bloqueado')
+        self.assertTrue(curso.get_estado() == 'bloqueado')
 
     def testEditarEstadoInvalido(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
 
         with pytest.raises(HTTPException):
-            curso.cambiarEstado('inexistente')
+            curso.set_estado('inexistente')
 
     def testEditarHashtags(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
-        curso.cambiarHashtags('#h1#h2')
+        curso.set_hashtags('#h1#h2')
 
-        self.assertTrue(curso.getHashtags() == '#h1#h2')
+        self.assertTrue(curso.get_hashtags() == '#h1#h2')
 
     def testEditarTipoValido(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
-        curso.cambiarTipo('programacion')
+        curso.set_tipo('programacion')
 
-        self.assertTrue(curso.getTipo() == 'programacion')
+        self.assertTrue(curso.get_tipo() == 'programacion')
 
     def testEditarTipoInvalido(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
 
         with pytest.raises(HTTPException):
-            curso.cambiarTipo('inexistente')
+            curso.set_tipo('inexistente')
 
     def testEditarExamenes(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
-        curso.cambiarExamenes('2')
+        curso.set_examenes('2')
 
-        self.assertTrue(curso.getExamenes() == '2')
+        self.assertTrue(curso.get_examenes() == '2')
 
     def testEditarSuscripcionValida(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
-        curso.cambiarSuscripcion('pago')
+        curso.set_suscripcion('pago')
 
-        self.assertTrue(curso.getSuscripcion() == 'pago')
+        self.assertTrue(curso.get_suscripcion() == 'pago')
 
     def testEditarSuscripcionInvalida(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
 
         with pytest.raises(HTTPException):
-            curso.cambiarSuscripcion('inexistente')
+            curso.set_suscripcion('inexistente')
 
     def testEditarUbicacion(self):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
-        curso.cambiarUbicacion('paseo colon')
+        curso.set_ubicacion('paseo colon')
 
-        self.assertTrue(curso.getUbicacion() == 'paseo colon')
+        self.assertTrue(curso.get_ubicacion() == 'paseo colon')

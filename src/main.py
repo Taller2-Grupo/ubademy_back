@@ -1,14 +1,16 @@
 import uuid
 
 from fastapi import FastAPI, Depends, Query
-
-from src.schemas import CursoSchema, CursadaSchema
+from src.schemas import CursoSchema, CursadaSchema, ColaboradorSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.services import curso_service, cursada_service
 from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
 from typing import Optional, List
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -26,12 +28,12 @@ def create_curso(curso: CursoSchema.CreateCursoRequest, db: Session = Depends(ge
     return curso_service.crear_curso(curso=curso, db=db)
 
 
-@app.get("/cursos/{curso_id}", response_model=CursoSchema.CursoResponse)
+@app.get("/cursos/{id_curso}", response_model=CursoSchema.CursoResponse)
 def get_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.get_curso(curso_id, db)
 
 
-@app.delete("/cursos/{curso_id}", response_model=CursoSchema.CursoResponse)
+@app.delete("/cursos/{id_curso}", response_model=CursoSchema.CursoResponse)
 def delete_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.eliminar_curso(curso_id, db)
 
@@ -51,7 +53,7 @@ def get_cursos_by_suscripcion(suscripciones: Optional[List[SuscripcionCursoEnum]
     return curso_service.get_cursos_by_suscripcion(suscripciones, db)
 
 
-@app.put("/cursos/{curso_id}", response_model=CursoSchema.CursoResponse)
+@app.put("/cursos/{id_curso}", response_model=CursoSchema.CursoResponse)
 def editar_curso(curso_id: uuid.UUID, curso: CursoSchema.EditarCurso, db: Session = Depends(get_db)):
     return curso_service.editar_curso(curso_id=curso_id, curso=curso, db=db)
 
@@ -61,16 +63,21 @@ def get_cursos_creador(creador_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.get_cursos_creador(creador_id, db)
 
 
-@app.post("/cursos/{curso_id}/inscribirse", response_model=CursadaSchema.CursadaResponse)
+@app.post("/cursos/{id_curso}/inscribirse", response_model=CursadaSchema.CursadaResponse)
 def inscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, db: Session = Depends(get_db)):
     return cursada_service.inscribir_alumno(curso_id, user, db)
 
 
-@app.put("/cursos/{curso_id}/desinscribirse", response_model=CursadaSchema.CursadaResponse)
+@app.put("/cursos/{id_curso}/desinscribirse", response_model=CursadaSchema.CursadaResponse)
 def desinscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, db: Session = Depends(get_db)):
     return cursada_service.desinscribir_alumno(curso_id, user, db)
 
 
-@app.get("/cursos/{curso_id}/alumnos", response_model=List[str])
+@app.get("/cursos/{id_curso}/alumnos", response_model=List[str])
 def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.get_listado_alumnos(curso_id, db)
+
+
+@app.post("/cursos/colaborador", response_model=ColaboradorSchema.ColaboradorResponse)
+def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db: Session = Depends(get_db)):
+    return curso_service.add_colaborador(colaborador, db)

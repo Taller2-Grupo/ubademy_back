@@ -24,7 +24,7 @@ def upgrade():
         sa.Column("id", UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4),
         sa.Column("fecha_creacion", sa.DateTime, nullable=False),
         sa.Column("fecha_actualizacion", sa.DateTime, nullable=True),
-        sa.Column("id_creador", UUID(as_uuid=True), nullable=False, index=True),
+        sa.Column("id_creador", sa.String, nullable=False, index=True),
         sa.Column("titulo", sa.String, nullable=False),
         sa.Column("descripcion", sa.String, nullable=False),
         sa.Column("estado", sa.String, nullable=False)
