@@ -9,6 +9,7 @@ from typing import List, Optional
 
 
 def crear_curso(curso: CursoSchema.CreateCursoRequest, db: Session):
+    # TODO: Validar que el username es válido.
     return curso_repository.create_curso(db=db, curso=curso)
 
 
@@ -72,10 +73,13 @@ def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db:
 
     for c in curso.colaboradores:
         if c.username == colaborador.username:
-            raise HTTPException(status_code=400, detail="El colaborador ya se encuentra dado de alta en el curso.")
+            raise HTTPException(status_code=422, detail="El colaborador ya se encuentra dado de alta en el curso.")
+
+    # TODO: Validar que el username es válido.
 
     colaborador_db = colaborador_repository.create_colaborador(db=db, colaborador=colaborador)
 
     curso.actualizar()
+    curso_repository.actualizar_curso(db, curso)
 
     return colaborador_db
