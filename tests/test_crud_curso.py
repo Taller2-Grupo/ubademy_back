@@ -1,9 +1,6 @@
 from unittest import TestCase
-from src.db.database import get_db, Base
 from src.models.CursoModel import Curso
-from src.schemas import CursoSchema
-from src.schemas.CursoSchema import CreateCursoRequest
-from src.services.curso_service import crear_curso
+
 
 class CursoTest(TestCase):
 
@@ -27,6 +24,3 @@ class CursoTest(TestCase):
         curso = Curso(1, 'hola', 'descr', '#h1', 'idioma', '1', 'gratuito', 'virtual')
         curso.eliminar()
         self.assertTrue(curso.estado == 'eliminado')
-
-
-
