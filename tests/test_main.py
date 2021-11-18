@@ -1,33 +1,10 @@
 from unittest import TestCase
 from fastapi.testclient import TestClient
 from src.main import app
-from sqlalchemy import create_engine, null
-from sqlalchemy.orm import sessionmaker
-
-# SQLALCHEMY_DATABASE_URL = "postgresql://szbbimktemtmxp:abb783d6b84c1f607061d64dacb901af10cae40d24a2b6d96110d7efe477b5c4@ec2-54-174-172-218.compute-1.amazonaws.com:5432/d3vhnlg19iblmb"
-#
-# engine = create_engine(
-#     SQLALCHEMY_DATABASE_URL
-# )
-# TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-#
-#
-# Base.metadata.create_all(bind=engine)
-#
-#
-# def override_get_db():
-#     try:
-#         db = TestingSessionLocal()
-#         yield db
-#     finally:
-#         db.close()
-#
-#
-# app.dependency_overrides[get_db] = override_get_db
 from src.models.CursadaModel import EstadoCursadaEnum
-from src.models.CursoModel import EstadoCursoEnum
 
 client = TestClient(app)
+
 
 class MainTest(TestCase):
 
@@ -61,7 +38,7 @@ class MainTest(TestCase):
 
     def testPostCursoTipoErroneo(self):
         response = client.post('/cursos/',
-                               json={'id_creador': 'dadb4e2f-63d1-45d4-9f44-2d68a07105cc', 'titulo': 'postCurso'
+                               json={'id_creador': 'Renzo', 'titulo': 'postCurso'
                                    , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'dsfsdfsd', 'examenes': '1'
                                    , 'suscripcion':'gratuito', 'ubicacion': 'virtual'})
         assert response.status_code == 400
@@ -75,7 +52,7 @@ class MainTest(TestCase):
 
     def testPostCursoSuscripcionErronea(self):
         response = client.post('/cursos/',
-                               json={'id_creador': 'dadb4e2f-63d1-45d4-9f44-2d68a07105cc', 'titulo': 'postCurso'
+                               json={'id_creador': 'Renzo', 'titulo': 'postCurso'
                                    , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                                    , 'suscripcion':'sdfsdfs', 'ubicacion': 'virtual'})
         assert response.status_code == 400
@@ -86,7 +63,7 @@ class MainTest(TestCase):
 
     def testGetCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': '615e3022-fd6a-4fd0-ba8b-0b8a3549a067', 'titulo': 'GetCurso'
+                    json={'id_creador': 'Renzo', 'titulo': 'GetCurso'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -99,7 +76,7 @@ class MainTest(TestCase):
 
     def testDeleteCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'DeleteCurso'
+                    json={'id_creador': 'Renzo', 'titulo': 'DeleteCurso'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -108,7 +85,7 @@ class MainTest(TestCase):
 
     def testEditarTituloCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -117,7 +94,7 @@ class MainTest(TestCase):
 
     def testEditarDescripcionCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -126,7 +103,7 @@ class MainTest(TestCase):
 
     def testEditarEstadoValidoCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -135,7 +112,7 @@ class MainTest(TestCase):
 
     def testEditarEstadoInvalidoCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -144,7 +121,7 @@ class MainTest(TestCase):
 
     def testEditarHashtagsCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -153,7 +130,7 @@ class MainTest(TestCase):
 
     def testEditarTipoValidoCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -162,7 +139,7 @@ class MainTest(TestCase):
 
     def testEditarTipoInvalidoCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -171,7 +148,7 @@ class MainTest(TestCase):
 
     def testEditarExamenesCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -180,7 +157,7 @@ class MainTest(TestCase):
 
     def testEditarSuscripcionValidaCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -189,7 +166,7 @@ class MainTest(TestCase):
 
     def testEditarSuscripcionInvalidaCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -198,7 +175,7 @@ class MainTest(TestCase):
 
     def testEditarUbicacionCurso(self):
         response_post = client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'EditarTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'EditarTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         id_post = response_post.json().get('id')
@@ -211,7 +188,7 @@ class MainTest(TestCase):
 
     def testGetCursosCreadorConCursos(self):
         client.post('/cursos/',
-                    json={'id_creador': 'fa3333cf-10e2-44df-9bc5-ae4c8d936c66', 'titulo': 'CursosCreadorTest'
+                    json={'id_creador': 'Renzo', 'titulo': 'CursosCreadorTest'
                         , 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1'
                         , 'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
         response = client.get('fa3333cf-10e2-44df-9bc5-ae4c8d936c66/cursos')
@@ -253,7 +230,8 @@ class MainTest(TestCase):
         id_post = response_post.json().get('id')
         client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin@admin.com'})
         response = client.put('/cursos/' + id_post + '/desinscribirse', json={'username': 'admin@admin.com'})
-        self.assertTrue(response.json().get('estado') == EstadoCursadaEnum.desinscripto and response.status_code == 200)
+        assert response.json().get('estado') == EstadoCursadaEnum.desinscripto
+        assert response.status_code == 200
 
     def testDesinscribirseCursoInexistente(self):
         response_post = client.post('/cursos/',
@@ -310,13 +288,33 @@ class MainTest(TestCase):
 
         self.assertTrue(response.status_code == 200 and response.json() == ['admin111@admin.com'])
 
-    def testGetCursoByTipo(self):
+    def test_get_curso_by_tipo(self):
         response = client.get('/cursos/tipos/?tipo=idioma')
         assert response.status_code == 200
 
-    def testGetCursoBySuscripcion(self):
+    def test_get_curso_by_suscripcion(self):
         response = client.get('/cursos/suscripciones/?suscripcion=gratuito')
         assert response.status_code == 200
+
+    def test_agregar_colaborador(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
+                                          'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1',
+                                          'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response = client.post('/cursos/colaborador', json={'username': 'admin@admin.com', 'id_curso': id_post})
+        assert response.status_code == 200
+
+    def test_agregar_colaborador_dos_veces(self):
+        response_post = client.post('/cursos/',
+                                    json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
+                                          'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma', 'examenes': '1',
+                                          'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+        id_post = response_post.json().get('id')
+        response_1 = client.post('/cursos/colaborador', json={'username': 'admin@admin.com', 'id_curso': id_post})
+        response_2 = client.post('/cursos/colaborador', json={'username': 'admin@admin.com', 'id_curso': id_post})
+        assert response_1.status_code == 200
+        assert response_2.status_code == 422
 
 
 

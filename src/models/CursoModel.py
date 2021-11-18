@@ -1,7 +1,11 @@
 import datetime
 import enum
+# Este import de Colaborador sirve para relationship, no sacar.
+from src.models.ColaboradorModel import Colaborador
 
 from sqlalchemy import Column, Enum, String
+from sqlalchemy.orm import relationship
+
 from src.models.Entity import Entity
 from src.db.database import Base
 from fastapi import HTTPException
@@ -35,6 +39,7 @@ class Curso(Base, Entity):
     examenes = Column(String, nullable=True)
     suscripcion = Column(Enum(SuscripcionCursoEnum), nullable=False)
     ubicacion = Column(String, nullable=True)
+    colaboradores = relationship("Colaborador", back_populates="curso")
 
     def __init__(self, id_creador, titulo, descripcion, hashtags, tipo, examenes, suscripcion, ubicacion):
         self.id_creador = id_creador
@@ -52,63 +57,63 @@ class Curso(Base, Entity):
         self.estado = EstadoCursoEnum.eliminado
         self.actualizar()
 
-    def getTitulo(self):
+    def get_titulo(self):
         return self.titulo
 
-    def getDescripcion(self):
+    def get_descripcion(self):
         return self.descripcion
 
-    def getEstado(self):
+    def get_estado(self):
         return self.estado.value
 
-    def getHashtags(self):
+    def get_hashtags(self):
         return self.hashtags
 
-    def getTipo(self):
+    def get_tipo(self):
         return self.tipo.value
 
-    def getExamenes(self):
+    def get_examenes(self):
         return self.examenes
 
-    def getSuscripcion(self):
+    def get_suscripcion(self):
         return self.suscripcion.value
 
-    def getUbicacion(self):
+    def get_ubicacion(self):
         return self.ubicacion
 
-    def cambiarTitulo(self, nuevo_titulo):
+    def set_titulo(self, nuevo_titulo):
         self.titulo = nuevo_titulo
 
-    def cambiarDescripcion(self, nueva_descripcion):
+    def set_descripcion(self, nueva_descripcion):
         self.descripcion = nueva_descripcion
 
-    def cambiarEstado(self, nuevo_estado):
+    def set_estado(self, nuevo_estado):
         try:
-            nuevoEstado = EstadoCursoEnum(nuevo_estado)
+            nuevo_estado_enum = EstadoCursoEnum(nuevo_estado)
         except ValueError as e:
             raise HTTPException(status_code=400, detail='Debe proporcionar un estado válido: (' + str(e) + ')')
-        self.estado = nuevoEstado
+        self.estado = nuevo_estado_enum
 
-    def cambiarHashtags(self, nuevos_hashtags):
+    def set_hashtags(self, nuevos_hashtags):
         self.hashtags = nuevos_hashtags
 
-    def cambiarTipo(self, nuevo_tipo):
+    def set_tipo(self, nuevo_tipo):
         try:
-            nuevoTipo = TipoCursoEnum(nuevo_tipo)
+            nuevo_tipo_enum = TipoCursoEnum(nuevo_tipo)
         except ValueError as e:
             raise HTTPException(status_code=400, detail='Debe proporcionar un tipo válido: (' + str(e) + ')')
-        self.tipo = nuevoTipo
+        self.tipo = nuevo_tipo_enum
 
-    def cambiarExamenes(self, nuevos_examenes):
+    def set_examenes(self, nuevos_examenes):
         self.examenes = nuevos_examenes
 
-    def cambiarSuscripcion(self, nueva_suscripcion):
+    def set_suscripcion(self, nueva_suscripcion):
         try:
-            nuevaSuscripcion = SuscripcionCursoEnum(nueva_suscripcion)
+            nueva_suscripcion_enum = SuscripcionCursoEnum(nueva_suscripcion)
         except ValueError as e:
             raise HTTPException(status_code=400, detail='Debe proporcionar una suscripción válida: (' + str(e) + ')')
-        self.suscripcion = nuevaSuscripcion
+        self.suscripcion = nueva_suscripcion_enum
 
-    def cambiarUbicacion(self, nueva_ubicacion):
+    def set_ubicacion(self, nueva_ubicacion):
         self.ubicacion = nueva_ubicacion
 

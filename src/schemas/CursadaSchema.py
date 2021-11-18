@@ -11,8 +11,8 @@ from src.models.CursadaModel import EstadoCursadaEnum
 class CursadaBase(BaseModel):
     username: Optional[str]
 
-class InscribirAlumno(CursadaBase):
 
+class InscribirAlumno(CursadaBase):
     @validator('username')
     def tiene_username(cls, username: str):
         if not username:

@@ -1,14 +1,15 @@
 import uuid
 
-from src.db.repositories import curso_repository
+from src.db.repositories import curso_repository, colaborador_repository
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from src.schemas import CursoSchema
+from src.schemas import CursoSchema, ColaboradorSchema
 from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
 from typing import List, Optional
 
 
 def crear_curso(curso: CursoSchema.CreateCursoRequest, db: Session):
+    # TODO: Validar que el username es válido.
     return curso_repository.create_curso(db=db, curso=curso)
 
 
@@ -32,21 +33,21 @@ def eliminar_curso(curso_id: uuid.UUID, db: Session):
 def editar_curso(curso_id: uuid.UUID, curso: CursoSchema.EditarCurso, db: Session):
     db_curso = get_curso(curso_id, db)
     if curso.nuevo_titulo:
-        db_curso.cambiarTitulo(curso.nuevo_titulo)
+        db_curso.set_titulo(curso.nuevo_titulo)
     if curso.nueva_descripcion:
-        db_curso.cambiarDescripcion(curso.nueva_descripcion)
+        db_curso.set_descripcion(curso.nueva_descripcion)
     if curso.nuevo_estado:
-        db_curso.cambiarEstado(curso.nuevo_estado)
+        db_curso.set_estado(curso.nuevo_estado)
     if curso.nuevos_hashtags:
-        db_curso.cambiarHashtags(curso.nuevos_hashtags)
+        db_curso.set_hashtags(curso.nuevos_hashtags)
     if curso.nuevo_tipo:
-        db_curso.cambiarTipo(curso.nuevo_tipo)
+        db_curso.set_tipo(curso.nuevo_tipo)
     if curso.nuevos_examenes:
-        db_curso.cambiarExamenes(curso.nuevos_examenes)
+        db_curso.set_examenes(curso.nuevos_examenes)
     if curso.nueva_suscripcion:
-        db_curso.cambiarSuscripcion(curso.nueva_suscripcion)
+        db_curso.set_suscripcion(curso.nueva_suscripcion)
     if curso.nueva_ubicacion:
-        db_curso.cambiarUbicacion(curso.nueva_ubicacion)
+        db_curso.set_ubicacion(curso.nueva_ubicacion)
     return curso_repository.actualizar_curso(db, db_curso)
 
 
@@ -65,3 +66,20 @@ def get_cursos_by_suscripcion(suscripciones: Optional[List[SuscripcionCursoEnum]
 def get_listado_alumnos(curso_id: uuid.UUID, db: Session):
     get_curso(curso_id, db)
     return curso_repository.get_listado_alumnos(curso_id, db)
+
+
+def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db: Session):
+    curso = get_curso(colaborador.id_curso, db)
+
+    for c in curso.colaboradores:
+        if c.username == colaborador.username:
+            raise HTTPException(status_code=422, detail="El colaborador ya se encuentra dado de alta en el curso.")
+
+    # TODO: Validar que el username es válido.
+
+    colaborador_db = colaborador_repository.create_colaborador(db=db, colaborador=colaborador)
+
+    curso.actualizar()
+    curso_repository.actualizar_curso(db, curso)
+
+    return colaborador_db

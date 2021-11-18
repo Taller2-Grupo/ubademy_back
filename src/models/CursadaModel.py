@@ -1,9 +1,7 @@
 import datetime
 import enum
-import uuid
 
 from sqlalchemy import Column, Enum, String
-from sqlalchemy.dialects import postgresql
 from src.models.Entity import Entity
 from src.db.database import Base
 from sqlalchemy.dialects.postgresql import UUID
@@ -22,7 +20,6 @@ class Cursada(Base, Entity):
     username = Column(String, nullable=False)
     curso_id = Column(UUID(as_uuid=True), default=uuid.uuid4)
     estado = Column(Enum(EstadoCursadaEnum), nullable=False)
-
 
     def __init__(self, username, curso_id):
         self.username = username

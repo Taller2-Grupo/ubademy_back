@@ -1,14 +1,16 @@
 import uuid
 
 from fastapi import FastAPI, Depends, Query
-
-from src.schemas import CursoSchema, CursadaSchema
+from src.schemas import CursoSchema, CursadaSchema, ColaboradorSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.services import curso_service, cursada_service
 from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
 from typing import Optional, List
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -74,3 +76,8 @@ def desinscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno
 @app.get("/cursos/{curso_id}/alumnos", response_model=List[str])
 def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.get_listado_alumnos(curso_id, db)
+
+
+@app.post("/cursos/colaborador", response_model=ColaboradorSchema.ColaboradorResponse)
+def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db: Session = Depends(get_db)):
+    return curso_service.add_colaborador(colaborador, db)

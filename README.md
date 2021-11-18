@@ -15,3 +15,5 @@ docker run --rm --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=p
 2. Ir a alembics/versions y completar la migration
 3. alembic upgrade head
 
+### Uso del .env
+Para correr localmente se debe crear un archivo .env en el root, esta commiteado un .env-example que se puede copiar.
