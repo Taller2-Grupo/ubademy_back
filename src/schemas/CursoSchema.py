@@ -1,10 +1,11 @@
 import datetime
 import uuid
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, validator
 from src.models.CursoModel import EstadoCursoEnum
 from fastapi import HTTPException
 from src.models.CursoModel import TipoCursoEnum, SuscripcionCursoEnum
+from src.schemas import ColaboradorSchema
 
 
 class CursoBase(BaseModel):
@@ -70,6 +71,7 @@ class CursoResponse(CursoBase):
     estado: EstadoCursoEnum
     fecha_creacion: datetime.datetime
     fecha_actualizacion: Optional[datetime.datetime]
+    colaboradores: Optional[List[ColaboradorSchema.ColaboradorResponse]]
 
     class Config:
         orm_mode = True

@@ -68,4 +68,14 @@ def get_listado_alumnos(curso_id: uuid.UUID, db: Session):
 
 
 def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db: Session):
-    return colaborador_repository.create_colaborador(db=db, colaborador=colaborador)
+    curso = get_curso(colaborador.id_curso, db)
+
+    for c in curso.colaboradores:
+        if c.username == colaborador.username:
+            raise HTTPException(status_code=400, detail="El colaborador ya se encuentra dado de alta en el curso.")
+
+    colaborador_db = colaborador_repository.create_colaborador(db=db, colaborador=colaborador)
+
+    curso.actualizar()
+
+    return colaborador_db
