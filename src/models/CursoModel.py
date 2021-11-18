@@ -1,5 +1,7 @@
 import datetime
 import enum
+# Este import de Colaborador sirve para relationship, no sacar.
+from src.models.ColaboradorModel import Colaborador
 
 from sqlalchemy import Column, Enum, String
 from sqlalchemy.orm import relationship
