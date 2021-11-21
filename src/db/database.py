@@ -6,7 +6,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-engine = create_engine(os.getenv("DATABASE_URL"))
+db_uri = os.getenv("DATABASE_URL")
+if db_uri.startswith("postgres://"):
+    db_uri = db_uri.replace("postgres://", "postgresql://", 1)
+
+engine = create_engine(db_uri)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
