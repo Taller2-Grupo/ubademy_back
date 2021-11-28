@@ -1,7 +1,7 @@
 import uuid
 
 from fastapi import FastAPI, Depends, Query
-from src.schemas import CursoSchema, CursadaSchema, ColaboradorSchema
+from src.schemas import CursoSchema, CursadaSchema, ColaboradorSchema, ExamenSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.services import curso_service, cursada_service
@@ -81,3 +81,8 @@ def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)
 @app.post("/cursos/colaborador", response_model=ColaboradorSchema.ColaboradorResponse)
 def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db: Session = Depends(get_db)):
     return curso_service.add_colaborador(colaborador, db)
+
+
+@app.post("/cursos/examen", response_model=ExamenSchema.ExamenResponse)
+def add_examen(examen: ExamenSchema.CreateExamenRequest, db: Session = Depends(get_db)):
+    return curso_service.add_examen(examen, db)

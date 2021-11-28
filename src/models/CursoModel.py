@@ -36,10 +36,10 @@ class Curso(Base, Entity):
     estado = Column(Enum(EstadoCursoEnum), nullable=False)
     hashtags = Column(String, nullable=True)
     tipo = Column(Enum(TipoCursoEnum), nullable=False)
-    examenes = Column(String, nullable=True)
     suscripcion = Column(Enum(SuscripcionCursoEnum), nullable=False)
     ubicacion = Column(String, nullable=True)
     colaboradores = relationship("Colaborador", back_populates="curso")
+    examenes = relationship("Examen", back_populates="curso")
 
     def __init__(self, id_creador, titulo, descripcion, hashtags, tipo, examenes, suscripcion, ubicacion):
         self.id_creador = id_creador

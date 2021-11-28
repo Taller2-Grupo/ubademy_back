@@ -1,9 +1,9 @@
 import uuid
 
-from src.db.repositories import curso_repository, colaborador_repository
+from src.db.repositories import curso_repository, colaborador_repository, examen_repository
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from src.schemas import CursoSchema, ColaboradorSchema
+from src.schemas import CursoSchema, ColaboradorSchema, ExamenSchema
 from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
 from typing import List, Optional
 
@@ -83,3 +83,14 @@ def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db:
     curso_repository.actualizar_curso(db, curso)
 
     return colaborador_db
+
+
+def add_examen(examen: ExamenSchema.CreateExamenRequest, db: Session):
+    curso = get_curso(examen.id_curso, db)
+
+    examen_db = examen_repository.create_examen(db=db, examen=examen)
+
+    curso.actualizar()
+    curso_repository.actualizar_curso(db, curso)
+
+    return examen_db
