@@ -22,6 +22,7 @@ class ExamenResponse(ExamenBase):
     fecha_creacion: datetime.datetime
     fecha_actualizacion: Optional[datetime.datetime]
     consignas: List[ConsignaSchema.ConsignaResponse]
+    estado: str
 
     class Config:
         orm_mode = True

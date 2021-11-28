@@ -3,6 +3,8 @@ import uuid
 from src.db.repositories import curso_repository, colaborador_repository, examen_repository
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
+
+from src.models.ExamenModel import EstadoExamenEnum
 from src.schemas import CursoSchema, ColaboradorSchema, ExamenSchema
 from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
 from typing import List, Optional
@@ -94,3 +96,24 @@ def add_examen(examen: ExamenSchema.CreateExamenRequest, db: Session):
     curso_repository.actualizar_curso(db, curso)
 
     return examen_db
+
+
+def get_examen(examen_id: uuid.UUID, db: Session):
+    db_examen = examen_repository.get_examen(db, examen_id=examen_id)
+    if db_examen is None:
+        raise HTTPException(status_code=404, detail="Examen not found")
+    return db_examen
+
+
+def publicar_examen(id_examen: uuid.UUID, db: Session):
+    examen = get_examen(id_examen, db)
+
+    if examen.estado == EstadoExamenEnum.publicado:
+        raise HTTPException(status_code=400, detail="El examen ya se encuentra publicado.")
+
+    examen.estado = EstadoExamenEnum.publicado
+
+    examen.actualizar()
+    examen_repository.actualizar_examen(db, examen)
+
+    return examen
