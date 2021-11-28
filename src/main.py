@@ -96,3 +96,8 @@ def get_examen(examen_id: uuid.UUID, db: Session = Depends(get_db)):
 @app.post("/cursos/examen/publicar", response_model=ExamenSchema.ExamenResponse)
 def publicar_examen(examen_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.publicar_examen(examen_id, db)
+
+
+@app.patch("/cursos/examen", response_model=ExamenSchema.ExamenResponse)
+def editar_examen(examen: ExamenSchema.EditExamenRequest, db: Session = Depends(get_db)):
+    return curso_service.editar_examen(examen, db)

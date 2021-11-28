@@ -7,18 +7,22 @@ from src.schemas import ConsignaSchema
 
 
 class ExamenBase(BaseModel):
-    id_curso: uuid.UUID
     nombre: str
 
 
-# En esta clase se le agregan todos los atributos particulares para la creación
 class CreateExamenRequest(ExamenBase):
+    id_curso: uuid.UUID
     consignas: List[str]
 
 
-# Esto es lo que se va a devolver cuando se este "leyendo" un Colaborador
+class EditExamenRequest(ExamenBase):
+    id: uuid.UUID
+    consignas: List[str]
+
+
 class ExamenResponse(ExamenBase):
     id: uuid.UUID
+    id_curso: uuid.UUID
     fecha_creacion: datetime.datetime
     fecha_actualizacion: Optional[datetime.datetime]
     consignas: List[ConsignaSchema.ConsignaResponse]

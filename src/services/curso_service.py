@@ -4,6 +4,7 @@ from src.db.repositories import curso_repository, colaborador_repository, examen
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
+from src.models.ConsignaModel import Consigna
 from src.models.ExamenModel import EstadoExamenEnum
 from src.schemas import CursoSchema, ColaboradorSchema, ExamenSchema
 from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
@@ -117,3 +118,20 @@ def publicar_examen(id_examen: uuid.UUID, db: Session):
     examen_repository.actualizar_examen(db, examen)
 
     return examen
+
+
+def editar_examen(examen: ExamenSchema.EditExamenRequest, db: Session):
+    examen_db = get_examen(examen.id, db)
+
+    if examen_db.estado == EstadoExamenEnum.publicado:
+        raise HTTPException(status_code=400, detail="No se puede editar un examen publicado.")
+
+    examen_db.nombre = examen.nombre
+    examen_db.consignas = []
+    for consigna in examen.consignas:
+        examen_db.consignas.append(Consigna(examen_db.id, consigna))
+
+    examen_db.actualizar()
+    examen_repository.actualizar_examen(db, examen_db)
+
+    return examen_db
