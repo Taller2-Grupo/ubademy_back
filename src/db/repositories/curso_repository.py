@@ -31,7 +31,6 @@ def create_curso(db: Session, curso: CursoSchema.CreateCursoRequest):
         curso.descripcion,
         curso.hashtags,
         curso.tipo,
-        curso.examenes,
         curso.suscripcion,
         curso.ubicacion
     )

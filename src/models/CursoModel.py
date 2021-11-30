@@ -41,7 +41,7 @@ class Curso(Base, Entity):
     colaboradores = relationship("Colaborador", back_populates="curso")
     examenes = relationship("Examen", back_populates="curso")
 
-    def __init__(self, id_creador, titulo, descripcion, hashtags, tipo, examenes, suscripcion, ubicacion):
+    def __init__(self, id_creador, titulo, descripcion, hashtags, tipo, suscripcion, ubicacion):
         self.id_creador = id_creador
         self.titulo = titulo
         self.descripcion = descripcion
@@ -49,7 +49,6 @@ class Curso(Base, Entity):
         self.fecha_creacion = datetime.datetime.now()
         self.hashtags = hashtags
         self.tipo = tipo
-        self.examenes = examenes
         self.suscripcion = suscripcion
         self.ubicacion = ubicacion
 
@@ -104,9 +103,6 @@ class Curso(Base, Entity):
             raise HTTPException(status_code=400, detail='Debe proporcionar un tipo válido: (' + str(e) + ')')
         self.tipo = nuevo_tipo_enum
 
-    def set_examenes(self, nuevos_examenes):
-        self.examenes = nuevos_examenes
-
     def set_suscripcion(self, nueva_suscripcion):
         try:
             nueva_suscripcion_enum = SuscripcionCursoEnum(nueva_suscripcion)
@@ -116,4 +112,3 @@ class Curso(Base, Entity):
 
     def set_ubicacion(self, nueva_ubicacion):
         self.ubicacion = nueva_ubicacion
-

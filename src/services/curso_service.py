@@ -45,8 +45,6 @@ def editar_curso(curso_id: uuid.UUID, curso: CursoSchema.EditarCurso, db: Sessio
         db_curso.set_hashtags(curso.nuevos_hashtags)
     if curso.nuevo_tipo:
         db_curso.set_tipo(curso.nuevo_tipo)
-    if curso.nuevos_examenes:
-        db_curso.set_examenes(curso.nuevos_examenes)
     if curso.nueva_suscripcion:
         db_curso.set_suscripcion(curso.nueva_suscripcion)
     if curso.nueva_ubicacion:
