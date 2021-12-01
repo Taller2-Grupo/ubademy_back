@@ -83,7 +83,7 @@ def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db:
     return curso_service.add_colaborador(colaborador, db)
 
 
-@app.post("/cursos/examen", response_model=ExamenSchema.ExamenResponse)
+@app.post("/cursos/examen", response_model=ExamenSchema.ExamenResponse, status_code=201)
 def add_examen(examen: ExamenSchema.CreateExamenRequest, db: Session = Depends(get_db)):
     return curso_service.add_examen(examen, db)
 
@@ -93,7 +93,7 @@ def get_examen(examen_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.get_examen(examen_id, db)
 
 
-@app.post("/cursos/examen/publicar", response_model=ExamenSchema.ExamenResponse)
+@app.post("/cursos/examen/publicar/{examen_id}", response_model=ExamenSchema.ExamenResponse)
 def publicar_examen(examen_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.publicar_examen(examen_id, db)
 
