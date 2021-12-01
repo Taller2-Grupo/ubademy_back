@@ -21,4 +21,4 @@ def upgrade():
 
 
 def downgrade():
-    op.add_column("cursos", "examenes")
+    op.add_column("cursos", sa.Column("examenes", sa.String, nullable=True))

@@ -21,6 +21,7 @@ class Examen(Base, Entity):
     nombre = Column(String, nullable=False)
     estado = Column(Enum(EstadoExamenEnum), nullable=False)
     consignas = relationship("Consigna", back_populates="examen", cascade="all, delete-orphan")
+    examenes_resueltos = relationship("ExamenResuelto", back_populates="examen")
 
     def __init__(self, id_curso, nombre, consignas):
         self.id_curso = id_curso

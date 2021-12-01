@@ -25,11 +25,24 @@ def inscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, d
         db.refresh(db_cursada)
         return db_cursada
 
+
 def actualizar_cursada(db: Session, cursada: Cursada):
     db.add(cursada)
     db.commit()
     db.refresh(cursada)
     return cursada
 
+
 def get_cursada(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, db: Session):
     return db.query(Cursada).filter(Cursada.curso_id == curso_id, Cursada.username == user.username).first()
+
+
+def get_cursada_by_id(cursada_id: uuid.UUID, db: Session):
+    return db.query(Cursada).filter(Cursada.id == cursada_id).first()
+
+
+def actualizar_cursada(db: Session, cursada: Cursada):
+    db.add(cursada)
+    db.commit()
+    db.refresh(cursada)
+    return cursada

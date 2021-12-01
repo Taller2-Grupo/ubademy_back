@@ -1,7 +1,7 @@
 import uuid
 
 from fastapi import FastAPI, Depends, Query
-from src.schemas import CursoSchema, CursadaSchema, ColaboradorSchema, ExamenSchema
+from src.schemas import CursoSchema, CursadaSchema, ColaboradorSchema, ExamenSchema, ExamenResueltoSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.services import curso_service, cursada_service
@@ -101,3 +101,8 @@ def publicar_examen(examen_id: uuid.UUID, db: Session = Depends(get_db)):
 @app.patch("/cursos/examen", response_model=ExamenSchema.ExamenResponse)
 def editar_examen(examen: ExamenSchema.EditExamenRequest, db: Session = Depends(get_db)):
     return curso_service.editar_examen(examen, db)
+
+
+@app.post("/cursadas/examen", response_model=ExamenResueltoSchema.ExamenResueltoResponse, status_code=201)
+def add_examen_resuelto(examen_resuelto: ExamenResueltoSchema.CreateExamenResueltoRequest, db: Session = Depends(get_db)):
+    return cursada_service.add_examen_resuelto(examen_resuelto, db)
