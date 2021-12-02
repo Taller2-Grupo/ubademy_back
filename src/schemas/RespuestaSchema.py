@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 
 class RespuestaBase(BaseModel):
-    consigna: str
+    id_consigna: uuid.UUID
     resolucion: str
 
 

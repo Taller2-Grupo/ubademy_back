@@ -31,4 +31,4 @@ class ExamenResuelto(Base, Entity):
         self.estado = EstadoExamenResueltoEnum.entregado
         self.respuestas = []
         for respuesta in respuestas:
-            self.respuestas.append(Respuesta(self.id, respuesta.consigna, respuesta.resolucion))
+            self.respuestas.append(Respuesta(self.id, respuesta.id_consigna, respuesta.resolucion))

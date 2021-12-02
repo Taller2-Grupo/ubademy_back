@@ -25,7 +25,7 @@ def upgrade():
         sa.Column("fecha_creacion", sa.DateTime, nullable=False),
         sa.Column("fecha_actualizacion", sa.DateTime, nullable=True),
         sa.Column("id_examen_resuelto", UUID(as_uuid=True), ForeignKey("examenes_resueltos.id"), nullable=False, index=True),
-        sa.Column("consigna", sa.String, nullable=False),
+        sa.Column("id_consigna", UUID(as_uuid=True), ForeignKey("consignas.id"), nullable=False),
         sa.Column("resolucion", sa.String, nullable=False),
         sa.Column("estado", sa.String, nullable=False)
     )

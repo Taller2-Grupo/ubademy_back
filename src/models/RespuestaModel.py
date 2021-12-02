@@ -20,12 +20,13 @@ class Respuesta(Base, Entity):
     __tablename__ = "respuestas"
     id_examen_resuelto = Column(postgresql.UUID(as_uuid=True), ForeignKey('examenes_resueltos.id'))
     examen_resuelto = relationship("ExamenResuelto", back_populates="respuestas")
-    consigna = Column(String, nullable=False)
+    id_consigna = Column(postgresql.UUID(as_uuid=True), ForeignKey('consignas.id'))
+    consigna = relationship("Consigna")
     resolucion = Column(String, nullable=False)
     estado = Column(Enum(EstadoRespuestaEnum), nullable=False)
 
-    def __init__(self, id_examen_resuelto, consigna, resolucion):
+    def __init__(self, id_examen_resuelto, id_consigna, resolucion):
         self.id_examen_resuelto = id_examen_resuelto
-        self.consigna = consigna
+        self.id_consigna = id_consigna
         self.resolucion = resolucion
         self.estado = EstadoRespuestaEnum.sin_corregir
