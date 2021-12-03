@@ -6,6 +6,11 @@ from pydantic import BaseModel
 
 class ConsignaBase(BaseModel):
     enunciado: str
+    puntaje: int
+
+
+class CreateConsignaRequest(ConsignaBase):
+    pass
 
 
 # Esto es lo que se va a devolver cuando se este "leyendo" un Colaborador

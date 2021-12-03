@@ -2,8 +2,7 @@ import datetime
 import uuid
 from typing import Optional, List
 from pydantic import BaseModel
-
-from src.schemas import ConsignaSchema
+from src.schemas.ConsignaSchema import CreateConsignaRequest, ConsignaResponse
 
 
 class ExamenBase(BaseModel):
@@ -12,12 +11,12 @@ class ExamenBase(BaseModel):
 
 class CreateExamenRequest(ExamenBase):
     id_curso: uuid.UUID
-    consignas: List[str]
+    consignas: List[CreateConsignaRequest]
 
 
 class EditExamenRequest(ExamenBase):
     id: uuid.UUID
-    consignas: List[str]
+    consignas: List[CreateConsignaRequest]
 
 
 class ExamenResponse(ExamenBase):
@@ -25,7 +24,7 @@ class ExamenResponse(ExamenBase):
     id_curso: uuid.UUID
     fecha_creacion: datetime.datetime
     fecha_actualizacion: Optional[datetime.datetime]
-    consignas: List[ConsignaSchema.ConsignaResponse]
+    consignas: List[ConsignaResponse]
     estado: str
 
     class Config:

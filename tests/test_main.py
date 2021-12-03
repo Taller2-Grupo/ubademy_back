@@ -351,8 +351,15 @@ def test_crear_examen_exitoso():
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/cursos/examen', json={'id_curso': id_curso,
                                                                 'nombre': 'test examen',
-                                                                'consignas': ['Pregunta 1', 'Pregunta 2']})
-
+                                                                'consignas': [
+                                                                    {
+                                                                        'enunciado': 'Pregunta 1',
+                                                                        'puntaje': 4
+                                                                    },
+                                                                    {
+                                                                        'enunciado': 'Pregunta 2',
+                                                                        'puntaje': 6
+                                                                    }]})
     assert crear_examen_response.status_code == 201
 
 
@@ -364,7 +371,15 @@ def test_get_examen_exitoso():
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/cursos/examen', json={'id_curso': id_curso,
                                                                 'nombre': 'test examen',
-                                                                'consignas': ['Pregunta 1', 'Pregunta 2']})
+                                                                'consignas': [
+                                                                    {
+                                                                        'enunciado': 'Pregunta 1',
+                                                                        'puntaje': 4
+                                                                    },
+                                                                    {
+                                                                        'enunciado': 'Pregunta 2',
+                                                                        'puntaje': 6
+                                                                    }]})
     id_examen = crear_examen_response.json().get('id')
     get_examen_response = client.get(f'/cursos/examen/{id_examen}')
 
@@ -380,7 +395,15 @@ def test_publicar_examen_exitoso():
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/cursos/examen', json={'id_curso': id_curso,
                                                                 'nombre': 'test examen',
-                                                                'consignas': ['Pregunta 1', 'Pregunta 2']})
+                                                                'consignas': [
+                                                                    {
+                                                                        'enunciado': 'Pregunta 1',
+                                                                        'puntaje': 4
+                                                                    },
+                                                                    {
+                                                                        'enunciado': 'Pregunta 2',
+                                                                        'puntaje': 6
+                                                                    }]})
     id_examen = crear_examen_response.json().get('id')
     publicar_examen_response = client.post(f'/cursos/examen/publicar/{id_examen}')
 
@@ -397,11 +420,27 @@ def test_update_examen_exitoso():
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/cursos/examen', json={'id_curso': id_curso,
                                                                 'nombre': 'test examen',
-                                                                'consignas': ['Pregunta 1', 'Pregunta 2']})
+                                                                'consignas': [
+                                                                    {
+                                                                        'enunciado': 'Pregunta 1',
+                                                                        'puntaje': 4
+                                                                    },
+                                                                    {
+                                                                        'enunciado': 'Pregunta 2',
+                                                                        'puntaje': 6
+                                                                    }]})
     id_examen = crear_examen_response.json().get('id')
     update_examen_response = client.patch(f'/cursos/examen', json={'id': id_examen,
                                                                    'nombre': 'test examen 2',
-                                                                   'consignas': ['Pregunta 3', 'Pregunta 4']})
+                                                                   'consignas': [
+                                                                    {
+                                                                        'enunciado': 'Pregunta 3',
+                                                                        'puntaje': 5
+                                                                    },
+                                                                    {
+                                                                        'enunciado': 'Pregunta 4',
+                                                                        'puntaje': 5
+                                                                    }]})
 
     assert update_examen_response.status_code == 200
     assert update_examen_response.json().get('id') == id_examen
@@ -416,7 +455,15 @@ def test_crear_examen_resuelto_sin_cursada():
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/cursos/examen', json={'id_curso': id_curso,
                                                                 'nombre': 'test examen',
-                                                                'consignas': ['Pregunta 1', 'Pregunta 2']})
+                                                                'consignas': [
+                                                                    {
+                                                                        'enunciado': 'Pregunta 1',
+                                                                        'puntaje': 4
+                                                                    },
+                                                                    {
+                                                                        'enunciado': 'Pregunta 2',
+                                                                        'puntaje': 6
+                                                                    }]})
     id_examen = crear_examen_response.json().get('id')
     id_consigna_1 = crear_examen_response.json().get('consignas')[0].get('id')
     id_consigna_2 = crear_examen_response.json().get('consignas')[1].get('id')
@@ -448,7 +495,15 @@ def test_crear_examen_resuelto_exitoso():
     client.post('/cursos/' + id_curso + '/inscribirse', json={'username': 'estudiante@test.com'})
     crear_examen_response = client.post('/cursos/examen', json={'id_curso': id_curso,
                                                                 'nombre': 'test examen',
-                                                                'consignas': ['Pregunta 1', 'Pregunta 2']})
+                                                                'consignas': [
+                                                                    {
+                                                                        'enunciado': 'Pregunta 1',
+                                                                        'puntaje': 4
+                                                                    },
+                                                                    {
+                                                                        'enunciado': 'Pregunta 2',
+                                                                        'puntaje': 6
+                                                                    }]})
     id_examen = crear_examen_response.json().get('id')
     id_consigna_1 = crear_examen_response.json().get('consignas')[0].get('id')
     id_consigna_2 = crear_examen_response.json().get('consignas')[1].get('id')

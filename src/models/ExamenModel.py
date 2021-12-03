@@ -29,4 +29,4 @@ class Examen(Base, Entity):
         self.estado = EstadoExamenEnum.creado
         self.consignas = []
         for consigna in consignas:
-            self.consignas.append(Consigna(self.id, consigna))
+            self.consignas.append(Consigna(self.id, consigna.enunciado, consigna.puntaje))

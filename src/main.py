@@ -2,7 +2,7 @@ import uuid
 from typing import List
 
 from fastapi import FastAPI, Depends
-from src.routers import cursos
+from src.routers import cursos_router
 from src.schemas import CursoSchema
 from sqlalchemy.orm import Session
 from src.db.database import get_db
@@ -22,7 +22,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(cursos.router)
+app.include_router(cursos_router.router)
 
 
 @app.get("/{creador_id}/cursos", response_model=List[CursoSchema.CursoResponse])

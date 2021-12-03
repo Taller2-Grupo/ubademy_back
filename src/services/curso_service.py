@@ -89,12 +89,22 @@ def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db:
 def add_examen(examen: ExamenSchema.CreateExamenRequest, db: Session):
     curso = get_curso(examen.id_curso, db)
 
+    validar_consignas(examen.consignas)
+
     examen_db = examen_repository.create_examen(db=db, examen=examen)
 
     curso.actualizar()
     curso_repository.actualizar_curso(db, curso)
 
     return examen_db
+
+
+def validar_consignas(consignas):
+    puntaje_total: int = 0
+    for consigna in consignas:
+        puntaje_total += consigna.puntaje
+    if puntaje_total != 10:
+        raise HTTPException(status_code=400, detail="El puntaje de las consignas debe sumar 10.")
 
 
 def get_examen(examen_id: uuid.UUID, db: Session):
@@ -124,10 +134,12 @@ def editar_examen(examen: ExamenSchema.EditExamenRequest, db: Session):
     if examen_db.estado == EstadoExamenEnum.publicado:
         raise HTTPException(status_code=400, detail="No se puede editar un examen publicado.")
 
+    validar_consignas(examen.consignas)
+
     examen_db.nombre = examen.nombre
     examen_db.consignas = []
     for consigna in examen.consignas:
-        examen_db.consignas.append(Consigna(examen_db.id, consigna))
+        examen_db.consignas.append(Consigna(examen_db.id, consigna.enunciado, consigna.puntaje))
 
     examen_db.actualizar()
     examen_repository.actualizar_examen(db, examen_db)
