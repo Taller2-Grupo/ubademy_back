@@ -406,3 +406,66 @@ def test_update_examen_exitoso():
     assert update_examen_response.status_code == 200
     assert update_examen_response.json().get('id') == id_examen
     assert update_examen_response.json().get('nombre') == 'test examen 2'
+
+
+def test_crear_examen_resuelto_sin_cursada():
+    crear_curso_response = client.post('/cursos/',
+                                       json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
+                                             'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_curso = crear_curso_response.json().get('id')
+    crear_examen_response = client.post('/cursos/examen', json={'id_curso': id_curso,
+                                                                'nombre': 'test examen',
+                                                                'consignas': ['Pregunta 1', 'Pregunta 2']})
+    id_examen = crear_examen_response.json().get('id')
+    id_consigna_1 = crear_examen_response.json().get('consignas')[0].get('id')
+    id_consigna_2 = crear_examen_response.json().get('consignas')[1].get('id')
+    crear_examen_resuelto_response = client.post('/cursos/examen_resuelto',
+                                                 json={
+                                                     'id_examen': id_examen,
+                                                     'id_curso': id_curso,
+                                                     'username': 'estudiante@test.com',
+                                                     'respuestas': [
+                                                         {
+                                                             'id_consigna': id_consigna_1,
+                                                             'resolucion': 'Resolucion 1'
+                                                         },
+                                                         {
+                                                             'id_consigna': id_consigna_2,
+                                                             'resolucion': 'Resolucion 2'
+                                                         }
+                                                     ]
+                                                 })
+    assert crear_examen_resuelto_response.status_code == 400
+
+
+def test_crear_examen_resuelto_exitoso():
+    crear_curso_response = client.post('/cursos/',
+                                       json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
+                                             'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_curso = crear_curso_response.json().get('id')
+    client.post('/cursos/' + id_curso + '/inscribirse', json={'username': 'estudiante@test.com'})
+    crear_examen_response = client.post('/cursos/examen', json={'id_curso': id_curso,
+                                                                'nombre': 'test examen',
+                                                                'consignas': ['Pregunta 1', 'Pregunta 2']})
+    id_examen = crear_examen_response.json().get('id')
+    id_consigna_1 = crear_examen_response.json().get('consignas')[0].get('id')
+    id_consigna_2 = crear_examen_response.json().get('consignas')[1].get('id')
+    crear_examen_resuelto_response = client.post('/cursos/examen_resuelto',
+                                                 json={
+                                                     'id_examen': id_examen,
+                                                     'id_curso': id_curso,
+                                                     'username': 'estudiante@test.com',
+                                                     'respuestas': [
+                                                         {
+                                                             'id_consigna': id_consigna_1,
+                                                             'resolucion': 'Resolucion 1'
+                                                         },
+                                                         {
+                                                             'id_consigna': id_consigna_2,
+                                                             'resolucion': 'Resolucion 2'
+                                                         }
+                                                     ]
+                                                 })
+    assert crear_examen_resuelto_response.status_code == 201

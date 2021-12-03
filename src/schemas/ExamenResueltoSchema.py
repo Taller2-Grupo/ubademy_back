@@ -7,11 +7,12 @@ from src.schemas import RespuestaSchema
 
 
 class ExamenResueltoBase(BaseModel):
-    id_cursada: uuid.UUID
     id_examen: uuid.UUID
 
 
 class CreateExamenResueltoRequest(ExamenResueltoBase):
+    id_curso: uuid.UUID
+    username: str
     respuestas: List[RespuestaSchema.CreateRespuestaRequest]
 
 
@@ -23,6 +24,7 @@ class ExamenResueltoResponse(ExamenResueltoBase):
     estado: str
     corrector: Optional[str]
     nota: Optional[int]
+    id_cursada: uuid.UUID
 
     class Config:
         orm_mode = True
