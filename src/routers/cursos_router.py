@@ -73,35 +73,3 @@ def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)
 @router.post("/colaborador", response_model=ColaboradorSchema.ColaboradorResponse)
 def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db: Session = Depends(get_db)):
     return curso_service.add_colaborador(colaborador, db)
-
-
-@router.post("/examen", response_model=ExamenSchema.ExamenResponse, status_code=201)
-def add_examen(examen: ExamenSchema.CreateExamenRequest, db: Session = Depends(get_db)):
-    return curso_service.add_examen(examen, db)
-
-
-@router.get("/examen/{examen_id}", response_model=ExamenSchema.ExamenResponse)
-def get_examen(examen_id: uuid.UUID, db: Session = Depends(get_db)):
-    return curso_service.get_examen(examen_id, db)
-
-
-@router.post("/examen/publicar/{examen_id}", response_model=ExamenSchema.ExamenResponse)
-def publicar_examen(examen_id: uuid.UUID, db: Session = Depends(get_db)):
-    return curso_service.publicar_examen(examen_id, db)
-
-
-@router.patch("/examen", response_model=ExamenSchema.ExamenResponse)
-def editar_examen(examen: ExamenSchema.EditExamenRequest, db: Session = Depends(get_db)):
-    return curso_service.editar_examen(examen, db)
-
-
-@router.post("/examen_resuelto", response_model=ExamenResueltoSchema.ExamenResueltoResponse, status_code=201)
-def add_examen_resuelto(
-        examen_resuelto: ExamenResueltoSchema.CreateExamenResueltoRequest,
-        db: Session = Depends(get_db)):
-    return cursada_service.add_examen_resuelto(examen_resuelto, db)
-
-
-@router.post("/examen_resuelto/corregir", response_model=ExamenResueltoSchema.ExamenResueltoResponse, status_code=200)
-def corregir_examen_resuelto(correccion: ExamenResueltoSchema.CorregirExamenRequest, db: Session = Depends(get_db)):
-    return cursada_service.corregir_examen_resuelto(correccion, db)
