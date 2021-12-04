@@ -1,8 +1,9 @@
 import uuid
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
-from src.models.ExamenModel import Examen
+from src.models.ExamenModel import Examen, EstadoExamenEnum
 from src.schemas import ExamenSchema
 
 
@@ -25,5 +26,8 @@ def create_examen(db: Session, examen: ExamenSchema.CreateExamenRequest):
     return db_examen
 
 
-def get_examenes_by_curso(db: Session, curso_id: uuid.UUID):
-    return db.query(Examen).filter(Examen.id_curso == curso_id).all()
+def get_examenes_by_curso(db: Session, curso_id: uuid.UUID, estados: Optional[List[EstadoExamenEnum]]):
+    examenes_by_curso = db.query(Examen).filter(Examen.id_curso == curso_id)
+    if estados is None:
+        return examenes_by_curso.all()
+    return examenes_by_curso.filter(Examen.estado.in_(estados)).all()

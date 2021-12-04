@@ -147,5 +147,5 @@ def editar_examen(examen: ExamenSchema.EditExamenRequest, db: Session):
     return examen_db
 
 
-def get_examenes_by_curso(curso_id: uuid.UUID, db: Session):
-    return examen_repository.get_examenes_by_curso(db, curso_id)
+def get_examenes_by_curso(curso_id: uuid.UUID, estados: Optional[List[EstadoExamenEnum]], db: Session):
+    return examen_repository.get_examenes_by_curso(db, curso_id, estados)

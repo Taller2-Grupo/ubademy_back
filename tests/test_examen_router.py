@@ -368,7 +368,7 @@ def test_corregir_examen_resuelto_dos_veces():
     assert corregir_examen_response_2.status_code == 400
 
 
-def test_get_examenes_by_curso_2_examenes():
+def test_get_examenes_by_curso_2_examenes_creados_busco_todos():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
@@ -386,6 +386,29 @@ def test_get_examenes_by_curso_2_examenes():
                                                                    'puntaje': 6
                                                                }]})
     crear_examen_response_2 = client.post('/examenes', json={'id_curso': id_curso,
+                                                             'nombre': 'test examen',
+                                                             'consignas': [
+                                                                 {
+                                                                     'enunciado': 'Pregunta 1',
+                                                                     'puntaje': 4
+                                                                 },
+                                                                 {
+                                                                     'enunciado': 'Pregunta 2',
+                                                                     'puntaje': 6
+                                                                 }]})
+    get_examenes_by_curso_response = client.get(f'/examenes/curso/{id_curso}')
+
+    assert get_examenes_by_curso_response.status_code == 200
+    assert len(get_examenes_by_curso_response.json()) == 2
+
+
+def test_get_examenes_by_curso_2_examenes_creados_busco_publicados():
+    crear_curso_response = client.post('/cursos/',
+                                       json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
+                                             'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_curso = crear_curso_response.json().get('id')
+    crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
                                                            'nombre': 'test examen',
                                                            'consignas': [
                                                                {
@@ -396,7 +419,52 @@ def test_get_examenes_by_curso_2_examenes():
                                                                    'enunciado': 'Pregunta 2',
                                                                    'puntaje': 6
                                                                }]})
-    get_examenes_by_curso_response = client.get(f'/examenes/curso/{id_curso}')
+    crear_examen_response_2 = client.post('/examenes', json={'id_curso': id_curso,
+                                                             'nombre': 'test examen',
+                                                             'consignas': [
+                                                                 {
+                                                                     'enunciado': 'Pregunta 1',
+                                                                     'puntaje': 4
+                                                                 },
+                                                                 {
+                                                                     'enunciado': 'Pregunta 2',
+                                                                     'puntaje': 6
+                                                                 }]})
+    get_examenes_by_curso_response = client.get(f'/examenes/curso/{id_curso}/?estado=publicado')
+
+    assert get_examenes_by_curso_response.status_code == 200
+    assert len(get_examenes_by_curso_response.json()) == 0
+
+
+def test_get_examenes_by_curso_2_examenes_creados_busco_creados():
+    crear_curso_response = client.post('/cursos/',
+                                       json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
+                                             'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_curso = crear_curso_response.json().get('id')
+    crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
+                                                           'nombre': 'test examen',
+                                                           'consignas': [
+                                                               {
+                                                                   'enunciado': 'Pregunta 1',
+                                                                   'puntaje': 4
+                                                               },
+                                                               {
+                                                                   'enunciado': 'Pregunta 2',
+                                                                   'puntaje': 6
+                                                               }]})
+    crear_examen_response_2 = client.post('/examenes', json={'id_curso': id_curso,
+                                                             'nombre': 'test examen',
+                                                             'consignas': [
+                                                                 {
+                                                                     'enunciado': 'Pregunta 1',
+                                                                     'puntaje': 4
+                                                                 },
+                                                                 {
+                                                                     'enunciado': 'Pregunta 2',
+                                                                     'puntaje': 6
+                                                                 }]})
+    get_examenes_by_curso_response = client.get(f'/examenes/curso/{id_curso}/?estado=creado')
 
     assert get_examenes_by_curso_response.status_code == 200
     assert len(get_examenes_by_curso_response.json()) == 2
