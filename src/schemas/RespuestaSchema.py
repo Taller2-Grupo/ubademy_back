@@ -18,6 +18,7 @@ class RespuestaResponse(RespuestaBase):
     fecha_creacion: datetime.datetime
     fecha_actualizacion: Optional[datetime.datetime]
     id_examen_resuelto: uuid.UUID
+    estado: str
 
     class Config:
         orm_mode = True

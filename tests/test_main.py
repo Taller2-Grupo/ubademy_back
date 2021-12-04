@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 from src.main import app
 from src.models.CursadaModel import EstadoCursadaEnum
 from src.models.ExamenModel import EstadoExamenEnum
+from src.models.ExamenResueltoModel import EstadoExamenResueltoEnum
 
 client = TestClient(app)
 
@@ -524,3 +525,138 @@ def test_crear_examen_resuelto_exitoso():
                                                      ]
                                                  })
     assert crear_examen_resuelto_response.status_code == 201
+
+
+def test_corregir_examen_resuelto_exitoso():
+    crear_curso_response = client.post('/cursos/',
+                                       json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
+                                             'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_curso = crear_curso_response.json().get('id')
+    client.post('/cursos/' + id_curso + '/inscribirse', json={'username': 'estudiante@test.com'})
+    crear_examen_response = client.post('/cursos/examen', json={'id_curso': id_curso,
+                                                                'nombre': 'test examen',
+                                                                'consignas': [
+                                                                    {
+                                                                        'enunciado': 'Pregunta 1',
+                                                                        'puntaje': 4
+                                                                    },
+                                                                    {
+                                                                        'enunciado': 'Pregunta 2',
+                                                                        'puntaje': 6
+                                                                    }]})
+    id_examen = crear_examen_response.json().get('id')
+    id_consigna_1 = crear_examen_response.json().get('consignas')[0].get('id')
+    id_consigna_2 = crear_examen_response.json().get('consignas')[1].get('id')
+    crear_examen_resuelto_response = client.post('/cursos/examen_resuelto',
+                                                 json={
+                                                     'id_examen': id_examen,
+                                                     'id_curso': id_curso,
+                                                     'username': 'estudiante@test.com',
+                                                     'respuestas': [
+                                                         {
+                                                             'id_consigna': id_consigna_1,
+                                                             'resolucion': 'Resolucion 1'
+                                                         },
+                                                         {
+                                                             'id_consigna': id_consigna_2,
+                                                             'resolucion': 'Resolucion 2'
+                                                         }
+                                                     ]
+                                                 })
+    id_examen_resuelto = crear_examen_resuelto_response.json().get('id')
+    id_respuesta_1 = crear_examen_resuelto_response.json().get('respuestas')[0].get('id')
+    id_respuesta_2 = crear_examen_resuelto_response.json().get('respuestas')[1].get('id')
+    corregir_examen_response = client.post('/cursos/examen_resuelto/corregir',
+                                           json={
+                                               "id_examen_resuelto": id_examen_resuelto,
+                                               "corrector": "creador@test.com",
+                                               "correcciones": [
+                                                   {
+                                                       "id_respuesta": id_respuesta_1,
+                                                       "es_correcta": True
+                                                   },
+                                                   {
+                                                       "id_respuesta": id_respuesta_2,
+                                                       "es_correcta": True
+                                                   }
+                                               ]
+                                           })
+
+    assert corregir_examen_response.status_code == 200
+    assert corregir_examen_response.json().get('nota') == 10
+    assert corregir_examen_response.json().get('corrector') == 'creador@test.com'
+    assert corregir_examen_response.json().get('estado') == EstadoExamenResueltoEnum.corregido
+
+
+def test_corregir_examen_resuelto_dos_veces():
+    crear_curso_response = client.post('/cursos/',
+                                       json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
+                                             'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_curso = crear_curso_response.json().get('id')
+    client.post('/cursos/' + id_curso + '/inscribirse', json={'username': 'estudiante@test.com'})
+    crear_examen_response = client.post('/cursos/examen', json={'id_curso': id_curso,
+                                                                'nombre': 'test examen',
+                                                                'consignas': [
+                                                                    {
+                                                                        'enunciado': 'Pregunta 1',
+                                                                        'puntaje': 4
+                                                                    },
+                                                                    {
+                                                                        'enunciado': 'Pregunta 2',
+                                                                        'puntaje': 6
+                                                                    }]})
+    id_examen = crear_examen_response.json().get('id')
+    id_consigna_1 = crear_examen_response.json().get('consignas')[0].get('id')
+    id_consigna_2 = crear_examen_response.json().get('consignas')[1].get('id')
+    crear_examen_resuelto_response = client.post('/cursos/examen_resuelto',
+                                                 json={
+                                                     'id_examen': id_examen,
+                                                     'id_curso': id_curso,
+                                                     'username': 'estudiante@test.com',
+                                                     'respuestas': [
+                                                         {
+                                                             'id_consigna': id_consigna_1,
+                                                             'resolucion': 'Resolucion 1'
+                                                         },
+                                                         {
+                                                             'id_consigna': id_consigna_2,
+                                                             'resolucion': 'Resolucion 2'
+                                                         }
+                                                     ]
+                                                 })
+    id_examen_resuelto = crear_examen_resuelto_response.json().get('id')
+    id_respuesta_1 = crear_examen_resuelto_response.json().get('respuestas')[0].get('id')
+    id_respuesta_2 = crear_examen_resuelto_response.json().get('respuestas')[1].get('id')
+    corregir_examen_response = client.post('/cursos/examen_resuelto/corregir',
+                                           json={
+                                               "id_examen_resuelto": id_examen_resuelto,
+                                               "corrector": "creador@test.com",
+                                               "correcciones": [
+                                                   {
+                                                       "id_respuesta": id_respuesta_1,
+                                                       "es_correcta": True
+                                                   },
+                                                   {
+                                                       "id_respuesta": id_respuesta_2,
+                                                       "es_correcta": True
+                                                   }
+                                               ]
+                                           })
+    corregir_examen_response_2 = client.post('/cursos/examen_resuelto/corregir',
+                                             json={
+                                               "id_examen_resuelto": id_examen_resuelto,
+                                               "corrector": "creador@test.com",
+                                               "correcciones": [
+                                                   {
+                                                       "id_respuesta": id_respuesta_1,
+                                                       "es_correcta": True
+                                                   },
+                                                   {
+                                                       "id_respuesta": id_respuesta_2,
+                                                       "es_correcta": True
+                                                   }
+                                               ]
+                                             })
+    assert corregir_examen_response_2.status_code == 400

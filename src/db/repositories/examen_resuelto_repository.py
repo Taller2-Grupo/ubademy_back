@@ -15,3 +15,14 @@ def create_examen_resuelto(
     db.commit()
     db.refresh(db_examen)
     return db_examen
+
+
+def get_examen_resuelto_by_id(db: Session, id_examen_resuelto: uuid.UUID):
+    return db.query(ExamenResuelto).filter(ExamenResuelto.id == id_examen_resuelto).first()
+
+
+def actualizar_examen_resuelto(db: Session, examen_resuelto: ExamenResuelto):
+    db.add(examen_resuelto)
+    db.commit()
+    db.refresh(examen_resuelto)
+    return examen_resuelto

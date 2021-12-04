@@ -100,3 +100,8 @@ def add_examen_resuelto(
         examen_resuelto: ExamenResueltoSchema.CreateExamenResueltoRequest,
         db: Session = Depends(get_db)):
     return cursada_service.add_examen_resuelto(examen_resuelto, db)
+
+
+@router.post("/examen_resuelto/corregir", response_model=ExamenResueltoSchema.ExamenResueltoResponse, status_code=200)
+def corregir_examen_resuelto(correccion: ExamenResueltoSchema.CorregirExamenRequest, db: Session = Depends(get_db)):
+    return cursada_service.corregir_examen_resuelto(correccion, db)

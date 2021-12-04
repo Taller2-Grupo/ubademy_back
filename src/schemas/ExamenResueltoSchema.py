@@ -16,6 +16,17 @@ class CreateExamenResueltoRequest(ExamenResueltoBase):
     respuestas: List[RespuestaSchema.CreateRespuestaRequest]
 
 
+class CorreccionRespuestaRequest(BaseModel):
+    id_respuesta: uuid.UUID
+    es_correcta: bool
+
+
+class CorregirExamenRequest(BaseModel):
+    id_examen_resuelto: uuid.UUID
+    corrector: str
+    correcciones: List[CorreccionRespuestaRequest]
+
+
 class ExamenResueltoResponse(ExamenResueltoBase):
     id: uuid.UUID
     fecha_creacion: datetime.datetime
