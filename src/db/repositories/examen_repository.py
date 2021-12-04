@@ -23,3 +23,7 @@ def create_examen(db: Session, examen: ExamenSchema.CreateExamenRequest):
     db.commit()
     db.refresh(db_examen)
     return db_examen
+
+
+def get_examenes_by_curso(db: Session, curso_id: uuid.UUID):
+    return db.query(Examen).filter(Examen.id_curso == curso_id).all()

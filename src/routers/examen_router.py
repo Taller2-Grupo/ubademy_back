@@ -1,4 +1,5 @@
 import uuid
+from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -37,6 +38,11 @@ def add_examen_resuelto(
         examen_resuelto: ExamenResueltoSchema.CreateExamenResueltoRequest,
         db: Session = Depends(get_db)):
     return cursada_service.add_examen_resuelto(examen_resuelto, db)
+
+
+@router.get("/curso/{curso_id}", response_model=List[ExamenSchema.ExamenResponse])
+def get_examenes_by_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
+    return curso_service.get_examenes_by_curso(curso_id, db)
 
 
 @router.post("/examenes_resueltos/corregir", response_model=ExamenResueltoSchema.ExamenResueltoResponse, status_code=200)

@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
 from src.models.CursadaModel import EstadoCursadaEnum
+from src.models.ExamenModel import EstadoExamenEnum
 from src.models.ExamenResueltoModel import EstadoExamenResueltoEnum, ExamenResuelto
 from src.models.RespuestaModel import EstadoRespuestaEnum
 from src.schemas import CursadaSchema, ExamenResueltoSchema
@@ -32,6 +33,11 @@ def add_examen_resuelto(examen_resuelto: ExamenResueltoSchema.CreateExamenResuel
 
     if cursada is None or cursada.estado != EstadoCursadaEnum.inscripto:
         raise HTTPException(status_code=400, detail="El usuario debe estar inscripto para poder rendir.")
+
+    examen = examen_repository.get_examen(db, examen_resuelto.id_examen)
+
+    if examen is None or examen.estado != EstadoExamenEnum.publicado:
+        raise HTTPException(status_code=400, detail="El examen debe estar publicado para poder rendir.")
 
     examen_resuelto_db =\
         examen_resuelto_repository.create_examen_resuelto(db=db, examen_resuelto=examen_resuelto, id_cursada=cursada.id)
