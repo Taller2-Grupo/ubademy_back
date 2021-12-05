@@ -14,7 +14,6 @@ class CursoBase(BaseModel):
     descripcion: Optional[str]
     hashtags: Optional[str]
     tipo: Optional[str]
-    examenes: Optional[str]
     suscripcion: Optional[str]
     ubicacion: Optional[str]
 
@@ -25,7 +24,6 @@ class EditarCurso(BaseModel):
     nuevo_estado: Optional[str]
     nuevos_hashtags: Optional[str]
     nuevo_tipo: Optional[str]
-    nuevos_examenes: Optional[str]
     nueva_suscripcion: Optional[str]
     nueva_ubicacion: Optional[str]
 
