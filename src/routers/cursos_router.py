@@ -29,6 +29,16 @@ def delete_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.eliminar_curso(curso_id, db)
 
 
+@router.patch("/{curso_id}/bloquear", response_model=CursoSchema.CursoResponse)
+def bloquear_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
+    return curso_service.bloquear_curso(curso_id, db)
+
+
+@router.patch("/{curso_id}/activar", response_model=CursoSchema.CursoResponse)
+def activar_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)):
+    return curso_service.activar_curso(curso_id, db)
+
+
 @router.get("", response_model=List[CursoSchema.CursoResponse])
 def get_cursos_by_estado(
         estados: Optional[List[EstadoCursoEnum]] = Query(None, alias="estado"),

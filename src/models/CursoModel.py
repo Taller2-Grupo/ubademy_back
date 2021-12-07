@@ -57,6 +57,20 @@ class Curso(Base, Entity):
         self.estado = EstadoCursoEnum.eliminado
         self.actualizar()
 
+    def bloquear(self):
+        if self.estado == EstadoCursoEnum.eliminado:
+            raise HTTPException(status_code=400, detail='No se puede bloquear un curso eliminado')
+
+        self.estado = EstadoCursoEnum.bloqueado
+        self.actualizar()
+
+    def activar(self):
+        if self.estado == EstadoCursoEnum.eliminado:
+            raise HTTPException(status_code=400, detail='No se puede activar un curso eliminado')
+
+        self.estado = EstadoCursoEnum.activo
+        self.actualizar()
+
     def get_titulo(self):
         return self.titulo
 
