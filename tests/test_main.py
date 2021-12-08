@@ -92,6 +92,50 @@ def test_delete_curso():
     assert response.status_code == 200
 
 
+def test_bloquear_curso():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'Renzo', 'titulo': 'DeleteCurso',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_post = response_post.json().get('id')
+    response = client.patch('/cursos/' + id_post + '/bloquear')
+    assert response.status_code == 200
+    assert response.json().get('estado') == 'bloqueado'
+
+
+def test_bloquear_curso_eliminado():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'Renzo', 'titulo': 'DeleteCurso',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_post = response_post.json().get('id')
+    client.delete('/cursos/' + id_post)
+    response = client.patch('/cursos/' + id_post + '/bloquear')
+    assert response.status_code == 400
+
+
+def test_activar_curso():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'Renzo', 'titulo': 'DeleteCurso',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_post = response_post.json().get('id')
+    response = client.patch('/cursos/' + id_post + '/activar')
+    assert response.status_code == 200
+    assert response.json().get('estado') == 'activo'
+
+
+def test_activar_curso_eliminado():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'Renzo', 'titulo': 'DeleteCurso',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_post = response_post.json().get('id')
+    client.delete('/cursos/' + id_post)
+    response = client.patch('/cursos/' + id_post + '/activar')
+    assert response.status_code == 400
+
+
 def test_editar_titulo_curso():
     response_post = client.post('/cursos/',
                                 json={'id_creador': 'Renzo', 'titulo': 'EditarTest',
