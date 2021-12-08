@@ -85,6 +85,11 @@ def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)
 def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db: Session = Depends(get_db)):
     return curso_service.add_colaborador(colaborador, db)
 
+
+@router.delete("/colaborador/delete", status_code=202)
+def delete_colaborador(colaborador: ColaboradorSchema.DeleteColaboradorRequest, db: Session = Depends(get_db)):
+    curso_service.delete_colaborador(colaborador, db)
+
 @router.post("/favoritos/", response_model=FavoritoSchema.FavoritoResponse)
 def add_favorito(favorito: FavoritoSchema.FavearCurso, db: Session = Depends(get_db)):
     return curso_service.add_favorito(favorito, db)

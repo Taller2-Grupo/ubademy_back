@@ -315,7 +315,7 @@ def test_get_listado_de_alumnos_curso_existente():
     client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin2@admin.com'})
     client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin3@admin.com'})
     response = client.get('/cursos/' + id_post + '/alumnos')
-    assert response.status_code == 200 and\
+    assert response.status_code == 200 and \
            response.json() == ['admin@admin.com', 'admin2@admin.com', 'admin3@admin.com']
 
 
@@ -386,3 +386,34 @@ def test_agregar_colaborador_dos_veces():
     response_2 = client.post('/cursos/colaborador', json={'username': 'admin@admin.com', 'id_curso': id_post})
     assert response_1.status_code == 200
     assert response_2.status_code == 422
+
+
+def test_borrar_colaborador():
+    response_post_curso = client.post('/cursos/',
+                                      json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
+                                            'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                            'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_curso = response_post_curso.json().get('id')
+    response_post_colaborador =\
+        client.post('/cursos/colaborador', json={'username': 'admin@admin.com', 'id_curso': id_curso})
+    response_delete_colaborador =\
+        client.delete('/cursos/colaborador/delete', json={'username': 'admin@admin.com', 'id_curso': id_curso})
+
+    assert response_delete_colaborador.status_code == 202
+
+
+def test_borrar_colaborador_dos_veces():
+    response_post_curso = client.post('/cursos/',
+                                      json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
+                                            'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                            'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_curso = response_post_curso.json().get('id')
+    response_post_colaborador =\
+        client.post('/cursos/colaborador', json={'username': 'admin@admin.com', 'id_curso': id_curso})
+    response_delete_colaborador =\
+        client.delete('/cursos/colaborador/delete', json={'username': 'admin@admin.com', 'id_curso': id_curso})
+    response_delete_colaborador_2 = \
+        client.delete('/cursos/colaborador/delete', json={'username': 'admin@admin.com', 'id_curso': id_curso})
+
+    assert response_delete_colaborador.status_code == 202
+    assert response_delete_colaborador_2.status_code == 404

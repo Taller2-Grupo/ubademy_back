@@ -5,12 +5,16 @@ from pydantic import BaseModel
 
 
 class ColaboradorBase(BaseModel):
-    id_curso: Optional[uuid.UUID]
-    username: Optional[str]
+    id_curso: uuid.UUID
+    username: str
 
 
 # En esta clase se le agregan todos los atributos particulares para la creación
 class CreateColaboradorRequest(ColaboradorBase):
+    pass
+
+
+class DeleteColaboradorRequest(ColaboradorBase):
     pass
 
 
