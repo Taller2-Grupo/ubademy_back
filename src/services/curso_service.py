@@ -161,3 +161,11 @@ def editar_examen(examen: ExamenSchema.EditExamenRequest, db: Session):
 
 def get_examenes_by_curso(curso_id: uuid.UUID, estados: Optional[List[EstadoExamenEnum]], db: Session):
     return examen_repository.get_examenes_by_curso(db, curso_id, estados)
+
+
+def add_favorito(favorito, db):
+    return curso_repository.add_favorito(favorito, db)
+
+
+def get_favoritos(favorito, db):
+    return curso_repository.get_favoritos(favorito, db)
