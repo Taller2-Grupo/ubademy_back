@@ -167,3 +167,11 @@ def get_examenes_by_curso(curso_id: uuid.UUID, estados: Optional[List[EstadoExam
 
 def delete_colaborador(colaborador: DeleteColaboradorRequest, db: Session):
     colaborador_repository.delete_colaborador(db, colaborador)
+
+
+def add_favorito(favorito, db):
+    return curso_repository.add_favorito(favorito, db)
+
+
+def get_favoritos(favorito, db):
+    return curso_repository.get_favoritos(favorito, db)

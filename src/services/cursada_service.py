@@ -41,7 +41,7 @@ def add_examen_resuelto(examen_resuelto: ExamenResueltoSchema.CreateExamenResuel
     if examen is None or examen.estado != EstadoExamenEnum.publicado:
         raise HTTPException(status_code=400, detail="El examen debe estar publicado para poder rendir.")
 
-    examen_resuelto_db =\
+    examen_resuelto_db = \
         examen_resuelto_repository.create_examen_resuelto(db=db, examen_resuelto=examen_resuelto, id_cursada=cursada.id)
 
     cursada.actualizar()
@@ -96,7 +96,12 @@ def corregir_examen_resuelto(correccion: ExamenResueltoSchema.CorregirExamenRequ
 
     return examen_resuelto
 
-
+def get_cursadas(username, db):
+    db_cursada = cursada_repository.get_cursadas(username, db)
+    if db_cursada is None:
+        raise HTTPException(status_code=404, detail="Cursada not found")
+    return db_cursada
+  
 def get_examenes_resueltos_by_curso(
         curso_id: uuid.UUID,
         estados: Optional[List[EstadoExamenResueltoEnum]],

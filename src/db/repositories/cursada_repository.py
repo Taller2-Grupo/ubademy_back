@@ -11,7 +11,9 @@ def inscribir_alumno(curso_id: uuid.UUID, user: CursadaSchema.InscribirAlumno, d
     cursada = get_cursada(curso_id, user.username, db)
     if cursada:
         if cursada.estado == EstadoCursadaEnum.inscripto:
-            raise HTTPException(status_code=400, detail="El alumno " + user.username + " ya se encuentra inscripto al curso " + str(curso_id))
+            raise HTTPException(status_code=400,
+                                detail="El alumno " + user.username + " ya se encuentra inscripto al curso " + str(
+                                    curso_id))
         else:
             cursada.cambiar_estado_a_inscripto()
             return actualizar_cursada(db, cursada)
@@ -46,3 +48,7 @@ def actualizar_cursada(db: Session, cursada: Cursada):
     db.commit()
     db.refresh(cursada)
     return cursada
+
+
+def get_cursadas(username, db):
+    return db.query(Cursada).filter(Cursada.username == username).all()
