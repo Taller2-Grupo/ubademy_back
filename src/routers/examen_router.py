@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.models.ExamenModel import EstadoExamenEnum
+from src.models.ExamenResueltoModel import EstadoExamenResueltoEnum
 from src.schemas import ExamenSchema, ExamenResueltoSchema
 from src.services import curso_service, cursada_service
 
@@ -47,6 +48,14 @@ def get_examenes_by_curso(
         estados: Optional[List[EstadoExamenEnum]] = Query(None, alias="estado"),
         db: Session = Depends(get_db)):
     return curso_service.get_examenes_by_curso(curso_id, estados, db)
+
+
+@router.get("/examenes_resueltos/curso/{curso_id}", response_model=List[ExamenResueltoSchema.ExamenResueltoResponse])
+def get_examenes_resueltos_by_curso(
+        curso_id: uuid.UUID,
+        estados: Optional[List[EstadoExamenResueltoEnum]] = Query(None, alias="estado"),
+        db: Session = Depends(get_db)):
+    return cursada_service.get_examenes_resueltos_by_curso(curso_id, estados, db)
 
 
 @router.post("/examenes_resueltos/corregir", response_model=ExamenResueltoSchema.ExamenResueltoResponse, status_code=200)
