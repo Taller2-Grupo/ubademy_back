@@ -1,4 +1,6 @@
 import uuid
+from typing import Optional, List
+
 from src.db.repositories import cursada_repository, examen_resuelto_repository, examen_repository
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
@@ -94,9 +96,14 @@ def corregir_examen_resuelto(correccion: ExamenResueltoSchema.CorregirExamenRequ
 
     return examen_resuelto
 
-
 def get_cursadas(username, db):
     db_cursada = cursada_repository.get_cursadas(username, db)
     if db_cursada is None:
         raise HTTPException(status_code=404, detail="Cursada not found")
     return db_cursada
+  
+def get_examenes_resueltos_by_curso(
+        curso_id: uuid.UUID,
+        estados: Optional[List[EstadoExamenResueltoEnum]],
+        db: Session):
+    return examen_resuelto_repository.get_examenes_resueltos_by_curso(db, curso_id, estados)

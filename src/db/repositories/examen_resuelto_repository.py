@@ -2,6 +2,7 @@ import uuid
 
 from sqlalchemy.orm import Session
 
+from src.models.CursadaModel import Cursada
 from src.models.ExamenResueltoModel import ExamenResuelto
 from src.schemas import ExamenResueltoSchema
 
@@ -26,3 +27,10 @@ def actualizar_examen_resuelto(db: Session, examen_resuelto: ExamenResuelto):
     db.commit()
     db.refresh(examen_resuelto)
     return examen_resuelto
+
+
+def get_examenes_resueltos_by_curso(db, curso_id, estados):
+    examenes_by_curso = db.query(ExamenResuelto).join(Cursada).filter(Cursada.curso_id == curso_id)
+    if estados is None:
+        return examenes_by_curso.all()
+    return examenes_by_curso.filter(ExamenResuelto.estado.in_(estados)).all()
