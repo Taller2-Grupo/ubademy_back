@@ -1,4 +1,6 @@
 import uuid
+from typing import Optional, List
+
 from src.db.repositories import cursada_repository, examen_resuelto_repository, examen_repository
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
@@ -93,3 +95,10 @@ def corregir_examen_resuelto(correccion: ExamenResueltoSchema.CorregirExamenRequ
     examen_resuelto_repository.actualizar_examen_resuelto(db, examen_resuelto)
 
     return examen_resuelto
+
+
+def get_examenes_resueltos_by_curso(
+        curso_id: uuid.UUID,
+        estados: Optional[List[EstadoExamenResueltoEnum]],
+        db: Session):
+    return examen_resuelto_repository.get_examenes_resueltos_by_curso(db, curso_id, estados)
