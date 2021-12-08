@@ -10,6 +10,8 @@ from src.schemas import CursoSchema, ColaboradorSchema, ExamenSchema
 from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
 from typing import List, Optional
 
+from src.schemas.ColaboradorSchema import DeleteColaboradorRequest
+
 
 def crear_curso(curso: CursoSchema.CreateCursoRequest, db: Session):
     # TODO: Validar que el username es válido.
@@ -161,3 +163,7 @@ def editar_examen(examen: ExamenSchema.EditExamenRequest, db: Session):
 
 def get_examenes_by_curso(curso_id: uuid.UUID, estados: Optional[List[EstadoExamenEnum]], db: Session):
     return examen_repository.get_examenes_by_curso(db, curso_id, estados)
+
+
+def delete_colaborador(colaborador: DeleteColaboradorRequest, db: Session):
+    colaborador_repository.delete_colaborador(db, colaborador)

@@ -2,7 +2,6 @@ import uuid
 from typing import List, Optional
 
 from sqlalchemy.orm import Session
-
 from src.models.ExamenModel import Examen, EstadoExamenEnum
 from src.schemas import ExamenSchema
 

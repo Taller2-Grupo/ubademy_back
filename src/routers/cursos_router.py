@@ -83,3 +83,8 @@ def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)
 @router.post("/colaborador", response_model=ColaboradorSchema.ColaboradorResponse)
 def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db: Session = Depends(get_db)):
     return curso_service.add_colaborador(colaborador, db)
+
+
+@router.delete("/colaborador/delete", status_code=202)
+def delete_colaborador(colaborador: ColaboradorSchema.DeleteColaboradorRequest, db: Session = Depends(get_db)):
+    curso_service.delete_colaborador(colaborador, db)
