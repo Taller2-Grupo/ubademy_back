@@ -5,7 +5,8 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from src.db.database import get_db
 from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
-from src.schemas import CursoSchema, ExamenSchema, ColaboradorSchema, CursadaSchema, ExamenResueltoSchema
+from src.schemas import CursoSchema, ExamenSchema, ColaboradorSchema, CursadaSchema, ExamenResueltoSchema, \
+    FavoritoSchema
 from src.services import curso_service, cursada_service
 
 router = APIRouter(
@@ -83,3 +84,11 @@ def get_listado_alumnos_curso(curso_id: uuid.UUID, db: Session = Depends(get_db)
 @router.post("/colaborador", response_model=ColaboradorSchema.ColaboradorResponse)
 def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db: Session = Depends(get_db)):
     return curso_service.add_colaborador(colaborador, db)
+
+@router.post("/favoritos/", response_model=FavoritoSchema.FavoritoResponse)
+def add_favorito(favorito: FavoritoSchema.FavearCurso, db: Session = Depends(get_db)):
+    return curso_service.add_favorito(favorito, db)
+
+@router.get("/favoritos/", response_model=FavoritoSchema.FavoritoResponse)
+def get_favoritos(favorito: FavoritoSchema.FavearCurso, db: Session = Depends(get_db)):
+    return curso_service.get_favoritos(favorito, db)

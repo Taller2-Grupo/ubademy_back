@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from src.models.CursadaModel import Cursada, EstadoCursadaEnum
 from src.models.CursoModel import Curso, EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
+from src.models.FavoritoModel import Favorito
 from src.schemas import CursoSchema
 from typing import List, Optional
 
@@ -66,8 +67,24 @@ def get_curso_by_suscripcion(suscripciones: Optional[List[SuscripcionCursoEnum]]
 
 
 def get_listado_alumnos(curso_id: uuid.UUID, db: Session):
-    cursadas = db.query(Cursada).filter(Cursada.curso_id == curso_id, Cursada.estado == EstadoCursadaEnum.inscripto).all()
+    cursadas = db.query(Cursada).filter(Cursada.curso_id == curso_id,
+                                        Cursada.estado == EstadoCursadaEnum.inscripto).all()
     listado = []
     for cursada in cursadas:
         listado.append(cursada.username)
     return listado
+
+
+def add_favorito(favorito, db):
+    username = favorito.tiene_username(favorito.username)
+    curso_id = favorito.tiene_curso_id(favorito.curso_id)
+    db_favorito = Favorito(username, curso_id)
+    db.add(db_favorito)
+    db.commit()
+    db.refresh(db_favorito)
+    return db_favorito
+
+
+def get_favoritos(favorito, db):
+    username = favorito.tiene_username(favorito.username)
+    return db.query(Favorito).filter(Favorito.username == username).all()
