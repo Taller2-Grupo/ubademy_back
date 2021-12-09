@@ -15,6 +15,6 @@ router = APIRouter(
 )
 
 
-@router.get("/{username}/", response_model=CursoSchema.CursoResponse)
+@router.get("/{username}/", response_model=List[CursadaSchema.CursadaResponse])
 def get_cursadas(username: string, db: Session = Depends(get_db)):
     return cursada_service.get_cursadas(username=username, db=db)
