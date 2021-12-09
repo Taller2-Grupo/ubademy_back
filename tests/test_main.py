@@ -418,18 +418,4 @@ def test_borrar_colaborador_dos_veces():
     assert response_delete_colaborador.status_code == 202
     assert response_delete_colaborador_2.status_code == 404
 
-def test_historicos_usuario_inexistente():
-    response = client.get('/cursadas/usuario_inexistente/')
-    assert response.status_code == 404
-
-def test_historicos_usuario_un_curso():
-    response_post = client.post('/cursos/',
-                                      json={'id_creador': 'hola@gmail.com', 'titulo': 'HistoricosTest',
-                                            'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                            'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
-    id_post = response_post.json().get('id')
-    client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin@admin.com'})
-    response = client.get('/cursadas/admin@admin.com/')
-    assert response.status_code == 200
-
 
