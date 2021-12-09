@@ -1,3 +1,4 @@
+import string
 import uuid
 from typing import List, Optional
 
@@ -89,6 +90,11 @@ def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db:
 @router.delete("/colaborador/delete", status_code=202)
 def delete_colaborador(colaborador: ColaboradorSchema.DeleteColaboradorRequest, db: Session = Depends(get_db)):
     curso_service.delete_colaborador(colaborador, db)
+
+
+@router.get("/historicos/", response_model=List[CursoSchema.CursoResponse])
+def get_historicos(user: CursadaSchema.InscribirAlumno, db: Session = Depends(get_db)):
+    return cursada_service.get_historicos(user=user, db=db)
 
 
 @router.post("/favoritos/", response_model=FavoritoSchema.FavoritoResponse)

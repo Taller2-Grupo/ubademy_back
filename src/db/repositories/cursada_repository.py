@@ -2,6 +2,7 @@ import uuid
 
 from sqlalchemy.orm import Session
 from src.models.CursadaModel import Cursada, EstadoCursadaEnum
+from src.models.CursoModel import Curso
 from src.schemas import CursadaSchema
 from fastapi import HTTPException
 
@@ -50,5 +51,10 @@ def actualizar_cursada(db: Session, cursada: Cursada):
     return cursada
 
 
-def get_cursadas(username, db):
-    return db.query(Cursada).filter(Cursada.username == username).all()
+def get_historicos(user, db):
+    user.tiene_username(user.username)
+    id_cursos = db.query(Cursada).filter(Cursada.username == user.username).with_entities(Cursada.curso_id).all()
+    id_cursos_string = []
+    for curso_id in id_cursos:
+        id_cursos_string.append(str(curso_id)[7:43])
+    return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
