@@ -25,7 +25,6 @@ class FavearCurso(FavoritoBase):
 
 # Esto es lo que se va a devolver cuando se este "leyendo" un Colaborador
 class FavoritoResponse(FavoritoBase):
-    id: uuid.UUID
 
     class Config:
         orm_mode = True

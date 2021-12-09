@@ -417,3 +417,31 @@ def test_borrar_colaborador_dos_veces():
 
     assert response_delete_colaborador.status_code == 202
     assert response_delete_colaborador_2.status_code == 404
+
+def test_historicos_usuario_inexistente():
+    response = client.get('/cursos/historicos/', json={'username': 'usuario_inexistente'})
+    assert response.status_code == 404
+
+def test_historicos_usuario_un_curso():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'hola@gmail.com', 'titulo': 'HistoricoTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_post = response_post.json().get('id')
+    client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin_historicos@admin.com'})
+    response = client.get('/cursos/historicos/', json={'username': 'admin_historicos@admin.com'})
+    assert response.status_code == 200
+
+def test_favoritos_usuario_inexistente():
+    response = client.get('/cursos/favoritos/', json={'username': 'usuario_inexistente'})
+    assert response.status_code == 404
+
+def test_favoritos_usuario_un_curso():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'hola@gmail.com', 'titulo': 'HistoricoTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+    id_post = response_post.json().get('id')
+    client.post('/cursos/favoritos/', json={'username': 'admin@admin.com', 'curso_id': id_post})
+    response = client.get('/cursos/favoritos/', json={'username': 'admin@admin.com'})
+    assert response.status_code == 200
