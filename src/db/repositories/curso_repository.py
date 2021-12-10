@@ -86,5 +86,9 @@ def add_favorito(favorito, db):
 
 
 def get_favoritos(favorito, db):
-    username = favorito.tiene_username(favorito.username)
-    return db.query(Favorito).filter(Favorito.username == username).all()
+    favorito.tiene_username(favorito.username)
+    id_cursos = db.query(Favorito).filter(Favorito.username == favorito.username).with_entities(Favorito.curso_id).all()
+    id_cursos_string = []
+    for curso_id in id_cursos:
+        id_cursos_string.append(str(curso_id)[2:38])
+    return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
