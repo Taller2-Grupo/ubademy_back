@@ -387,6 +387,10 @@ def test_agregar_colaborador_dos_veces():
     assert response_1.status_code == 200
     assert response_2.status_code == 422
 
+def test_obtener_cursos_colaborador_sin_colaboraciones():
+    response = client.get('/cursos/colaboraciones/', json={'username': 'admin_nocolaborador@admin.com'})
+    assert response.status_code == 404
+
 def test_obtener_cursos_colaborador():
     response_post = client.post('/cursos/',
                                 json={'id_creador': 'hola@gmail.com', 'titulo': 'ColaboradorTest',

@@ -10,16 +10,6 @@ class ColaboradorBase(BaseModel):
     username: str
 
 
-
-# En esta clase se le agregan todos los atributos particulares para la creación
-class CreateColaboradorRequest(ColaboradorBase):
-    @validator('username')
-    def tiene_username(cls, username: str):
-        if not username:
-            raise HTTPException(status_code=400, detail='Debe proporcionar un nombre de usuario.')
-        return username
-
-
 class DeleteColaboradorRequest(ColaboradorBase):
     pass
 
