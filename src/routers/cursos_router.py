@@ -87,6 +87,11 @@ def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db:
     return curso_service.add_colaborador(colaborador, db)
 
 
+@router.get("/colaboraciones/", response_model=List[CursoSchema.CursoResponse])
+def get_cursos_colaborador(colaborador: FavoritoSchema.FavearCurso, db: Session = Depends(get_db)):
+    return curso_service.get_cursos_colaborador(colaborador, db)
+
+
 @router.delete("/colaborador/delete", status_code=202)
 def delete_colaborador(colaborador: ColaboradorSchema.DeleteColaboradorRequest, db: Session = Depends(get_db)):
     curso_service.delete_colaborador(colaborador, db)

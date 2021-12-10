@@ -1,7 +1,8 @@
 import datetime
 import uuid
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
+from fastapi import HTTPException
 
 
 class ColaboradorBase(BaseModel):
@@ -9,9 +10,14 @@ class ColaboradorBase(BaseModel):
     username: str
 
 
+
 # En esta clase se le agregan todos los atributos particulares para la creación
 class CreateColaboradorRequest(ColaboradorBase):
-    pass
+    @validator('username')
+    def tiene_username(cls, username: str):
+        if not username:
+            raise HTTPException(status_code=400, detail='Debe proporcionar un nombre de usuario.')
+        return username
 
 
 class DeleteColaboradorRequest(ColaboradorBase):
