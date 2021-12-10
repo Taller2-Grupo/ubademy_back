@@ -10,6 +10,10 @@ class ColaboradorBase(BaseModel):
     username: str
 
 
+class CreateColaboradorRequest(ColaboradorBase):
+    pass
+
+
 class DeleteColaboradorRequest(ColaboradorBase):
     pass
 
