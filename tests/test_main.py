@@ -457,3 +457,13 @@ def test_favoritos_usuario_un_curso():
     client.post('/cursos/favoritos/', json={'username': 'admin_favorito@admin.com', 'curso_id': id_post})
     response = client.get('/cursos/favoritos/admin_favorito@admin.com/')
     assert response.status_code == 200
+
+
+#tests
+#tests
+#tests
+#tests
+#tests
+#tests
+#tests
+#tests
