@@ -178,3 +178,10 @@ def get_favoritos(favorito, db):
     if len(db_cursos) == 0:
         raise HTTPException(status_code=404, detail="Cursos not found")
     return db_cursos
+
+
+def get_cursos_colaborador(colaborador, db):
+    db_cursos = curso_repository.get_cursos_colaborador(db, colaborador=colaborador)
+    if len(db_cursos) == 0:
+        raise HTTPException(status_code=404, detail="Cursos not found")
+    return db_cursos

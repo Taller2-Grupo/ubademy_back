@@ -1,7 +1,8 @@
 import datetime
 import uuid
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
+from fastapi import HTTPException
 
 
 class ColaboradorBase(BaseModel):
@@ -9,7 +10,6 @@ class ColaboradorBase(BaseModel):
     username: str
 
 
-# En esta clase se le agregan todos los atributos particulares para la creación
 class CreateColaboradorRequest(ColaboradorBase):
     pass
 

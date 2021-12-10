@@ -2,6 +2,7 @@ import uuid
 
 from sqlalchemy.orm import Session
 
+from src.models.ColaboradorModel import Colaborador
 from src.models.CursadaModel import Cursada, EstadoCursadaEnum
 from src.models.CursoModel import Curso, EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
 from src.models.FavoritoModel import Favorito
@@ -91,4 +92,14 @@ def get_favoritos(favorito, db):
     id_cursos_string = []
     for curso_id in id_cursos:
         id_cursos_string.append(str(curso_id)[2:38])
+    return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
+
+
+def get_cursos_colaborador(db, colaborador):
+    colaborador.tiene_username(colaborador.username)
+    id_cursos = db.query(Colaborador).filter(Colaborador.username == colaborador.username).with_entities(
+        Colaborador.id_curso).all()
+    id_cursos_string = []
+    for curso_id in id_cursos:
+        id_cursos_string.append(str(curso_id)[7:43])
     return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
