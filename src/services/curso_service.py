@@ -173,15 +173,15 @@ def add_favorito(favorito, db):
     return curso_repository.add_favorito(favorito, db)
 
 
-def get_favoritos(favorito, db):
-    db_cursos = curso_repository.get_favoritos(favorito, db)
+def get_favoritos(username, db):
+    db_cursos = curso_repository.get_favoritos(username, db)
     if len(db_cursos) == 0:
         raise HTTPException(status_code=404, detail="Cursos not found")
     return db_cursos
 
 
-def get_cursos_colaborador(colaborador, db):
-    db_cursos = curso_repository.get_cursos_colaborador(db, colaborador=colaborador)
+def get_cursos_colaborador(username, db):
+    db_cursos = curso_repository.get_cursos_colaborador(db, username)
     if len(db_cursos) == 0:
         raise HTTPException(status_code=404, detail="Cursos not found")
     return db_cursos

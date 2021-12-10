@@ -1,4 +1,3 @@
-import string
 import uuid
 from typing import List, Optional
 
@@ -87,9 +86,9 @@ def add_colaborador(colaborador: ColaboradorSchema.CreateColaboradorRequest, db:
     return curso_service.add_colaborador(colaborador, db)
 
 
-@router.get("/colaboraciones/", response_model=List[CursoSchema.CursoResponse])
-def get_cursos_colaborador(colaborador: FavoritoSchema.FavearCurso, db: Session = Depends(get_db)):
-    return curso_service.get_cursos_colaborador(colaborador, db)
+@router.get("/colaboraciones/{username}/", response_model=List[CursoSchema.CursoResponse])
+def get_cursos_colaborador(username: str, db: Session = Depends(get_db)):
+    return curso_service.get_cursos_colaborador(username, db)
 
 
 @router.delete("/colaborador/delete", status_code=202)
@@ -97,9 +96,9 @@ def delete_colaborador(colaborador: ColaboradorSchema.DeleteColaboradorRequest, 
     curso_service.delete_colaborador(colaborador, db)
 
 
-@router.get("/historicos/", response_model=List[CursoSchema.CursoResponse])
-def get_historicos(user: CursadaSchema.InscribirAlumno, db: Session = Depends(get_db)):
-    return cursada_service.get_historicos(user=user, db=db)
+@router.get("/historicos/{username}/", response_model=List[CursoSchema.CursoResponse])
+def get_historicos(username: str, db: Session = Depends(get_db)):
+    return cursada_service.get_historicos(username, db)
 
 
 @router.post("/favoritos/", response_model=FavoritoSchema.FavoritoResponse)
@@ -107,6 +106,6 @@ def add_favorito(favorito: FavoritoSchema.FavearCurso, db: Session = Depends(get
     return curso_service.add_favorito(favorito, db)
 
 
-@router.get("/favoritos/", response_model=List[CursoSchema.CursoResponse])
-def get_favoritos(favorito: FavoritoSchema.FavearCurso, db: Session = Depends(get_db)):
-    return curso_service.get_favoritos(favorito, db)
+@router.get("/favoritos/{username}/", response_model=List[CursoSchema.CursoResponse])
+def get_favoritos(username: str, db: Session = Depends(get_db)):
+    return curso_service.get_favoritos(username, db)
