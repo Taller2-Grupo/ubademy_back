@@ -442,6 +442,6 @@ def test_favoritos_usuario_un_curso():
                                       'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
                                       'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
     id_post = response_post.json().get('id')
-    client.post('/cursos/favoritos/', json={'username': 'admin@admin.com', 'curso_id': id_post})
-    response = client.get('/cursos/favoritos/', json={'username': 'admin@admin.com'})
+    client.post('/cursos/favoritos/', json={'username': 'admin_favorito@admin.com', 'curso_id': id_post})
+    response = client.get('/cursos/favoritos/', json={'username': 'admin_favorito@admin.com'})
     assert response.status_code == 200

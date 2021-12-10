@@ -58,3 +58,4 @@ def get_historicos(user, db):
     for curso_id in id_cursos:
         id_cursos_string.append(str(curso_id)[7:43])
     return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
+
