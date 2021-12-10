@@ -1,8 +1,6 @@
 from fastapi.testclient import TestClient
 from src.main import app
 from src.models.CursadaModel import EstadoCursadaEnum
-from src.models.ExamenModel import EstadoExamenEnum
-from src.models.ExamenResueltoModel import EstadoExamenResueltoEnum
 
 client = TestClient(app)
 
@@ -388,7 +386,7 @@ def test_agregar_colaborador_dos_veces():
     assert response_2.status_code == 422
 
 def test_obtener_cursos_colaborador_sin_colaboraciones():
-    response = client.get('/cursos/colaboraciones/', json={'username': 'admin_nocolaborador@admin.com'})
+    response = client.get('/cursos/colaboraciones/admin_nocolaborador@admin.com/')
     assert response.status_code == 404
 
 def test_obtener_cursos_colaborador():
@@ -398,7 +396,7 @@ def test_obtener_cursos_colaborador():
                                       'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
     id_post = response_post.json().get('id')
     client.post('/cursos/colaborador', json={'username': 'admin_colaborador@admin.com', 'id_curso': id_post})
-    response = client.get('/cursos/colaboraciones/', json={'username': 'admin_colaborador@admin.com'})
+    response = client.get('/cursos/colaboraciones/admin_colaborador@admin.com/')
     assert response.status_code == 200
 
 
@@ -433,7 +431,7 @@ def test_borrar_colaborador_dos_veces():
     assert response_delete_colaborador_2.status_code == 404
 
 def test_historicos_usuario_inexistente():
-    response = client.get('/cursos/historicos/', json={'username': 'usuario_inexistente'})
+    response = client.get('/cursos/historicos/usuario_inexistente/')
     assert response.status_code == 404
 
 def test_historicos_usuario_un_curso():
@@ -443,11 +441,11 @@ def test_historicos_usuario_un_curso():
                                       'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
     id_post = response_post.json().get('id')
     client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin_historicos@admin.com'})
-    response = client.get('/cursos/historicos/', json={'username': 'admin_historicos@admin.com'})
+    response = client.get('/cursos/historicos/admin_historicos@admin.com/')
     assert response.status_code == 200
 
 def test_favoritos_usuario_inexistente():
-    response = client.get('/cursos/favoritos/', json={'username': 'usuario_inexistente'})
+    response = client.get('/cursos/favoritos/usuario_inexistente/')
     assert response.status_code == 404
 
 def test_favoritos_usuario_un_curso():
@@ -457,5 +455,15 @@ def test_favoritos_usuario_un_curso():
                                       'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
     id_post = response_post.json().get('id')
     client.post('/cursos/favoritos/', json={'username': 'admin_favorito@admin.com', 'curso_id': id_post})
-    response = client.get('/cursos/favoritos/', json={'username': 'admin_favorito@admin.com'})
+    response = client.get('/cursos/favoritos/admin_favorito@admin.com/')
     assert response.status_code == 200
+
+
+#tests
+#tests
+#tests
+#tests
+#tests
+#tests
+#tests
+#tests

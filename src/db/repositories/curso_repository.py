@@ -86,18 +86,16 @@ def add_favorito(favorito, db):
     return db_favorito
 
 
-def get_favoritos(favorito, db):
-    favorito.tiene_username(favorito.username)
-    id_cursos = db.query(Favorito).filter(Favorito.username == favorito.username).with_entities(Favorito.curso_id).all()
+def get_favoritos(username, db):
+    id_cursos = db.query(Favorito).filter(Favorito.username == username).with_entities(Favorito.curso_id).all()
     id_cursos_string = []
     for curso_id in id_cursos:
         id_cursos_string.append(str(curso_id)[2:38])
     return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
 
 
-def get_cursos_colaborador(db, colaborador):
-    colaborador.tiene_username(colaborador.username)
-    id_cursos = db.query(Colaborador).filter(Colaborador.username == colaborador.username).with_entities(
+def get_cursos_colaborador(db, username):
+    id_cursos = db.query(Colaborador).filter(Colaborador.username == username).with_entities(
         Colaborador.id_curso).all()
     id_cursos_string = []
     for curso_id in id_cursos:

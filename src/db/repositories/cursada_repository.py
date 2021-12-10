@@ -51,9 +51,8 @@ def actualizar_cursada(db: Session, cursada: Cursada):
     return cursada
 
 
-def get_historicos(user, db):
-    user.tiene_username(user.username)
-    id_cursos = db.query(Cursada).filter(Cursada.username == user.username).with_entities(Cursada.curso_id).all()
+def get_historicos(username, db):
+    id_cursos = db.query(Cursada).filter(Cursada.username == username).with_entities(Cursada.curso_id).all()
     id_cursos_string = []
     for curso_id in id_cursos:
         id_cursos_string.append(str(curso_id)[7:43])
