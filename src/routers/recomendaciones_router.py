@@ -9,6 +9,6 @@ router = APIRouter(
 )
 
 
-@router.get("/intereses")
+@router.get("/intereses/{username}")
 def get_recomendacion_por_intereses(username: str, db: Session = Depends(get_db)):
     return recomendacion_service.recomendar_curso_por_intereses(db, username)
