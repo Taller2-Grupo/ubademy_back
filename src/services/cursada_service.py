@@ -109,3 +109,11 @@ def get_examenes_resueltos_by_curso(
         estados: Optional[List[EstadoExamenResueltoEnum]],
         db: Session):
     return examen_resuelto_repository.get_examenes_resueltos_by_curso(db, curso_id, estados)
+
+
+def get_examenes_resueltos_by_curso_and_username(
+        curso_id: uuid.UUID,
+        username: str,
+        estados: Optional[List[EstadoExamenResueltoEnum]],
+        db: Session):
+    return examen_resuelto_repository.get_examenes_resueltos_by_curso_and_username(db, curso_id, username, estados)

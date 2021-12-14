@@ -58,6 +58,15 @@ def get_examenes_resueltos_by_curso(
     return cursada_service.get_examenes_resueltos_by_curso(curso_id, estados, db)
 
 
+@router.get("/examenes_resueltos/curso/{curso_id}/{username}", response_model=List[ExamenResueltoSchema.ExamenResueltoResponse])
+def get_examenes_resueltos_by_curso_and_username(
+        curso_id: uuid.UUID,
+        username: str,
+        estados: Optional[List[EstadoExamenResueltoEnum]] = Query(None, alias="estado"),
+        db: Session = Depends(get_db)):
+    return cursada_service.get_examenes_resueltos_by_curso_and_username(curso_id, username, estados, db)
+
+
 @router.post("/examenes_resueltos/corregir", response_model=ExamenResueltoSchema.ExamenResueltoResponse, status_code=200)
 def corregir_examen_resuelto(correccion: ExamenResueltoSchema.CorregirExamenRequest, db: Session = Depends(get_db)):
     return cursada_service.corregir_examen_resuelto(correccion, db)

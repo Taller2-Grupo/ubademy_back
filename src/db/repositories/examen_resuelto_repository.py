@@ -34,3 +34,13 @@ def get_examenes_resueltos_by_curso(db, curso_id, estados):
     if estados is None:
         return examenes_by_curso.all()
     return examenes_by_curso.filter(ExamenResuelto.estado.in_(estados)).all()
+
+
+def get_examenes_resueltos_by_curso_and_username(db, curso_id, username, estados):
+    examenes_by_curso = \
+        db.query(ExamenResuelto).join(Cursada).filter(Cursada.curso_id == curso_id).filter(Cursada.username == username)
+
+    if estados is None:
+        return examenes_by_curso.all()
+
+    return examenes_by_curso.filter(ExamenResuelto.estado.in_(estados)).all()
