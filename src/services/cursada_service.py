@@ -96,12 +96,14 @@ def corregir_examen_resuelto(correccion: ExamenResueltoSchema.CorregirExamenRequ
 
     return examen_resuelto
 
+
 def get_historicos(username, db):
     db_cursada = cursada_repository.get_historicos(username, db)
     if len(db_cursada) == 0:
         raise HTTPException(status_code=404, detail="Cursada not found")
     return db_cursada
-  
+
+
 def get_examenes_resueltos_by_curso(
         curso_id: uuid.UUID,
         estados: Optional[List[EstadoExamenResueltoEnum]],

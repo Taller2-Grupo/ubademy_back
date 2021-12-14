@@ -1,6 +1,8 @@
 import uuid
+from typing import List
 
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
 from src.models.CursadaModel import Cursada, EstadoCursadaEnum
 from src.models.CursoModel import Curso
 from src.schemas import CursadaSchema
@@ -58,3 +60,32 @@ def get_historicos(username, db):
         id_cursos_string.append(str(curso_id)[7:43])
     return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
 
+
+def get_cursos_mas_inscriptos_by_tipo_curso(db: Session, tipo_curso: str, ids_curso: str):
+    statement = text(
+        """ select cursos, count(cursos.id) as cantidad_inscriptos from cursadas
+            inner join cursos on cursos.id = cursadas.curso_id
+            where cursos.tipo = :tipo_curso
+            and cursos.id not in :ids_curso
+            group by cursos.id
+            order by cantidad_inscriptos desc
+            limit 10 """)
+
+    params = {
+        "tipo_curso": tipo_curso
+    }
+
+    statement = statement.bindparams(ids_curso=tuple(ids_curso))
+
+    return db.execute(statement, params).all()
+
+
+def get_cursos_mas_inscriptos(db: Session):
+    statement = text(
+        """ select cursos, count(cursos.id) as cantidad_inscriptos from cursadas
+            inner join cursos on cursos.id = cursadas.curso_id
+            group by cursos.id
+            order by cantidad_inscriptos desc
+            limit 10 """)
+
+    return db.execute(statement).all()
