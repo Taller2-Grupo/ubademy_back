@@ -1,6 +1,3 @@
-# Este import sirve para relationship, no sacar.
-from src.models.ExamenResueltoModel import ExamenResuelto
-
 import datetime
 import enum
 

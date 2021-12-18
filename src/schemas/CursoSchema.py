@@ -27,6 +27,7 @@ class EditarCurso(BaseModel):
     nuevos_hashtags: Optional[str]
     nuevo_tipo: Optional[str]
     nueva_suscripcion: Optional[str]
+    actualizar_ubicacion: Optional[bool]
     nueva_latitud: Optional[decimal.Decimal]
     nueva_longitud: Optional[decimal.Decimal]
 

@@ -1,6 +1,7 @@
 import enum
-# Este import de Consigna sirve para relationship, no sacar.
+# Estos import sirven para relationship, no sacar.
 from src.models.ConsignaModel import Consigna
+from src.models.ExamenResueltoModel import ExamenResuelto
 
 from sqlalchemy import Column, ForeignKey, String, Enum
 from sqlalchemy.dialects import postgresql

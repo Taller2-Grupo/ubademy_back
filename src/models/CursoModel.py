@@ -52,6 +52,13 @@ class Curso(Base, Entity):
         self.hashtags = hashtags
         self.tipo = tipo
         self.suscripcion = suscripcion
+
+        if latitud is not None and longitud is None:
+            raise HTTPException(status_code=400, detail="El curso debe tener latitud y longitud o ninguna de las dos")
+
+        if latitud is None and longitud is not None:
+            raise HTTPException(status_code=400, detail="El curso debe tener latitud y longitud o ninguna de las dos")
+
         self.latitud = latitud
         self.longitud = longitud
 
@@ -124,10 +131,19 @@ class Curso(Base, Entity):
             raise HTTPException(status_code=400, detail='Debe proporcionar una suscripción válida: (' + str(e) + ')')
         self.suscripcion = nueva_suscripcion_enum
 
-    def set_latitud(self, latitud):
-        self.latitud = latitud
-        self.actualizar()
+    def get_latitud(self):
+        return self.latitud
 
-    def set_longitud(self, longitud):
+    def set_latitud_and_longitud(self, latitud, longitud):
+        if latitud is None and longitud is not None:
+            raise HTTPException(status_code=400, detail="El curso debe tener latitud y longitud o ninguna de las dos")
+
+        if longitud is None and latitud is not None:
+            raise HTTPException(status_code=400, detail="El curso debe tener latitud y longitud o ninguna de las dos")
+
+        self.latitud = latitud
         self.longitud = longitud
         self.actualizar()
+
+    def get_longitud(self):
+        return self.longitud
