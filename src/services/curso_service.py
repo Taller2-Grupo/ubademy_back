@@ -7,7 +7,7 @@ from fastapi import HTTPException
 from src.models.ConsignaModel import Consigna
 from src.models.ExamenModel import EstadoExamenEnum
 from src.schemas import CursoSchema, ColaboradorSchema, ExamenSchema
-from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum
+from src.models.CursoModel import EstadoCursoEnum, TipoCursoEnum, SuscripcionCursoEnum, Curso
 from typing import List, Optional
 
 from src.schemas.ColaboradorSchema import DeleteColaboradorRequest
@@ -48,21 +48,29 @@ def activar_curso(curso_id: uuid.UUID, db: Session):
 
 
 def editar_curso(curso_id: uuid.UUID, curso: CursoSchema.EditarCurso, db: Session):
-    db_curso = get_curso(curso_id, db)
+    db_curso: Curso = get_curso(curso_id, db)
+
     if curso.nuevo_titulo:
         db_curso.set_titulo(curso.nuevo_titulo)
+
     if curso.nueva_descripcion:
         db_curso.set_descripcion(curso.nueva_descripcion)
+
     if curso.nuevo_estado:
         db_curso.set_estado(curso.nuevo_estado)
+
     if curso.nuevos_hashtags:
         db_curso.set_hashtags(curso.nuevos_hashtags)
+
     if curso.nuevo_tipo:
         db_curso.set_tipo(curso.nuevo_tipo)
+
     if curso.nueva_suscripcion:
         db_curso.set_suscripcion(curso.nueva_suscripcion)
-    if curso.nueva_ubicacion:
-        db_curso.set_ubicacion(curso.nueva_ubicacion)
+
+    if curso.actualizar_ubicacion:
+        db_curso.set_latitud_and_longitud(curso.nueva_latitud, curso.nueva_longitud)
+
     return curso_repository.actualizar_curso(db, db_curso)
 
 

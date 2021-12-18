@@ -10,7 +10,7 @@ def test_crear_examen_exitoso():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
                                                            'nombre': 'test examen',
@@ -30,7 +30,7 @@ def test_get_examen_exitoso():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
                                                            'nombre': 'test examen',
@@ -54,7 +54,7 @@ def test_publicar_examen_exitoso():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/examenes',
                                         json={'id_curso': id_curso,
@@ -80,7 +80,7 @@ def test_update_examen_exitoso():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
                                                            'nombre': 'test examen',
@@ -115,7 +115,7 @@ def test_crear_examen_resuelto_sin_cursada():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
                                                            'nombre': 'test examen',
@@ -154,7 +154,7 @@ def test_crear_examen_resuelto_sin_publicar():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     client.post('/cursos/' + id_curso + '/inscribirse', json={'username': 'estudiante@test.com'})
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
@@ -194,7 +194,7 @@ def test_crear_examen_resuelto_exitoso():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     client.post('/cursos/' + id_curso + '/inscribirse', json={'username': 'estudiante@test.com'})
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
@@ -235,7 +235,7 @@ def test_corregir_examen_resuelto_exitoso():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     client.post('/cursos/' + id_curso + '/inscribirse', json={'username': 'estudiante@test.com'})
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
@@ -298,7 +298,7 @@ def test_corregir_examen_resuelto_dos_veces():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     client.post('/cursos/' + id_curso + '/inscribirse', json={'username': 'estudiante@test.com'})
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
@@ -372,7 +372,7 @@ def test_get_examenes_by_curso_2_examenes_creados_busco_todos():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
                                                            'nombre': 'test examen',
@@ -406,7 +406,7 @@ def test_get_examenes_by_curso_2_examenes_creados_busco_publicados():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
                                                            'nombre': 'test examen',
@@ -440,7 +440,7 @@ def test_get_examenes_by_curso_2_examenes_creados_busco_creados():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
                                                            'nombre': 'test examen',
@@ -474,7 +474,7 @@ def test_get_examenes_by_curso_0_examenes():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'hola@gmail.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     get_examenes_by_curso_response = client.get(f'/examenes/curso/{id_curso}')
 
@@ -486,7 +486,7 @@ def test_get_examenes_resueltos_by_curso():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     client.post('/cursos/' + id_curso + '/inscribirse', json={'username': 'estudiante@test.com'})
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,
@@ -572,7 +572,7 @@ def test_get_examenes_resueltos_by_curso_and_username():
     crear_curso_response = client.post('/cursos/',
                                        json={'id_creador': 'creador@test.com', 'titulo': 'InscribirseTest',
                                              'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
-                                             'suscripcion': 'gratuito', 'ubicacion': 'virtual'})
+                                             'suscripcion': 'gratuito'})
     id_curso = crear_curso_response.json().get('id')
     client.post('/cursos/' + id_curso + '/inscribirse', json={'username': 'estudiante@test.com'})
     crear_examen_response = client.post('/examenes', json={'id_curso': id_curso,

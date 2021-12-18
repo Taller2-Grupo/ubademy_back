@@ -1,4 +1,5 @@
 import datetime
+import decimal
 import uuid
 from typing import Optional, List
 from pydantic import BaseModel, validator
@@ -15,7 +16,8 @@ class CursoBase(BaseModel):
     hashtags: Optional[str]
     tipo: Optional[str]
     suscripcion: Optional[str]
-    ubicacion: Optional[str]
+    latitud: Optional[decimal.Decimal]
+    longitud: Optional[decimal.Decimal]
 
 
 class EditarCurso(BaseModel):
@@ -25,7 +27,9 @@ class EditarCurso(BaseModel):
     nuevos_hashtags: Optional[str]
     nuevo_tipo: Optional[str]
     nueva_suscripcion: Optional[str]
-    nueva_ubicacion: Optional[str]
+    actualizar_ubicacion: Optional[bool]
+    nueva_latitud: Optional[decimal.Decimal]
+    nueva_longitud: Optional[decimal.Decimal]
 
 
 # En esta clase se le agregan todos los atributos particulares para la creación

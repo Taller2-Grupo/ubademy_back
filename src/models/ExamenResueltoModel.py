@@ -1,6 +1,7 @@
 import enum
 # Este import sirve para relationship, no sacar.
 from src.models.RespuestaModel import Respuesta
+from src.models.CursadaModel import Cursada
 
 from sqlalchemy import Column, ForeignKey, String, Enum, INT
 from sqlalchemy.dialects import postgresql
