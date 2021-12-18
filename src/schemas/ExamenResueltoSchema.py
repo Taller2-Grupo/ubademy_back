@@ -3,7 +3,7 @@ import uuid
 from typing import Optional, List
 from pydantic import BaseModel
 
-from src.schemas import RespuestaSchema
+from src.schemas import RespuestaSchema, CursadaSchema
 
 
 class ExamenResueltoBase(BaseModel):
@@ -35,7 +35,7 @@ class ExamenResueltoResponse(ExamenResueltoBase):
     estado: str
     corrector: Optional[str]
     nota: Optional[int]
-    id_cursada: uuid.UUID
+    cursada: CursadaSchema.CursadaResponse
 
     class Config:
         orm_mode = True

@@ -313,8 +313,8 @@ def test_get_listado_de_alumnos_curso_existente():
     client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin2@admin.com'})
     client.post('/cursos/' + id_post + '/inscribirse', json={'username': 'admin3@admin.com'})
     response = client.get('/cursos/' + id_post + '/alumnos')
-    assert response.status_code == 200 and \
-           response.json() == ['admin@admin.com', 'admin2@admin.com', 'admin3@admin.com']
+    assert response.status_code == 200
+    assert response.json() == ['admin@admin.com', 'admin2@admin.com', 'admin3@admin.com']
 
 
 def test_get_listado_de_alumnos_curso_inexistente():
