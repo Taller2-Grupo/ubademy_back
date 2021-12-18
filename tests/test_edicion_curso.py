@@ -43,11 +43,17 @@ class CursoTest(TestCase):
         curso = Curso("test@test.com", 'hola', 'descr', '#h1', 'idioma', 'gratuito')
         self.assertRaises(HTTPException, curso.set_tipo, 'inexistente')
 
-    def testEditarSuscripcionValida(self):
+    def testEditarSuscripcionPremiumValida(self):
         curso = Curso("test@test.com", 'hola', 'descr', '#h1', 'idioma', 'gratuito')
-        curso.set_suscripcion('pago')
+        curso.set_suscripcion('premium')
 
-        self.assertTrue(curso.get_suscripcion() == 'pago')
+        self.assertTrue(curso.get_suscripcion() == 'premium')
+
+    def testEditarSuscripcionVipValida(self):
+        curso = Curso("test@test.com", 'hola', 'descr', '#h1', 'idioma', 'gratuito')
+        curso.set_suscripcion('vip')
+
+        self.assertTrue(curso.get_suscripcion() == 'vip')
 
     def testEditarSuscripcionInvalida(self):
         curso = Curso("test@test.com", 'hola', 'descr', '#h1', 'idioma', 'gratuito')

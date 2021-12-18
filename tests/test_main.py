@@ -249,8 +249,8 @@ def test_editar_suscripcion_valida_curso():
                                       'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
                                       'suscripcion': 'gratuito'})
     id_post = response_post.json().get('id')
-    response = client.put('/cursos/' + id_post, json={'nueva_suscripcion': 'pago'})
-    assert response.json().get('suscripcion') == 'pago' and response.status_code == 200
+    response = client.put('/cursos/' + id_post, json={'nueva_suscripcion': 'premium'})
+    assert response.json().get('suscripcion') == 'premium' and response.status_code == 200
 
 
 def test_editar_suscripcion_invalida_curso():

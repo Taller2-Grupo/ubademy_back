@@ -26,7 +26,8 @@ class TipoCursoEnum(str, enum.Enum):
 
 class SuscripcionCursoEnum(str, enum.Enum):
     gratuito = 'gratuito'
-    pago = 'pago'
+    premium = 'premium'
+    vip = 'vip'
 
 
 class Curso(Base, Entity):
