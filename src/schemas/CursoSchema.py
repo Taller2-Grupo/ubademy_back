@@ -15,7 +15,6 @@ class CursoBase(BaseModel):
     hashtags: Optional[str]
     tipo: Optional[str]
     suscripcion: Optional[str]
-    ubicacion: Optional[str]
 
 
 class EditarCurso(BaseModel):
@@ -25,7 +24,6 @@ class EditarCurso(BaseModel):
     nuevos_hashtags: Optional[str]
     nuevo_tipo: Optional[str]
     nueva_suscripcion: Optional[str]
-    nueva_ubicacion: Optional[str]
 
 
 # En esta clase se le agregan todos los atributos particulares para la creación

@@ -61,8 +61,6 @@ def editar_curso(curso_id: uuid.UUID, curso: CursoSchema.EditarCurso, db: Sessio
         db_curso.set_tipo(curso.nuevo_tipo)
     if curso.nueva_suscripcion:
         db_curso.set_suscripcion(curso.nueva_suscripcion)
-    if curso.nueva_ubicacion:
-        db_curso.set_ubicacion(curso.nueva_ubicacion)
     return curso_repository.actualizar_curso(db, db_curso)
 
 

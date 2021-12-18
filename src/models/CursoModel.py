@@ -38,11 +38,10 @@ class Curso(Base, Entity):
     hashtags = Column(String, nullable=True)
     tipo = Column(Enum(TipoCursoEnum), nullable=False)
     suscripcion = Column(Enum(SuscripcionCursoEnum), nullable=False)
-    ubicacion = Column(String, nullable=True)
     colaboradores = relationship("Colaborador", back_populates="curso")
     examenes = relationship("Examen", back_populates="curso")
 
-    def __init__(self, id_creador, titulo, descripcion, hashtags, tipo, suscripcion, ubicacion):
+    def __init__(self, id_creador, titulo, descripcion, hashtags, tipo, suscripcion):
         self.id_creador = id_creador
         self.titulo = titulo
         self.descripcion = descripcion
@@ -51,7 +50,6 @@ class Curso(Base, Entity):
         self.hashtags = hashtags
         self.tipo = tipo
         self.suscripcion = suscripcion
-        self.ubicacion = ubicacion
 
     def eliminar(self):
         self.estado = EstadoCursoEnum.eliminado
@@ -92,9 +90,6 @@ class Curso(Base, Entity):
     def get_suscripcion(self):
         return self.suscripcion.value
 
-    def get_ubicacion(self):
-        return self.ubicacion
-
     def set_titulo(self, nuevo_titulo):
         self.titulo = nuevo_titulo
 
@@ -124,6 +119,3 @@ class Curso(Base, Entity):
         except ValueError as e:
             raise HTTPException(status_code=400, detail='Debe proporcionar una suscripción válida: (' + str(e) + ')')
         self.suscripcion = nueva_suscripcion_enum
-
-    def set_ubicacion(self, nueva_ubicacion):
-        self.ubicacion = nueva_ubicacion

@@ -33,8 +33,7 @@ def create_curso(db: Session, curso: CursoSchema.CreateCursoRequest):
         curso.descripcion,
         curso.hashtags,
         curso.tipo,
-        curso.suscripcion,
-        curso.ubicacion
+        curso.suscripcion
     )
     db.add(db_curso)
     db.commit()
