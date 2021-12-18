@@ -61,11 +61,12 @@ def get_historicos(username, db):
     return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
 
 
-def get_cursos_mas_inscriptos_by_tipo_curso(db: Session, tipo_curso: str, ids_curso: str):
+def get_cursos_mas_inscriptos_by_tipo_curso(db: Session, tipo_curso: str, ids_curso: List[str]):
     statement = text(
         """ select cursos, count(cursos.id) as cantidad_inscriptos from cursadas
             inner join cursos on cursos.id = cursadas.curso_id
             where cursos.tipo = :tipo_curso
+            and cursos.estado = 'activo'
             and cursos.id not in :ids_curso
             group by cursos.id
             order by cantidad_inscriptos desc
@@ -84,8 +85,45 @@ def get_cursos_mas_inscriptos(db: Session):
     statement = text(
         """ select cursos, count(cursos.id) as cantidad_inscriptos from cursadas
             inner join cursos on cursos.id = cursadas.curso_id
+            where cursos.estado = 'activo'
             group by cursos.id
             order by cantidad_inscriptos desc
             limit 10 """)
 
     return db.execute(statement).all()
+
+
+# def get_cursos_virtuales_con_mas_inscriptos(db: Session):
+#     statement = text(
+#         """ select cursos, count(cursos.id) as cantidad_inscriptos from cursadas
+#             inner join cursos on cursos.id = cursadas.curso_id
+#             where cursos.latitud is null and cursos.longitud is null
+#             group by cursos.id
+#             order by cantidad_inscriptos desc
+#             limit 10 """)
+#
+#     return db.execute(statement).all()
+
+
+def get_cursos_by_cercania(db: Session, latitud, longitud):
+    statement = text(
+        """ select
+            *,
+            SQRT(
+                POW(69.1 * (cursos.latitud - :latitud), 2) +
+                POW(69.1 * (:longitud - cursos.longitud) * COS(cursos.latitud / 57.3), 2)) as distance
+            from cursos
+            where
+             SQRT(
+                POW(69.1 * (cursos.latitud - :latitud), 2) +
+                POW(69.1 * (:longitud - cursos.longitud) * COS(cursos.latitud / 57.3), 2)) < 2
+            and estado = 'activo'
+            order by distance
+            limit 10 """)
+
+    params = {
+        "latitud": latitud,
+        "longitud": longitud
+    }
+
+    return db.execute(statement, params).all()
