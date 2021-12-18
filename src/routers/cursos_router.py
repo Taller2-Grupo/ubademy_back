@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=CursoSchema.CursoResponse)
+@router.post("/", response_model=CursoSchema.CursoResponse, status_code=201)
 def create_curso(curso: CursoSchema.CreateCursoRequest, db: Session = Depends(get_db)):
     return curso_service.crear_curso(curso=curso, db=db)
 

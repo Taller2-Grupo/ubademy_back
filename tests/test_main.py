@@ -10,7 +10,7 @@ def test_post_curso():
                            json={'id_creador': 'Renzo', 'titulo': 'postCurso',
                                  'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
                                  'suscripcion': 'gratuito'})
-    assert response.status_code == 200
+    assert response.status_code == 201
 
 
 def test_post_curso_sin_titulo():

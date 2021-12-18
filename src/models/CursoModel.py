@@ -4,7 +4,7 @@ import enum
 from src.models.ColaboradorModel import Colaborador
 from src.models.ExamenModel import Examen
 
-from sqlalchemy import Column, Enum, String
+from sqlalchemy import Column, Enum, String, DECIMAL
 from sqlalchemy.orm import relationship
 
 from src.models.Entity import Entity
@@ -40,8 +40,10 @@ class Curso(Base, Entity):
     suscripcion = Column(Enum(SuscripcionCursoEnum), nullable=False)
     colaboradores = relationship("Colaborador", back_populates="curso")
     examenes = relationship("Examen", back_populates="curso")
+    latitud = Column(DECIMAL, nullable=True)
+    longitud = Column(DECIMAL, nullable=True)
 
-    def __init__(self, id_creador, titulo, descripcion, hashtags, tipo, suscripcion):
+    def __init__(self, id_creador, titulo, descripcion, hashtags, tipo, suscripcion, latitud=None, longitud=None):
         self.id_creador = id_creador
         self.titulo = titulo
         self.descripcion = descripcion
@@ -50,6 +52,8 @@ class Curso(Base, Entity):
         self.hashtags = hashtags
         self.tipo = tipo
         self.suscripcion = suscripcion
+        self.latitud = latitud
+        self.longitud = longitud
 
     def eliminar(self):
         self.estado = EstadoCursoEnum.eliminado
@@ -119,3 +123,11 @@ class Curso(Base, Entity):
         except ValueError as e:
             raise HTTPException(status_code=400, detail='Debe proporcionar una suscripción válida: (' + str(e) + ')')
         self.suscripcion = nueva_suscripcion_enum
+
+    def set_latitud(self, latitud):
+        self.latitud = latitud
+        self.actualizar()
+
+    def set_longitud(self, longitud):
+        self.longitud = longitud
+        self.actualizar()
