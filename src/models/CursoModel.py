@@ -131,9 +131,6 @@ class Curso(Base, Entity):
             raise HTTPException(status_code=400, detail='Debe proporcionar una suscripción válida: (' + str(e) + ')')
         self.suscripcion = nueva_suscripcion_enum
 
-    def get_latitud(self):
-        return self.latitud
-
     def set_latitud_and_longitud(self, latitud, longitud):
         if latitud is None and longitud is not None:
             raise HTTPException(status_code=400, detail="El curso debe tener latitud y longitud o ninguna de las dos")
@@ -144,6 +141,3 @@ class Curso(Base, Entity):
         self.latitud = latitud
         self.longitud = longitud
         self.actualizar()
-
-    def get_longitud(self):
-        return self.longitud
