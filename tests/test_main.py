@@ -5,12 +5,52 @@ from src.models.CursadaModel import EstadoCursadaEnum
 client = TestClient(app)
 
 
-def test_post_curso():
+def test_post_curso_sin_latitud_ni_longitud():
     response = client.post('/cursos/',
                            json={'id_creador': 'Renzo', 'titulo': 'postCurso',
                                  'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
                                  'suscripcion': 'gratuito'})
     assert response.status_code == 201
+    assert response.json().get("id_creador") == "Renzo"
+    assert response.json().get("titulo") == "postCurso"
+    assert response.json().get("descripcion") == "descr"
+    assert response.json().get("hashtags") == "hola"
+    assert response.json().get("tipo") == "idioma"
+    assert response.json().get("suscripcion") == "gratuito"
+    assert response.json().get("latitud") is None
+    assert response.json().get("longitud") is None
+
+
+def test_post_curso_con_latitud_y_longitud():
+    response = client.post('/cursos/',
+                           json={'id_creador': 'Renzo', 'titulo': 'postCurso',
+                                 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                 'suscripcion': 'gratuito', 'latitud': 10, 'longitud': 15})
+    assert response.status_code == 201
+    assert response.json().get("id_creador") == "Renzo"
+    assert response.json().get("titulo") == "postCurso"
+    assert response.json().get("descripcion") == "descr"
+    assert response.json().get("hashtags") == "hola"
+    assert response.json().get("tipo") == "idioma"
+    assert response.json().get("suscripcion") == "gratuito"
+    assert response.json().get("latitud") == 10
+    assert response.json().get("longitud") == 15
+
+
+def test_post_curso_con_latitud_sin_longitud():
+    response = client.post('/cursos/',
+                           json={'id_creador': 'Renzo', 'titulo': 'postCurso',
+                                 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                 'suscripcion': 'gratuito', 'latitud': 10})
+    assert response.status_code == 400
+
+
+def test_post_curso_sin_latitud_con_longitud():
+    response = client.post('/cursos/',
+                           json={'id_creador': 'Renzo', 'titulo': 'postCurso',
+                                 'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                 'suscripcion': 'gratuito', 'longitud': 10})
+    assert response.status_code == 400
 
 
 def test_post_curso_sin_titulo():
@@ -223,6 +263,54 @@ def test_editar_suscripcion_invalida_curso():
     assert response.status_code == 400
 
 
+def test_editar_curso_latitud_longitud_no_nulos():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'Renzo', 'titulo': 'EditarTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito'})
+    id_post = response_post.json().get('id')
+    response = client.put('/cursos/' + id_post, json={
+        'nueva_latitud': 10, 'nueva_longitud': 15, 'actualizar_ubicacion': True})
+    assert response.json().get('latitud') == 10
+    assert response.json().get('longitud') == 15
+    assert response.status_code == 200
+
+
+def test_editar_curso_latitud_longitud_no_nulos_no_actualizar():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'Renzo', 'titulo': 'EditarTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito'})
+    id_post = response_post.json().get('id')
+    response = client.put('/cursos/' + id_post, json={
+        'nueva_latitud': 10, 'nueva_longitud': 15, 'actualizar_ubicacion': False})
+    assert response.json().get('latitud') is None
+    assert response.json().get('longitud') is None
+    assert response.status_code == 200
+
+
+def test_editar_curso_latitud_nula_longitud_no_nula():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'Renzo', 'titulo': 'EditarTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito'})
+    id_post = response_post.json().get('id')
+    response = client.put('/cursos/' + id_post, json={
+        'nueva_longitud': 15, 'actualizar_ubicacion': True})
+    assert response.status_code == 400
+
+
+def test_editar_curso_latitud_no_nula_longitud_nula():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'Renzo', 'titulo': 'EditarTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito'})
+    id_post = response_post.json().get('id')
+    response = client.put('/cursos/' + id_post, json={
+        'nueva_latitud': 10, 'actualizar_ubicacion': True})
+    assert response.status_code == 400
+
+
 def test_get_cursos_creador_sin_cursos():
     response = client.get('4e4707da-0542-4f9c-ae59-bc3bcaafde71/cursos')
     assert response.status_code == 200
@@ -374,9 +462,11 @@ def test_agregar_colaborador_dos_veces():
     assert response_1.status_code == 200
     assert response_2.status_code == 422
 
+
 def test_obtener_cursos_colaborador_sin_colaboraciones():
     response = client.get('/cursos/colaboraciones/admin_nocolaborador@admin.com/')
     assert response.status_code == 404
+
 
 def test_obtener_cursos_colaborador():
     response_post = client.post('/cursos/',
