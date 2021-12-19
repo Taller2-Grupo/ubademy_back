@@ -32,7 +32,7 @@ COPY heroku/heroku-entrypoint.sh requirements.txt alembic.ini ./
 # ENV POETRY_VIRTUALENVS_IN_PROJECT true
 # RUN poetry install
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
-RUN alembic upgrade head
+# RUN alembic upgrade head
 
 # Expose DogStatsD and trace-agent ports
 EXPOSE 8125/udp 8126/tcp
