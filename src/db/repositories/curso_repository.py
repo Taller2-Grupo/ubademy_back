@@ -102,3 +102,10 @@ def get_cursos_colaborador(db, username):
     for curso_id in id_cursos:
         id_cursos_string.append(str(curso_id)[7:43])
     return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
+
+
+def get_cursos(cursos_id, db):
+    id_cursos_string = []
+    for curso_id in cursos_id:
+        id_cursos_string.append(str(curso_id)[7:43])
+    return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
