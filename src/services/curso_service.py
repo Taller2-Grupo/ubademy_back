@@ -25,8 +25,8 @@ def get_curso(curso_id: uuid.UUID, db: Session):
     return db_curso
 
 
-def get_cursos_creador(creador_id: uuid.UUID, db: Session):
-    return curso_repository.get_cursos_creador(db, creador_id=creador_id)
+def get_cursos_creador(creador: str, db: Session):
+    return curso_repository.get_cursos_creador(db, creador=creador)
 
 
 def eliminar_curso(curso_id: uuid.UUID, db: Session):

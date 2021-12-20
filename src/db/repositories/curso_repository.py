@@ -14,10 +14,10 @@ def get_curso(db: Session, curso_id: uuid.UUID):
     return db.query(Curso).filter(Curso.id == curso_id).first()
 
 
-def get_cursos_creador(db: Session, creador_id: uuid.UUID):
+def get_cursos_creador(db: Session, creador: str):
     cursos = []
     for curso in db.query(Curso):
-        if str(curso.id_creador) == str(creador_id):
+        if curso.id_creador == creador:
             cursos.append(curso)
     return cursos
 

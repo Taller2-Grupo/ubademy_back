@@ -27,9 +27,9 @@ app.include_router(examen_router.router)
 app.include_router(recomendaciones_router.router)
 
 
-@app.get("/{creador_id}/cursos", response_model=List[CursoSchema.CursoResponse])
-def get_cursos_creador(creador_id: uuid.UUID, db: Session = Depends(get_db)):
-    return curso_service.get_cursos_creador(creador_id, db)
+@app.get("/{creador}/cursos", response_model=List[CursoSchema.CursoResponse])
+def get_cursos_creador(creador: str, db: Session = Depends(get_db)):
+    return curso_service.get_cursos_creador(creador, db)
 
 
 # Para debuguear:
