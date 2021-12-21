@@ -548,7 +548,7 @@ def test_es_favorito_true():
                                       'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
                                       'suscripcion': 'gratuito'})
     id_post = response_post.json().get('id')
-    r = client.post('/cursos/favoritos/', json={'username': 'admin_esfavorito@admin.com', 'curso_id': id_post})
+    client.post('/cursos/favoritos/', json={'username': 'admin_esfavorito@admin.com', 'curso_id': id_post})
     response = client.get('/cursos/favoritos/admin_esfavorito@admin.com/' + id_post)
     assert response.json()
 
@@ -561,3 +561,34 @@ def test_es_favorito_false():
     id_post = response_post.json().get('id')
     response = client.get('/cursos/favoritos/admin_esfavorito@admin.com/' + id_post + '/')
     assert not response.json()
+
+
+def test_delete_favorito():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'hola@gmail.com', 'titulo': 'DeleteFavoritoTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito'})
+    id_post = response_post.json().get('id')
+    client.post('/cursos/favoritos/', json={'username': 'admin_deletefavorito@admin.com', 'curso_id': id_post})
+    response = client.delete('/cursos/favoritos/admin_deletefavorito@admin.com/' + id_post)
+    assert response.status_code == 202
+
+def test_delete_favorito_dos_veces():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'hola@gmail.com', 'titulo': 'DeleteFavoritoTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito'})
+    id_post = response_post.json().get('id')
+    client.post('/cursos/favoritos/', json={'username': 'admin_deletefavorito@admin.com', 'curso_id': id_post})
+    client.delete('/cursos/favoritos/admin_deletefavorito@admin.com/' + id_post)
+    response = client.delete('/cursos/favoritos/admin_deletefavorito@admin.com/' + id_post)
+    assert response.status_code == 404
+
+def test_delete_favorito_curso_no_favorito():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'hola@gmail.com', 'titulo': 'DeleteFavoritoTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito'})
+    id_post = response_post.json().get('id')
+    response = client.delete('/cursos/favoritos/admin_deletenofavorito@admin.com/' + id_post)
+    assert response.status_code == 404

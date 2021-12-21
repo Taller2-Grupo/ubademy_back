@@ -114,3 +114,8 @@ def get_favoritos(username: str, db: Session = Depends(get_db)):
 @router.get("/favoritos/{username}/{curso_id}", response_model=bool)
 def get_es_favorito(username: str, curso_id: uuid.UUID, db: Session = Depends(get_db)):
     return curso_service.es_favorito(username, curso_id, db)
+
+
+@router.delete("/favoritos/{username}/{curso_id}", status_code=202)
+def delete_favorito(username: str, curso_id: uuid.UUID, db: Session = Depends(get_db)):
+    return curso_service.delete_favorito(username, curso_id, db)

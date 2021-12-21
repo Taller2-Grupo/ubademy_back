@@ -197,3 +197,7 @@ def get_cursos_colaborador(username, db):
 
 def es_favorito(username, curso_id, db):
     return curso_repository.es_favorito(username, curso_id, db)
+
+
+def delete_favorito(username, curso_id, db):
+    return curso_repository.delete_favorito(username, curso_id, db)

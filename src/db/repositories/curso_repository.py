@@ -8,6 +8,7 @@ from src.models.CursoModel import Curso, EstadoCursoEnum, TipoCursoEnum, Suscrip
 from src.models.FavoritoModel import Favorito
 from src.schemas import CursoSchema
 from typing import List, Optional
+from fastapi import HTTPException
 
 from src.schemas.FavoritoSchema import EsFavoritoResponse
 
@@ -118,9 +119,14 @@ def es_favorito(username, curso_id, db):
                                      Favorito.curso_id == str(curso_id)).all()) == 0:
         return False
     return True
-    # response = EsFavoritoResponse(value=True)
-    # print(response.json())
-    # if db.query(Favorito).filter(Favorito.username == username,
-    # Favorito.curso_id == curso_id):
-    # return EsFavoritoResponse(value=True)
-    # return EsFavoritoResponse(value=False)
+
+
+def delete_favorito(username, curso_id, db):
+    db_favorito = db.query(Favorito).filter(Favorito.username == username,
+                                            Favorito.curso_id == str(curso_id)).first()
+
+    if db_favorito is None:
+        raise HTTPException(status_code=404, detail="El curso no esta en los favoritos del usuario")
+
+    db.delete(db_favorito)
+    db.commit()
