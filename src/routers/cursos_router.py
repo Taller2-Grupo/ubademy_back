@@ -109,3 +109,8 @@ def add_favorito(favorito: FavoritoSchema.FavearCurso, db: Session = Depends(get
 @router.get("/favoritos/{username}/", response_model=List[CursoSchema.CursoResponse])
 def get_favoritos(username: str, db: Session = Depends(get_db)):
     return curso_service.get_favoritos(username, db)
+
+
+@router.get("/favoritos/{username}/{curso_id}", response_model=bool)
+def get_es_favorito(username: str, curso_id: uuid.UUID, db: Session = Depends(get_db)):
+    return curso_service.es_favorito(username, curso_id, db)

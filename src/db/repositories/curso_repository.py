@@ -9,6 +9,8 @@ from src.models.FavoritoModel import Favorito
 from src.schemas import CursoSchema
 from typing import List, Optional
 
+from src.schemas.FavoritoSchema import EsFavoritoResponse
+
 
 def get_curso(db: Session, curso_id: uuid.UUID):
     return db.query(Curso).filter(Curso.id == curso_id).first()
@@ -109,3 +111,16 @@ def get_cursos(cursos_id, db):
     for curso_id in cursos_id:
         id_cursos_string.append(str(curso_id)[7:43])
     return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
+
+
+def es_favorito(username, curso_id, db):
+    if len(db.query(Favorito).filter(Favorito.username == username,
+                                     Favorito.curso_id == str(curso_id)).all()) == 0:
+        return False
+    return True
+    # response = EsFavoritoResponse(value=True)
+    # print(response.json())
+    # if db.query(Favorito).filter(Favorito.username == username,
+    # Favorito.curso_id == curso_id):
+    # return EsFavoritoResponse(value=True)
+    # return EsFavoritoResponse(value=False)

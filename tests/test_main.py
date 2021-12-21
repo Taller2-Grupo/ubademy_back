@@ -485,9 +485,9 @@ def test_borrar_colaborador():
                                             'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
                                             'suscripcion': 'gratuito'})
     id_curso = response_post_curso.json().get('id')
-    response_post_colaborador =\
+    response_post_colaborador = \
         client.post('/cursos/colaborador', json={'username': 'admin@admin.com', 'id_curso': id_curso})
-    response_delete_colaborador =\
+    response_delete_colaborador = \
         client.delete('/cursos/colaborador/delete', json={'username': 'admin@admin.com', 'id_curso': id_curso})
 
     assert response_delete_colaborador.status_code == 202
@@ -499,9 +499,9 @@ def test_borrar_colaborador_dos_veces():
                                             'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
                                             'suscripcion': 'gratuito'})
     id_curso = response_post_curso.json().get('id')
-    response_post_colaborador =\
+    response_post_colaborador = \
         client.post('/cursos/colaborador', json={'username': 'admin@admin.com', 'id_curso': id_curso})
-    response_delete_colaborador =\
+    response_delete_colaborador = \
         client.delete('/cursos/colaborador/delete', json={'username': 'admin@admin.com', 'id_curso': id_curso})
     response_delete_colaborador_2 = \
         client.delete('/cursos/colaborador/delete', json={'username': 'admin@admin.com', 'id_curso': id_curso})
@@ -540,3 +540,24 @@ def test_favoritos_usuario_un_curso():
     client.post('/cursos/favoritos/', json={'username': 'admin_favorito@admin.com', 'curso_id': id_post})
     response = client.get('/cursos/favoritos/admin_favorito@admin.com/')
     assert response.status_code == 200
+
+
+def test_es_favorito_true():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'hola@gmail.com', 'titulo': 'EsFavoritoTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito'})
+    id_post = response_post.json().get('id')
+    r = client.post('/cursos/favoritos/', json={'username': 'admin_esfavorito@admin.com', 'curso_id': id_post})
+    response = client.get('/cursos/favoritos/admin_esfavorito@admin.com/' + id_post)
+    assert response.json()
+
+
+def test_es_favorito_false():
+    response_post = client.post('/cursos/',
+                                json={'id_creador': 'hola@gmail.com', 'titulo': 'NoEsFavoritoTest',
+                                      'descripcion': 'descr', 'hashtags': 'hola', 'tipo': 'idioma',
+                                      'suscripcion': 'gratuito'})
+    id_post = response_post.json().get('id')
+    response = client.get('/cursos/favoritos/admin_esfavorito@admin.com/' + id_post + '/')
+    assert not response.json()

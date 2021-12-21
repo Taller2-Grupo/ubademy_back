@@ -25,6 +25,12 @@ class FavearCurso(FavoritoBase):
 
 # Esto es lo que se va a devolver cuando se este "leyendo" un Colaborador
 class FavoritoResponse(FavoritoBase):
+    class Config:
+        orm_mode = True
+
+
+class EsFavoritoResponse(FavoritoBase):
+    value: bool
 
     class Config:
         orm_mode = True
