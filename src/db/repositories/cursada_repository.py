@@ -63,12 +63,13 @@ def get_historicos(username, db):
 
 def get_cursos_mas_inscriptos_by_tipo_curso(db: Session, tipo_curso: str, ids_curso: List[str]):
     statement = text(
-        """ select cursos.id from cursadas
+        """ select cursos.*, count(cursos.id) as cantidad_inscriptos from cursadas
             inner join cursos on cursos.id = cursadas.curso_id
             where cursos.tipo = :tipo_curso
             and cursos.estado = 'activo'
             and cursos.id not in :ids_curso
             group by cursos.id
+            order by cantidad_inscriptos desc
             limit 10 """)
 
     params = {
@@ -76,15 +77,17 @@ def get_cursos_mas_inscriptos_by_tipo_curso(db: Session, tipo_curso: str, ids_cu
     }
 
     statement = statement.bindparams(ids_curso=tuple(ids_curso))
+
     return db.execute(statement, params).all()
 
 
 def get_cursos_mas_inscriptos(db: Session):
     statement = text(
-        """ select cursos.id from cursadas
+        """ select cursos.*, count(cursos.id) as cantidad_inscriptos from cursadas
             inner join cursos on cursos.id = cursadas.curso_id
             where cursos.estado = 'activo'
             group by cursos.id
+            order by cantidad_inscriptos desc
             limit 10 """)
 
     return db.execute(statement).all()
