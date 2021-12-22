@@ -61,19 +61,21 @@ def get_historicos(username, db):
     return db.query(Curso).filter(Curso.id.in_(id_cursos_string)).all()
 
 
-def get_cursos_mas_inscriptos_by_tipo_curso(db: Session, tipo_curso: str, ids_curso: List[str]):
+def get_cursos_mas_inscriptos_by_tipo_curso(db: Session, tipo_curso: str, ids_curso: List[str], username: str):
     statement = text(
         """ select cursos.*, count(cursos.id) as cantidad_inscriptos from cursadas
             inner join cursos on cursos.id = cursadas.curso_id
             where cursos.tipo = :tipo_curso
             and cursos.estado = 'activo'
             and cursos.id not in :ids_curso
+            and cursos.id_creador != :username
             group by cursos.id
             order by cantidad_inscriptos desc
             limit 10 """)
 
     params = {
-        "tipo_curso": tipo_curso
+        "tipo_curso": tipo_curso,
+        "username": username
     }
 
     statement = statement.bindparams(ids_curso=tuple(ids_curso))
@@ -81,16 +83,21 @@ def get_cursos_mas_inscriptos_by_tipo_curso(db: Session, tipo_curso: str, ids_cu
     return db.execute(statement, params).all()
 
 
-def get_cursos_mas_inscriptos(db: Session):
+def get_cursos_mas_inscriptos(db: Session, username: str):
     statement = text(
         """ select cursos.*, count(cursos.id) as cantidad_inscriptos from cursadas
             inner join cursos on cursos.id = cursadas.curso_id
             where cursos.estado = 'activo'
+            and cursos.id_creador != :username
             group by cursos.id
             order by cantidad_inscriptos desc
             limit 10 """)
 
-    return db.execute(statement).all()
+    params = {
+        "username": username
+    }
+
+    return db.execute(statement, params).all()
 
 
 # def get_cursos_virtuales_con_mas_inscriptos(db: Session):
