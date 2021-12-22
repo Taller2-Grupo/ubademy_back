@@ -13,9 +13,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: ubademy-back
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
     strategy:
       fail-fast: false
       matrix:
@@ -41,6 +43,7 @@ jobs:
     - name: Running tests
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
       run: |
         export PYTHONPATH=. src
         pytest ${{ matrix.test-name }}

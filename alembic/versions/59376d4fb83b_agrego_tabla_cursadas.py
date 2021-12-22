@@ -27,7 +27,7 @@ def upgrade():
         sa.Column("fecha_creacion", sa.DateTime, nullable=False),
         sa.Column("fecha_actualizacion", sa.DateTime, nullable=True),
         sa.Column("username", sa.String, nullable=False),
-        sa.Column("id_curso", sa.String, nullable=False),
+        sa.Column("curso_id", sa.String, nullable=False),
         sa.Column("estado", sa.String, nullable=False)
     )
 
