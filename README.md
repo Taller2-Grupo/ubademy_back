@@ -22,6 +22,8 @@ Para correr localmente se debe crear un archivo .env en el root, esta commiteado
 
 DATABASE_URL: URL de la base de datos postgres, si se usa heroku se setea automaticamente al agregarle una base de datos a la aplicacion.
 
+TEST_DATABASE_URL: URL de la base de pruebas.
+
 Para monitoreo datadog:
 
 DD_API_KEY: api key de datadog

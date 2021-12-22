@@ -20,11 +20,11 @@ depends_on = None
 
 
 def upgrade():
-    op.drop_column('cursadas', 'id_curso')
-    op.add_column('cursadas', sa.Column("id_curso", UUID(as_uuid=True), default=uuid.uuid4))
+    op.drop_column('cursadas', 'curso_id')
+    op.add_column('cursadas', sa.Column("curso_id", UUID(as_uuid=True), default=uuid.uuid4))
 
 
 def downgrade():
-    op.drop_column('cursadas', 'id_curso')
-    op.add_column('cursadas', sa.Column("id_curso", sa.String, nullable=False))
+    op.drop_column('cursadas', 'curso_id')
+    op.add_column('cursadas', sa.Column("curso_id", sa.String, nullable=False))
 
