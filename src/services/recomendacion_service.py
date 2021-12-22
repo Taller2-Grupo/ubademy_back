@@ -26,8 +26,8 @@ def recomendar_curso_por_intereses(db: Session, username: str):
     return cursada_repository.get_cursos_mas_inscriptos_by_tipo_curso(db, tipo_curso_favorito, ids_cursos)
 
 
-def recomendar_cursos_por_ubicacion(db: Session, latitud: decimal.Decimal, longitud: decimal.Decimal):
+def recomendar_cursos_por_ubicacion(db: Session, username: str, latitud: decimal.Decimal, longitud: decimal.Decimal):
     if latitud is None and longitud is None:
         return []
 
-    return cursada_repository.get_cursos_by_cercania(db, latitud, longitud)
+    return cursada_repository.get_cursos_by_cercania(db, username, latitud, longitud)

@@ -18,6 +18,10 @@ def get_recomendacion_por_intereses(username: str, db: Session = Depends(get_db)
     return recomendacion_service.recomendar_curso_por_intereses(db, username)
 
 
-@router.get("/ubicacion/{latitud}/{longitud}", response_model=List[CursoSchema.CursoResponse])
-def get_recomendacion_por_intereses(latitud: decimal.Decimal, longitud: decimal.Decimal, db: Session = Depends(get_db)):
-    return recomendacion_service.recomendar_cursos_por_ubicacion(db, latitud, longitud)
+@router.get("/ubicacion/{username}/{latitud}/{longitud}", response_model=List[CursoSchema.CursoResponse])
+def get_recomendacion_por_intereses(
+        username: str,
+        latitud: decimal.Decimal,
+        longitud: decimal.Decimal,
+        db: Session = Depends(get_db)):
+    return recomendacion_service.recomendar_cursos_por_ubicacion(db, username, latitud, longitud)

@@ -10,5 +10,5 @@ def test_recomendar_intereses_exitoso():
 
 
 def test_recomendar_ubicacion_exitoso():
-    recomendar_response = client.get('/recomendaciones/ubicacion/10/15')
+    recomendar_response = client.get('/recomendaciones/ubicacion/test@test.com/10/15')
     assert recomendar_response.status_code == 200

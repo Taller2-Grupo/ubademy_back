@@ -105,7 +105,7 @@ def get_cursos_mas_inscriptos(db: Session):
 #     return db.execute(statement).all()
 
 
-def get_cursos_by_cercania(db: Session, latitud, longitud):
+def get_cursos_by_cercania(db: Session, username, latitud, longitud):
     statement = text(
         """ select
             *,
@@ -118,12 +118,14 @@ def get_cursos_by_cercania(db: Session, latitud, longitud):
                 POW(69.1 * (cursos.latitud - :latitud), 2) +
                 POW(69.1 * (:longitud - cursos.longitud) * COS(cursos.latitud / 57.3), 2)) < 2
             and estado = 'activo'
+            and id_creador != :username
             order by distance
             limit 10 """)
 
     params = {
         "latitud": latitud,
-        "longitud": longitud
+        "longitud": longitud,
+        "username": username
     }
 
     return db.execute(statement, params).all()
